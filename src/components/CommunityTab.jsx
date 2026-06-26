@@ -19,6 +19,30 @@ const VISA_OPTIONS = [
   { value: 'other', label: 'Other' },
 ]
 
+const RESEARCH_OPTIONS = [
+  { value: 'multi_high', label: '2+ publications — high-impact journal' },
+  { value: 'single_high', label: '1 publication — high-impact journal' },
+  { value: 'multi_any', label: 'Multiple publications — any journal' },
+  { value: 'single_any', label: '1 publication — any journal' },
+  { value: 'presentations', label: 'Presentations / abstracts only' },
+  { value: 'none', label: 'No research' },
+]
+
+const EMPTY_IV_FORM = {
+  program_code: '',
+  cycle: CYCLES[0],
+  step2: '',
+  step3: '',
+  med_school: 'dow',
+  yog: '',
+  visa: 'j1',
+  research: 'none',
+  rotation_months: '',
+  got_invite: '',
+  notes: '',
+  contact: '',
+}
+
 const REPORT_TYPES = [
   { value: 'error',      label: '🐛 Incorrect program data' },
   { value: 'question',   label: '❓ Question about the tool' },
@@ -41,17 +65,7 @@ function SetupNotice() {
 }
 
 function IVReportForm({ programs, userId, onSubmitted }) {
-  const [form, setForm] = useState({
-    program_code: '',
-    cycle:        CYCLES[0],
-    step2:        '',
-    med_school:   'dow',
-    yog:          '',
-    visa:         'j1',
-    got_invite:   '',
-    notes:        '',
-    contact:      '',
-  })
+  const [form, setForm] = useState({ ...EMPTY_IV_FORM })
   const [status, setStatus] = useState('idle')
 
   function update(field, value) {
@@ -70,7 +84,7 @@ function IVReportForm({ programs, userId, onSubmitted }) {
       )
       setStatus('success')
       onSubmitted?.()
-      setForm({ program_code: '', cycle: CYCLES[0], step2: '', med_school: 'dow', yog: '', visa: 'j1', got_invite: '', notes: '', contact: '' })
+      setForm({ ...EMPTY_IV_FORM })
     } catch {
       setStatus('error')
     }
@@ -138,6 +152,19 @@ function IVReportForm({ programs, userId, onSubmitted }) {
         </label>
 
         <label className="block">
+          <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
+            USMLE Step 3 <span className="font-normal text-slate-400">(optional)</span>
+          </span>
+          <input
+            type="text"
+            placeholder="Score or leave blank if not taken"
+            value={form.step3}
+            onChange={(e) => update('step3', e.target.value)}
+            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+          />
+        </label>
+
+        <label className="block">
           <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Medical School</span>
           <select
             value={form.med_school}
@@ -169,6 +196,31 @@ function IVReportForm({ programs, userId, onSubmitted }) {
           >
             {VISA_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
           </select>
+        </label>
+
+        <label className="block">
+          <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Research</span>
+          <select
+            value={form.research}
+            onChange={(e) => update('research', e.target.value)}
+            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+          >
+            {RESEARCH_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+          </select>
+        </label>
+
+        <label className="block">
+          <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
+            US clinical rotation months <span className="font-normal text-slate-400">(optional)</span>
+          </span>
+          <input
+            type="text"
+            inputMode="numeric"
+            placeholder="e.g. 3 — total months across all rotations"
+            value={form.rotation_months}
+            onChange={(e) => update('rotation_months', e.target.value.replace(/\D/g, '').slice(0, 2))}
+            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+          />
         </label>
 
         <div className="block md:col-span-2">
@@ -414,7 +466,7 @@ export default function CommunityTab({ programs }) {
           <>
             <h3 className="mb-1 text-base font-semibold text-slate-900 dark:text-slate-100">Interview Invite Report</h3>
             <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
-              Share whether you received an interview at a program — Step 2, school, and visa help the community.
+              Share whether you received an interview at a program — Step 2/3, school, visa, research, and rotation months help the community.
             </p>
             <IVReportForm programs={programs} userId={userId} onSubmitted={refreshCounts} />
           </>

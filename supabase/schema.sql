@@ -10,9 +10,12 @@ create table if not exists public.iv_reports (
   program_name text,
   cycle text,
   step2 text not null,
+  step3 text,
   med_school text,
   yog text,
   visa text,
+  research text,
+  rotation_months integer,
   got_invite text not null check (got_invite in ('yes', 'no')),
   notes text,
   contact_email text
@@ -36,6 +39,12 @@ create index if not exists community_reports_created_at_idx on public.community_
 
 alter table public.iv_reports enable row level security;
 alter table public.community_reports enable row level security;
+
+-- Policies (safe to re-run)
+drop policy if exists "iv_reports_insert_own" on public.iv_reports;
+drop policy if exists "community_reports_insert_own" on public.community_reports;
+drop policy if exists "iv_reports_select_own" on public.iv_reports;
+drop policy if exists "community_reports_select_own" on public.community_reports;
 
 -- Signed-in users can submit; user_id must match their account
 create policy "iv_reports_insert_own"
