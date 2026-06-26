@@ -7,7 +7,7 @@ import { fetchSubmissionCounts, submitCommunityReport, submitIvReport } from '..
 const CYCLES = ['2026–27', '2025–26', '2024–25', '2023–24']
 
 const MED_SCHOOLS = [
-  { value: 'dow',       label: 'Dow University of Health Sciences (DUHS / DMC)' },
+  { value: 'dow',       label: 'Dow University of Health Sciences (DIMC / DMC)' },
   { value: 'other_pak', label: 'Other Pakistani medical school' },
   { value: 'other_img', label: 'Other IMG (non-Pakistani)' },
 ]

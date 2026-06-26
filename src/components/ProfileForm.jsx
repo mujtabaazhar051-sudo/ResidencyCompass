@@ -171,7 +171,7 @@ export default function ProfileForm({
             <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Pakistani Medical School</span>
             <div className="flex gap-3">
               {[
-                { value: 'dow',       label: 'Dow University of Health Sciences (DUHS / DMC)' },
+                { value: 'dow',       label: 'Dow University of Health Sciences (DIMC / DMC)' },
                 { value: 'other_pak', label: 'Other Pakistani medical school' },
               ].map((o) => (
                 <label key={o.value} className={`flex flex-1 cursor-pointer items-center gap-2 rounded-lg border px-3 py-2.5 text-sm transition-colors ${

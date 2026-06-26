@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 
 export default function AuthModal({ mode = 'signin', onClose, onSuccess, onSwitchMode }) {
-  const { signIn, signUp, isConfigured } = useAuth()
+  const { signIn, signUp, isConfigured, configError, envDebug } = useAuth()
   const isSignUp = mode === 'signup'
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -47,7 +47,12 @@ export default function AuthModal({ mode = 'signin', onClose, onSuccess, onSwitc
       }
       onSuccess?.()
     } catch (err) {
-      setError(err.message ?? 'Sign in failed. Try again.')
+      const msg = err?.message ?? ''
+      if (msg.includes('JSON') || msg.includes('fetch')) {
+        setError('Could not reach Supabase. Check VITE_SUPABASE_URL (must be https://xxxx.supabase.co) and VITE_SUPABASE_ANON_KEY (anon public key starting with eyJ), then restart npm run dev.')
+      } else {
+        setError(msg || 'Sign in failed. Try again.')
+      }
     } finally {
       setBusy(false)
     }
@@ -87,9 +92,18 @@ export default function AuthModal({ mode = 'signin', onClose, onSuccess, onSwitc
           </div>
         </div>
 
+        {import.meta.env.DEV && envDebug && (
+          <p className="mb-4 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-xs text-slate-600 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-400">
+            Dev: URL={envDebug.url ?? 'missing'} · key={envDebug.hasKey ? `${envDebug.keyLength} chars` : 'missing'}
+            {envDebug.configError ? ` · ${envDebug.configError}` : ''}
+          </p>
+        )}
+
         {!isConfigured && (
           <p className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:border-amber-800 dark:bg-amber-900/20 dark:text-amber-300">
-            Supabase is not configured — using local demo sign-in. Add <code className="rounded bg-amber-100 px-1 dark:bg-amber-900/40">VITE_SUPABASE_*</code> for production auth. See <code className="rounded bg-amber-100 px-1 dark:bg-amber-900/40">docs/DEPLOY.md</code>.
+            {configError ?? (
+              <>Supabase is not configured. Add <code className="rounded bg-amber-100 px-1 dark:bg-amber-900/40">VITE_SUPABASE_URL</code> and <code className="rounded bg-amber-100 px-1 dark:bg-amber-900/40">VITE_SUPABASE_ANON_KEY</code> to <code className="rounded bg-amber-100 px-1 dark:bg-amber-900/40">.env</code>, then restart <code className="rounded bg-amber-100 px-1 dark:bg-amber-900/40">npm run dev</code>. See docs/DEPLOY.md.</>
+            )}
           </p>
         )}
 

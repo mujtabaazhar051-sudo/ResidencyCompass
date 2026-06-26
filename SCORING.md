@@ -57,7 +57,7 @@ Step 2 is the heaviest single academic factor — a 15+ point difference between
 
 ### 2. Dow / Pak Match History (max +22 pts)
 
-Scores differ based on whether you attended Dow University of Health Sciences (DUHS/DMC) or another Pakistani medical school.
+Scores differ based on whether you attended Dow University of Health Sciences (DIMC/DMC) or another Pakistani medical school.
 
 **Dow graduate:**
 

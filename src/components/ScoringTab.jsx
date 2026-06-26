@@ -114,7 +114,7 @@ export default function ScoringTab() {
 
         {/* 2 · Dow / Pak */}
         <Section title="2 · Dow / Pak Match History  (max +22)">
-          <p className="mb-2 text-sm text-slate-600 dark:text-slate-400">Points depend on whether you attended Dow (DUHS/DMC) or another Pakistani school.</p>
+          <p className="mb-2 text-sm text-slate-600 dark:text-slate-400">Points depend on whether you attended Dow (DIMC/DMC) or another Pakistani school.</p>
           <div className="grid gap-3 md:grid-cols-2">
             <div>
               <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-700 dark:text-slate-300">Dow graduate</p>

@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { isSupabaseConfigured, supabase } from '../lib/supabase.js'
+import { getSupabaseEnvDebug, isSupabaseConfigured, supabase, supabaseConfigError } from '../lib/supabase.js'
 
 const LOCAL_SESSION_KEY = 'imresidency_session'
 
@@ -53,11 +53,17 @@ export function AuthProvider({ children }) {
 
     let mounted = true
 
-    supabase.auth.getSession().then(({ data }) => {
-      if (!mounted) return
-      setUser(profileFromUser(data.session?.user ?? null))
-      setLoading(false)
-    })
+    supabase.auth.getSession()
+      .then(({ data }) => {
+        if (!mounted) return
+        setUser(profileFromUser(data.session?.user ?? null))
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.error('Supabase getSession failed:', err)
+        if (!mounted) return
+        setLoading(false)
+      })
 
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(profileFromUser(session?.user ?? null))
@@ -124,6 +130,8 @@ export function AuthProvider({ children }) {
       user,
       loading,
       isConfigured: isSupabaseConfigured,
+      configError: supabaseConfigError,
+      envDebug: import.meta.env.DEV ? getSupabaseEnvDebug() : null,
       isAuthenticated: Boolean(user?.email),
       signUp,
       signIn,
