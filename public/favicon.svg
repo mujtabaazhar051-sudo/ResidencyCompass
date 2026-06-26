@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Outer ring -->
+  <circle cx="32" cy="32" r="29" stroke="#1e3a5f" stroke-width="3.5"/>
+  <!-- Compass rose - N/S points (navy) -->
+  <polygon points="32,8 28,32 32,28 36,32" fill="#1e3a5f"/>
+  <polygon points="32,56 28,32 32,36 36,32" fill="#1e3a5f"/>
+  <!-- Compass rose - E/W points (emerald) -->
+  <polygon points="8,32 32,28 28,32 32,36" fill="#10b981"/>
+  <polygon points="56,32 32,28 36,32 32,36" fill="#10b981"/>
+  <!-- Centre dot -->
+  <circle cx="32" cy="32" r="4" fill="#1e3a5f"/>
+  <!-- Needle tip (NE — pointing to target) -->
+  <polygon points="32,12 44,20 32,32" fill="#10b981" opacity="0.9"/>
+  <!-- Star at needle tip -->
+  <circle cx="46" cy="18" r="6" fill="#10b981"/>
+  <polygon points="46,13 47.4,16.6 51,16.6 48.3,18.8 49.4,22.4 46,20.2 42.6,22.4 43.7,18.8 41,16.6 44.6,16.6" fill="white"/>
+</svg>

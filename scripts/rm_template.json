@@ -1,0 +1,14 @@
+{
+  "url": "https://resmatch-v2-bd2b9aea342e.herokuapp.com/posts/search",
+  "method": "POST",
+  "headers": {
+    "sec-ch-ua-platform": "\"Windows\"",
+    "referer": "https://residencymatch.net/",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36",
+    "accept": "application/json, text/plain, */*",
+    "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+    "content-type": "application/json",
+    "sec-ch-ua-mobile": "?0"
+  },
+  "postData": "{\"request\":{\"startRow\":0,\"endRow\":100,\"rowGroupCols\":[],\"valueCols\":[],\"pivotCols\":[],\"pivotMode\":false,\"groupKeys\":[],\"filterModel\":{},\"sortModel\":[]},\"searchType\":\"table\",\"specialtyId\":5,\"searchTerm\":\"\",\"postType\":\"interviewInvite\",\"myProgramsOnly\":false,\"archived\":false}"
+}

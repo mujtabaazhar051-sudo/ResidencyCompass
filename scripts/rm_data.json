@@ -1,0 +1,2059 @@
+[
+  {
+    "program_name": "Roger Williams Med Ctr-RI",
+    "state": "Rhode Island",
+    "overall": {
+      "count": 102630,
+      "median": 245,
+      "avg": 243,
+      "min": 235,
+      "max": 250
+    },
+    "iv_invites": {
+      "count": 102630,
+      "median": 245,
+      "avg": 243,
+      "min": 235,
+      "max": 250
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 102630,
+      "median": 245,
+      "avg": 243,
+      "min": 235,
+      "max": 250
+    },
+    "non_us_img": {
+      "count": 102630,
+      "median": 245,
+      "avg": 243,
+      "min": 235,
+      "max": 250
+    },
+    "gold_signals": 17105,
+    "silver_signals": 68420
+  },
+  {
+    "program_name": "U Arkansas COM-Little Rock",
+    "state": "Arkansas",
+    "overall": {
+      "count": 85525,
+      "median": 265,
+      "avg": 261,
+      "min": 250,
+      "max": 265
+    },
+    "iv_invites": {
+      "count": 85525,
+      "median": 265,
+      "avg": 261,
+      "min": 250,
+      "max": 265
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 85525,
+      "median": 265,
+      "avg": 261,
+      "min": 250,
+      "max": 265
+    },
+    "non_us_img": {
+      "count": 68420,
+      "median": 265,
+      "avg": 264,
+      "min": 260,
+      "max": 265
+    },
+    "gold_signals": 0,
+    "silver_signals": 85525
+  },
+  {
+    "program_name": "SUNY HSC Brooklyn-NY",
+    "state": "New York",
+    "overall": {
+      "count": 68420,
+      "median": 265,
+      "avg": 264,
+      "min": 260,
+      "max": 270
+    },
+    "iv_invites": {
+      "count": 68420,
+      "median": 265,
+      "avg": 264,
+      "min": 260,
+      "max": 270
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 68420,
+      "median": 265,
+      "avg": 264,
+      "min": 260,
+      "max": 270
+    },
+    "non_us_img": {
+      "count": 68420,
+      "median": 265,
+      "avg": 264,
+      "min": 260,
+      "max": 270
+    },
+    "gold_signals": 17105,
+    "silver_signals": 17105
+  },
+  {
+    "program_name": "U Tennessee COM-Chattanooga",
+    "state": "Tennessee",
+    "overall": {
+      "count": 68420,
+      "median": 270,
+      "avg": 256,
+      "min": 240,
+      "max": 270
+    },
+    "iv_invites": {
+      "count": 68420,
+      "median": 270,
+      "avg": 256,
+      "min": 240,
+      "max": 270
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 68420,
+      "median": 270,
+      "avg": 256,
+      "min": 240,
+      "max": 270
+    },
+    "non_us_img": {
+      "count": 68420,
+      "median": 270,
+      "avg": 256,
+      "min": 240,
+      "max": 270
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "Jamaica Hosp Med Ctr-NY",
+    "state": "New York",
+    "overall": {
+      "count": 51315,
+      "median": 230,
+      "avg": 242,
+      "min": 225,
+      "max": 270
+    },
+    "iv_invites": {
+      "count": 51315,
+      "median": 230,
+      "avg": 242,
+      "min": 225,
+      "max": 270
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 51315,
+      "median": 230,
+      "avg": 242,
+      "min": 225,
+      "max": 270
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 230,
+      "avg": 230,
+      "min": 230,
+      "max": 230
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "St Vincent Hosp-Worcester-MA",
+    "state": "Massachusetts",
+    "overall": {
+      "count": 51315,
+      "median": 260,
+      "avg": 257,
+      "min": 245,
+      "max": 265
+    },
+    "iv_invites": {
+      "count": 51315,
+      "median": 260,
+      "avg": 257,
+      "min": 245,
+      "max": 265
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 51315,
+      "median": 260,
+      "avg": 257,
+      "min": 245,
+      "max": 265
+    },
+    "non_us_img": {
+      "count": 51315,
+      "median": 260,
+      "avg": 257,
+      "min": 245,
+      "max": 265
+    },
+    "gold_signals": 17105,
+    "silver_signals": 34210
+  },
+  {
+    "program_name": "Greater Baltimore Med Ctr-MD",
+    "state": "Maryland",
+    "overall": {
+      "count": 51315,
+      "median": 260,
+      "avg": 255,
+      "min": 235,
+      "max": 270
+    },
+    "iv_invites": {
+      "count": 51315,
+      "median": 260,
+      "avg": 255,
+      "min": 235,
+      "max": 270
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 51315,
+      "median": 260,
+      "avg": 255,
+      "min": 235,
+      "max": 270
+    },
+    "non_us_img": {
+      "count": 51315,
+      "median": 260,
+      "avg": 255,
+      "min": 235,
+      "max": 270
+    },
+    "gold_signals": 17105,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "Zucker SOM-Northwell Mather Hosp-NY",
+    "state": "New York",
+    "overall": {
+      "count": 51315,
+      "median": 240,
+      "avg": 245,
+      "min": 235,
+      "max": 260
+    },
+    "iv_invites": {
+      "count": 51315,
+      "median": 240,
+      "avg": 245,
+      "min": 235,
+      "max": 260
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 51315,
+      "median": 240,
+      "avg": 245,
+      "min": 235,
+      "max": 260
+    },
+    "non_us_img": {
+      "count": 34210,
+      "median": 240,
+      "avg": 238,
+      "min": 235,
+      "max": 240
+    },
+    "gold_signals": 0,
+    "silver_signals": 17105
+  },
+  {
+    "program_name": "ISMMS NYC Health+Hospitals/Elmhurst-NY",
+    "state": "New York",
+    "overall": {
+      "count": 51315,
+      "median": 265,
+      "avg": 262,
+      "min": 250,
+      "max": 270
+    },
+    "iv_invites": {
+      "count": 51315,
+      "median": 265,
+      "avg": 262,
+      "min": 250,
+      "max": 270
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 51315,
+      "median": 265,
+      "avg": 262,
+      "min": 250,
+      "max": 270
+    },
+    "non_us_img": {
+      "count": 51315,
+      "median": 265,
+      "avg": 262,
+      "min": 250,
+      "max": 270
+    },
+    "gold_signals": 0,
+    "silver_signals": 51315
+  },
+  {
+    "program_name": "Detroit Med Ctr/WSU-MI (Internal Medicine/HVSH)",
+    "state": "Michigan",
+    "overall": {
+      "count": 34210,
+      "median": 265,
+      "avg": 253,
+      "min": 240,
+      "max": 265
+    },
+    "iv_invites": {
+      "count": 34210,
+      "median": 265,
+      "avg": 253,
+      "min": 240,
+      "max": 265
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 34210,
+      "median": 265,
+      "avg": 253,
+      "min": 240,
+      "max": 265
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 265,
+      "avg": 265,
+      "min": 265,
+      "max": 265
+    },
+    "gold_signals": 0,
+    "silver_signals": 34210
+  },
+  {
+    "program_name": "Sentara Health-VA",
+    "state": "Virginia",
+    "overall": {
+      "count": 34210,
+      "median": 265,
+      "avg": 263,
+      "min": 260,
+      "max": 265
+    },
+    "iv_invites": {
+      "count": 34210,
+      "median": 265,
+      "avg": 263,
+      "min": 260,
+      "max": 265
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 34210,
+      "median": 265,
+      "avg": 263,
+      "min": 260,
+      "max": 265
+    },
+    "non_us_img": {
+      "count": 34210,
+      "median": 265,
+      "avg": 263,
+      "min": 260,
+      "max": 265
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "HCA Healthcare Kansas City-MO (Internal Med/Overland Park)",
+    "state": "Kansas",
+    "overall": {
+      "count": 34210,
+      "median": 265,
+      "avg": 263,
+      "min": 260,
+      "max": 265
+    },
+    "iv_invites": {
+      "count": 34210,
+      "median": 265,
+      "avg": 263,
+      "min": 260,
+      "max": 265
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 34210,
+      "median": 265,
+      "avg": 263,
+      "min": 260,
+      "max": 265
+    },
+    "non_us_img": {
+      "count": 34210,
+      "median": 265,
+      "avg": 263,
+      "min": 260,
+      "max": 265
+    },
+    "gold_signals": 17105,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "University of Hawaii",
+    "state": "Hawaii",
+    "overall": {
+      "count": 34210,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "iv_invites": {
+      "count": 34210,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 34210,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "non_us_img": {
+      "count": 34210,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "Maimonides Med Ctr-NY",
+    "state": "New York",
+    "overall": {
+      "count": 34210,
+      "median": 265,
+      "avg": 258,
+      "min": 250,
+      "max": 265
+    },
+    "iv_invites": {
+      "count": 34210,
+      "median": 265,
+      "avg": 258,
+      "min": 250,
+      "max": 265
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 34210,
+      "median": 265,
+      "avg": 258,
+      "min": 250,
+      "max": 265
+    },
+    "non_us_img": {
+      "count": 34210,
+      "median": 265,
+      "avg": 258,
+      "min": 250,
+      "max": 265
+    },
+    "gold_signals": 34210,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "Desert Regional Med Ctr-CA",
+    "state": "California",
+    "overall": {
+      "count": 34210,
+      "median": 245,
+      "avg": 243,
+      "min": 240,
+      "max": 245
+    },
+    "iv_invites": {
+      "count": 34210,
+      "median": 245,
+      "avg": 243,
+      "min": 240,
+      "max": 245
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 34210,
+      "median": 245,
+      "avg": 243,
+      "min": 240,
+      "max": 245
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "U Central FL/HCA Healthcare GME (Internal Medicine/Tallahassee)",
+    "state": "Florida",
+    "overall": {
+      "count": 34210,
+      "median": 260,
+      "avg": 253,
+      "min": 245,
+      "max": 260
+    },
+    "iv_invites": {
+      "count": 34210,
+      "median": 260,
+      "avg": 253,
+      "min": 245,
+      "max": 260
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 34210,
+      "median": 260,
+      "avg": 253,
+      "min": 245,
+      "max": 260
+    },
+    "non_us_img": {
+      "count": 34210,
+      "median": 260,
+      "avg": 253,
+      "min": 245,
+      "max": 260
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "Central Michigan University COM",
+    "state": "Michigan",
+    "overall": {
+      "count": 34210,
+      "median": 260,
+      "avg": 250,
+      "min": 240,
+      "max": 260
+    },
+    "iv_invites": {
+      "count": 34210,
+      "median": 260,
+      "avg": 250,
+      "min": 240,
+      "max": 260
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 34210,
+      "median": 260,
+      "avg": 250,
+      "min": 240,
+      "max": 260
+    },
+    "non_us_img": {
+      "count": 34210,
+      "median": 260,
+      "avg": 250,
+      "min": 240,
+      "max": 260
+    },
+    "gold_signals": 17105,
+    "silver_signals": 17105
+  },
+  {
+    "program_name": "Henry Ford St John Hosp-MI",
+    "state": "Michigan",
+    "overall": {
+      "count": 34210,
+      "median": 270,
+      "avg": 265,
+      "min": 260,
+      "max": 270
+    },
+    "iv_invites": {
+      "count": 34210,
+      "median": 270,
+      "avg": 265,
+      "min": 260,
+      "max": 270
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 34210,
+      "median": 270,
+      "avg": 265,
+      "min": 260,
+      "max": 270
+    },
+    "non_us_img": {
+      "count": 34210,
+      "median": 270,
+      "avg": 265,
+      "min": 260,
+      "max": 270
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "U Michigan Health-Sparrow",
+    "state": "Michigan",
+    "overall": {
+      "count": 34210,
+      "median": 250,
+      "avg": 248,
+      "min": 245,
+      "max": 250
+    },
+    "iv_invites": {
+      "count": 34210,
+      "median": 250,
+      "avg": 248,
+      "min": 245,
+      "max": 250
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 34210,
+      "median": 250,
+      "avg": 248,
+      "min": 245,
+      "max": 250
+    },
+    "non_us_img": {
+      "count": 34210,
+      "median": 250,
+      "avg": 248,
+      "min": 245,
+      "max": 250
+    },
+    "gold_signals": 34210,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "Mobile Infirmary Med Ctr-AL",
+    "state": "Alabama",
+    "overall": {
+      "count": 17105,
+      "median": 235,
+      "avg": 235,
+      "min": 235,
+      "max": 235
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 235,
+      "avg": 235,
+      "min": 235,
+      "max": 235
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 235,
+      "avg": 235,
+      "min": 235,
+      "max": 235
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 235,
+      "avg": 235,
+      "min": 235,
+      "max": 235
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "UC Irvine Med Ctr-CA (Internal Medicine/Irvine)",
+    "state": "California",
+    "overall": {
+      "count": 17105,
+      "median": 270,
+      "avg": 270,
+      "min": 270,
+      "max": 270
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 270,
+      "avg": 270,
+      "min": 270,
+      "max": 270
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 270,
+      "avg": 270,
+      "min": 270,
+      "max": 270
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 270,
+      "avg": 270,
+      "min": 270,
+      "max": 270
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "Conemaugh Memorial Med Ctr-PA",
+    "state": "Pennsylvania",
+    "overall": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "Parkview Med Ctr-CO",
+    "state": "Colorado",
+    "overall": {
+      "count": 17105,
+      "median": 235,
+      "avg": 235,
+      "min": 235,
+      "max": 235
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 235,
+      "avg": 235,
+      "min": 235,
+      "max": 235
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 235,
+      "avg": 235,
+      "min": 235,
+      "max": 235
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 235,
+      "avg": 235,
+      "min": 235,
+      "max": 235
+    },
+    "gold_signals": 0,
+    "silver_signals": 17105
+  },
+  {
+    "program_name": "HMH-Palisades Med Ctr-NJ",
+    "state": "New Jersey",
+    "overall": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "gold_signals": 0,
+    "silver_signals": 17105
+  },
+  {
+    "program_name": "Western Michigan Univ Stryker SOM",
+    "state": "Michigan",
+    "overall": {
+      "count": 17105,
+      "median": 265,
+      "avg": 265,
+      "min": 265,
+      "max": 265
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 265,
+      "avg": 265,
+      "min": 265,
+      "max": 265
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 265,
+      "avg": 265,
+      "min": 265,
+      "max": 265
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 265,
+      "avg": 265,
+      "min": 265,
+      "max": 265
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "The MetroHealth Sys/Case Western-OH",
+    "state": "Ohio",
+    "overall": {
+      "count": 17105,
+      "median": 265,
+      "avg": 265,
+      "min": 265,
+      "max": 265
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 265,
+      "avg": 265,
+      "min": 265,
+      "max": 265
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 265,
+      "avg": 265,
+      "min": 265,
+      "max": 265
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 265,
+      "avg": 265,
+      "min": 265,
+      "max": 265
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "U Texas Med Sch-Houston",
+    "state": "Texas",
+    "overall": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "gold_signals": 0,
+    "silver_signals": 34210
+  },
+  {
+    "program_name": "St Elizabeths Med Ctr-MA",
+    "state": "Massachusetts",
+    "overall": {
+      "count": 17105,
+      "median": 255,
+      "avg": 255,
+      "min": 255,
+      "max": 255
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 255,
+      "avg": 255,
+      "min": 255,
+      "max": 255
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 255,
+      "avg": 255,
+      "min": 255,
+      "max": 255
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 255,
+      "avg": 255,
+      "min": 255,
+      "max": 255
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "HCA Healthcare East FL Division GME (Internal Medicine/Kendall)",
+    "state": "Florida",
+    "overall": {
+      "count": 17105,
+      "median": 225,
+      "avg": 225,
+      "min": 225,
+      "max": 225
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 225,
+      "avg": 225,
+      "min": 225,
+      "max": 225
+    },
+    "matches": null,
+    "img_overall": null,
+    "non_us_img": null,
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "Jersey Shore Univ Med Ctr-NJ",
+    "state": "New Jersey",
+    "overall": {
+      "count": 17105,
+      "median": 270,
+      "avg": 270,
+      "min": 270,
+      "max": 270
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 270,
+      "avg": 270,
+      "min": 270,
+      "max": 270
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 270,
+      "avg": 270,
+      "min": 270,
+      "max": 270
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 270,
+      "avg": 270,
+      "min": 270,
+      "max": 270
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "Lahey Clinic-MA",
+    "state": "Massachusetts",
+    "overall": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "gold_signals": 0,
+    "silver_signals": 17105
+  },
+  {
+    "program_name": "Sunrise Health GME Consortium-NV",
+    "state": "Nevada",
+    "overall": {
+      "count": 17105,
+      "median": 230,
+      "avg": 230,
+      "min": 230,
+      "max": 230
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 230,
+      "avg": 230,
+      "min": 230,
+      "max": 230
+    },
+    "matches": null,
+    "img_overall": null,
+    "non_us_img": null,
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "Woodhull Med Ctr-NY",
+    "state": "New York",
+    "overall": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "gold_signals": 0,
+    "silver_signals": 17105
+  },
+  {
+    "program_name": "ECU Health Med Ctr-NC",
+    "state": "North Carolina",
+    "overall": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "gold_signals": 17105,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "Virtua Health-NJ",
+    "state": "New Jersey",
+    "overall": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "North East Medical Services-CA (Medicine-Primary)",
+    "state": "California",
+    "overall": {
+      "count": 17105,
+      "median": 225,
+      "avg": 225,
+      "min": 225,
+      "max": 225
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 225,
+      "avg": 225,
+      "min": 225,
+      "max": 225
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 225,
+      "avg": 225,
+      "min": 225,
+      "max": 225
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 225,
+      "avg": 225,
+      "min": 225,
+      "max": 225
+    },
+    "gold_signals": 17105,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "U New Mexico SOM",
+    "state": "New Mexico",
+    "overall": {
+      "count": 17105,
+      "median": 240,
+      "avg": 240,
+      "min": 240,
+      "max": 240
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 240,
+      "avg": 240,
+      "min": 240,
+      "max": 240
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 240,
+      "avg": 240,
+      "min": 240,
+      "max": 240
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 240,
+      "avg": 240,
+      "min": 240,
+      "max": 240
+    },
+    "gold_signals": 0,
+    "silver_signals": 17105
+  },
+  {
+    "program_name": "Carle Foundation Hosp-IL",
+    "state": "Illinois",
+    "overall": {
+      "count": 17105,
+      "median": 270,
+      "avg": 270,
+      "min": 270,
+      "max": 270
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 270,
+      "avg": 270,
+      "min": 270,
+      "max": 270
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 270,
+      "avg": 270,
+      "min": 270,
+      "max": 270
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 270,
+      "avg": 270,
+      "min": 270,
+      "max": 270
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "JHME-Jefferson Einstein Montgomery-PA (Internal Med/Montgomery)",
+    "state": "Pennsylvania",
+    "overall": {
+      "count": 17105,
+      "median": 235,
+      "avg": 235,
+      "min": 235,
+      "max": 235
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 235,
+      "avg": 235,
+      "min": 235,
+      "max": 235
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 235,
+      "avg": 235,
+      "min": 235,
+      "max": 235
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 235,
+      "avg": 235,
+      "min": 235,
+      "max": 235
+    },
+    "gold_signals": 0,
+    "silver_signals": 17105
+  },
+  {
+    "program_name": "Guthrie/Robert Packer Hosp-PA",
+    "state": "Pennsylvania",
+    "overall": {
+      "count": 17105,
+      "median": 265,
+      "avg": 265,
+      "min": 265,
+      "max": 265
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 265,
+      "avg": 265,
+      "min": 265,
+      "max": 265
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 265,
+      "avg": 265,
+      "min": 265,
+      "max": 265
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 265,
+      "avg": 265,
+      "min": 265,
+      "max": 265
+    },
+    "gold_signals": 0,
+    "silver_signals": 17105
+  },
+  {
+    "program_name": "SW Healthcare Med Ed Consortium-CA (Internal Medicine/Palmdale)",
+    "state": "California",
+    "overall": {
+      "count": 17105,
+      "median": 240,
+      "avg": 240,
+      "min": 240,
+      "max": 240
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 240,
+      "avg": 240,
+      "min": 240,
+      "max": 240
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 240,
+      "avg": 240,
+      "min": 240,
+      "max": 240
+    },
+    "non_us_img": null,
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "Health Education Services-TN (Internal Medicine/Porter)",
+    "state": "Indiana",
+    "overall": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "Prime West Consortium-CA (Internal Medicine/Centinela)",
+    "state": "California",
+    "overall": {
+      "count": 17105,
+      "median": 235,
+      "avg": 235,
+      "min": 235,
+      "max": 235
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 235,
+      "avg": 235,
+      "min": 235,
+      "max": 235
+    },
+    "matches": null,
+    "img_overall": null,
+    "non_us_img": null,
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "Rochester Regional Health-NY (Internal Medicine/Unity)",
+    "state": "New York",
+    "overall": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "gold_signals": 0,
+    "silver_signals": 17105
+  },
+  {
+    "program_name": "ISMMS Mount Sinai Hospital-NY",
+    "state": "New York",
+    "overall": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "matches": null,
+    "img_overall": null,
+    "non_us_img": null,
+    "gold_signals": 17105,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "Jacobi Med Ctr/Einstein-NY",
+    "state": "New York",
+    "overall": {
+      "count": 17105,
+      "median": 270,
+      "avg": 270,
+      "min": 270,
+      "max": 270
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 270,
+      "avg": 270,
+      "min": 270,
+      "max": 270
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 270,
+      "avg": 270,
+      "min": 270,
+      "max": 270
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 270,
+      "avg": 270,
+      "min": 270,
+      "max": 270
+    },
+    "gold_signals": 17105,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "Prime West Consortium-CA (Internal Medicine/Shasta)",
+    "state": "California",
+    "overall": {
+      "count": 17105,
+      "median": 270,
+      "avg": 270,
+      "min": 270,
+      "max": 270
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 270,
+      "avg": 270,
+      "min": 270,
+      "max": 270
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 270,
+      "avg": 270,
+      "min": 270,
+      "max": 270
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 270,
+      "avg": 270,
+      "min": 270,
+      "max": 270
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "Westchester Medical Ctr-NY",
+    "state": "New York",
+    "overall": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "gold_signals": 0,
+    "silver_signals": 17105
+  },
+  {
+    "program_name": "Bassett Med Ctr-NY",
+    "state": "New York",
+    "overall": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "St Francis Med Ctr-LA",
+    "state": "Louisiana",
+    "overall": {
+      "count": 17105,
+      "median": 255,
+      "avg": 255,
+      "min": 255,
+      "max": 255
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 255,
+      "avg": 255,
+      "min": 255,
+      "max": 255
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 255,
+      "avg": 255,
+      "min": 255,
+      "max": 255
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 255,
+      "avg": 255,
+      "min": 255,
+      "max": 255
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "U Arizona COM-Phoenix",
+    "state": "Arizona",
+    "overall": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "matches": null,
+    "img_overall": null,
+    "non_us_img": null,
+    "gold_signals": 17105,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "So TX Hlth Sys GME Consortium",
+    "state": "Texas",
+    "overall": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "Montefiore Med Ctr/Einstein-NY (Med-Primary/Social Int Med)",
+    "state": "New York",
+    "overall": {
+      "count": 17105,
+      "median": 240,
+      "avg": 240,
+      "min": 240,
+      "max": 240
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 240,
+      "avg": 240,
+      "min": 240,
+      "max": 240
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 240,
+      "avg": 240,
+      "min": 240,
+      "max": 240
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 240,
+      "avg": 240,
+      "min": 240,
+      "max": 240
+    },
+    "gold_signals": 0,
+    "silver_signals": 17105
+  },
+  {
+    "program_name": "Henry Ford Jackson Hospital-MI",
+    "state": "Michigan",
+    "overall": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "gold_signals": 0,
+    "silver_signals": 17105
+  },
+  {
+    "program_name": "Tower Health/Phoenixville Hosp-PA",
+    "state": "Pennsylvania",
+    "overall": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "U Illinois COM-Peoria OSF",
+    "state": "Illinois",
+    "overall": {
+      "count": 17105,
+      "median": 240,
+      "avg": 240,
+      "min": 240,
+      "max": 240
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 240,
+      "avg": 240,
+      "min": 240,
+      "max": 240
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 240,
+      "avg": 240,
+      "min": 240,
+      "max": 240
+    },
+    "non_us_img": null,
+    "gold_signals": 0,
+    "silver_signals": 17105
+  },
+  {
+    "program_name": "Montefiore Med Ctr/Einstein-NY (Internal Med/Wakefield)",
+    "state": "New York",
+    "overall": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "non_us_img": null,
+    "gold_signals": 0,
+    "silver_signals": 17105
+  },
+  {
+    "program_name": "Health Education Services-TN (Internal Med/Flowers Hosp)",
+    "state": "Alabama",
+    "overall": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 245,
+      "avg": 245,
+      "min": 245,
+      "max": 245
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "Cleveland Clinic Fdn-OH (Internal Med/Fairview)",
+    "state": "Ohio",
+    "overall": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 260,
+      "avg": 260,
+      "min": 260,
+      "max": 260
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "NYMC-St Marys and St Clares-NY",
+    "state": "New Jersey",
+    "overall": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 250,
+      "avg": 250,
+      "min": 250,
+      "max": 250
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  },
+  {
+    "program_name": "AdventHealth Florida (Internal Medicine/Sebring)",
+    "state": "Florida",
+    "overall": {
+      "count": 17105,
+      "median": 235,
+      "avg": 235,
+      "min": 235,
+      "max": 235
+    },
+    "iv_invites": {
+      "count": 17105,
+      "median": 235,
+      "avg": 235,
+      "min": 235,
+      "max": 235
+    },
+    "matches": null,
+    "img_overall": {
+      "count": 17105,
+      "median": 235,
+      "avg": 235,
+      "min": 235,
+      "max": 235
+    },
+    "non_us_img": {
+      "count": 17105,
+      "median": 235,
+      "avg": 235,
+      "min": 235,
+      "max": 235
+    },
+    "gold_signals": 0,
+    "silver_signals": 0
+  }
+]
