@@ -309,10 +309,31 @@ function CardChevron({ expanded }) {
       viewBox="0 0 20 20"
       fill="currentColor"
       aria-hidden="true"
-      className={`h-5 w-5 shrink-0 text-slate-400 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`}
+      className={`h-5 w-5 shrink-0 text-slate-400 transition-transform duration-300 ease-out ${expanded ? 'rotate-180' : ''}`}
     >
       <path fillRule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06z" clipRule="evenodd" />
     </svg>
+  )
+}
+
+function ExpandablePanel({ expanded, children }) {
+  return (
+    <div
+      className={`grid transition-[grid-template-rows] duration-300 ease-in-out motion-reduce:transition-none ${
+        expanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+      }`}
+      aria-hidden={!expanded}
+    >
+      <div className="overflow-hidden">
+        <div
+          className={`min-h-0 transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${
+            expanded ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0'
+          }`}
+        >
+          {children}
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -340,9 +361,16 @@ function ExpandedDetails({
   onNoteChange,
   connection,
   onConnection,
+  embedded = false,
 }) {
   return (
-    <div className="space-y-5 border-t border-slate-100 px-5 pb-5 pt-4 dark:border-slate-700 md:px-6 md:pb-6 md:pt-5">
+    <div
+      className={
+        embedded
+          ? 'space-y-5 border-t border-slate-100 pt-5 dark:border-slate-700 md:pt-5'
+          : 'space-y-5 border-t border-slate-100 px-5 pb-5 pt-4 dark:border-slate-700 md:px-6 md:pb-6 md:pt-5'
+      }
+    >
       <div>
         <label className="block">
           <span className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300">
@@ -473,7 +501,6 @@ export default function ProgramCard({
   const hasNote = Boolean(note?.trim())
   const statusInfo = STATUS_MAP[status] ?? STATUS_MAP['not_applied']
   const whyTier = profileActive ? buildWhyThisTier(program.score_breakdown) : null
-  const isSimple = cardMode === 'simple'
 
   const nameBadges = (
     <>
@@ -529,9 +556,9 @@ export default function ProgramCard({
 
   return (
     <article
-      className={`rounded-xl border bg-white shadow-sm transition-colors dark:bg-slate-800 ${
+      className={`rounded-xl border bg-white shadow-sm transition-[border-color,box-shadow] duration-300 ease-out dark:bg-slate-800 ${
         expanded
-          ? 'border-blue-200 dark:border-blue-800'
+          ? 'border-blue-200 shadow-md dark:border-blue-800'
           : 'border-slate-200 hover:border-slate-300 dark:border-slate-700 dark:hover:border-slate-600'
       }`}
     >
@@ -570,34 +597,24 @@ export default function ProgramCard({
         </div>
       </button>
 
-      <div className="space-y-4 border-t border-slate-100 px-5 pb-5 pt-4 dark:border-slate-700 md:px-6 md:pb-6">
+      <ExpandablePanel expanded={expanded}>
+        <div className="space-y-4 border-t border-slate-100 px-5 pb-5 pt-4 dark:border-slate-700 md:px-6 md:pb-6">
           <ControlSection label="Application">
             {applicationControls}
           </ControlSection>
 
-          {!isSimple && (
-            <div className="space-y-4">
-              {signalConnectionControls}
-            </div>
-          )}
-        </div>
+          {signalConnectionControls}
 
-      {expanded && (
-        <>
-          {isSimple && (
-            <div className="space-y-4 border-t border-slate-100 px-5 pb-0 pt-4 dark:border-slate-700 md:px-6">
-              {signalConnectionControls}
-            </div>
-          )}
           <ExpandedDetails
             program={program}
             note={note}
             onNoteChange={onNoteChange}
             connection={connection}
             onConnection={onConnection}
+            embedded
           />
-        </>
-      )}
+        </div>
+      </ExpandablePanel>
     </article>
   )
 }
