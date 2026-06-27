@@ -94,8 +94,8 @@ export default function LandingPage({ onSignIn, onSignUp }) {
               Rank IM residency programs with confidence
             </h1>
             <p className="mt-4 text-lg leading-relaxed text-slate-600 dark:text-slate-400">
-              ResidencyCompass scores and tiers Internal Medicine programs based on your profile — Step 2, visa need,
-              connections, rotations, and research — so you build a balanced list instead of applying blind.
+              ResidencyCompass scores and tiers Internal Medicine programs based on your Step 2, visa need,
+              connections, rotations, and research, so you build a balanced list instead of applying blind.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <button
