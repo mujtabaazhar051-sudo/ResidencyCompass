@@ -337,6 +337,42 @@ function ExpandablePanel({ expanded, children }) {
   )
 }
 
+function DetailSection({ title, summary, defaultOpen = false, children }) {
+  const [open, setOpen] = useState(defaultOpen)
+
+  return (
+    <div className="rounded-lg border border-slate-200 dark:border-slate-700">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left transition-colors hover:bg-slate-50 dark:hover:bg-slate-700/40"
+      >
+        <span className="min-w-0">
+          <span className="block text-sm font-semibold text-slate-800 dark:text-slate-200">{title}</span>
+          {!open && summary && (
+            <span className="mt-0.5 block truncate text-xs text-slate-500 dark:text-slate-400">{summary}</span>
+          )}
+        </span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          aria-hidden="true"
+          className={`h-4 w-4 shrink-0 text-slate-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+        >
+          <path fillRule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06z" clipRule="evenodd" />
+        </svg>
+      </button>
+      {open && (
+        <div className="border-t border-slate-200 px-3 pb-3 pt-2 dark:border-slate-700">
+          {children}
+        </div>
+      )}
+    </div>
+  )
+}
+
 function StatusSelect({ status, statusInfo, onStatusChange }) {
   return (
     <select
@@ -362,35 +398,52 @@ function ExpandedDetails({
   connection,
   onConnection,
   embedded = false,
+  advanced = false,
 }) {
+  const detailFields = [
+    { label: 'Program Director', value: program.pd_name },
+    { label: 'Phone', value: program.phone },
+    { label: 'Email', value: program.email },
+    {
+      label: 'Website',
+      value: program.website
+        ? <a href={program.website} target="_blank" rel="noopener noreferrer" className="break-all text-blue-600 hover:underline dark:text-blue-400">{program.website}</a>
+        : null,
+    },
+    { label: 'Known Contacts', value: program.known_contacts },
+    { label: 'Community reports', value: program.crowdsourced_outcomes },
+    { label: 'Program Notes', value: program.program_notes, wide: true },
+    { label: 'PGY Positions', value: program.pgy_positions },
+    { label: 'Median Step 2 (crowdsourced)', value: program.median_step2 },
+  ].filter((f) => f.value)
+
   return (
     <div
       className={
         embedded
-          ? 'space-y-5 border-t border-slate-100 pt-5 dark:border-slate-700 md:pt-5'
-          : 'space-y-5 border-t border-slate-100 px-5 pb-5 pt-4 dark:border-slate-700 md:px-6 md:pb-6 md:pt-5'
+          ? 'space-y-3 border-t border-slate-100 pt-3 dark:border-slate-700'
+          : 'space-y-3 border-t border-slate-100 px-5 pb-5 pt-3 dark:border-slate-700 md:px-6 md:pb-6'
       }
     >
       <div>
         <label className="block">
-          <span className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300">
-            My Notes
-            <span className="font-normal text-slate-400">(private — saved in your browser)</span>
+          <span className="mb-1 block text-xs font-semibold text-slate-600 dark:text-slate-300">
+            My Notes <span className="font-normal text-slate-400">(private)</span>
           </span>
           <textarea
-            rows={3}
+            rows={2}
             value={note}
             onChange={(e) => onNoteChange(e.target.value)}
-            placeholder="Jot down action items, impressions, follow-ups…"
-            className="w-full resize-y rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:placeholder-slate-500"
+            placeholder="Action items, impressions, follow-ups…"
+            className="w-full resize-y rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 placeholder-slate-400 focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:placeholder-slate-500"
           />
         </label>
       </div>
 
       {(program.flags?.length ?? 0) > 0 && (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5">
           {program.flags.map((flag) => (
-            <span key={flag} className="rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 dark:bg-red-900/30 dark:text-red-300">
+            <span key={flag} className="rounded-md bg-red-50 px-2 py-0.5 text-xs font-medium text-red-700 dark:bg-red-900/30 dark:text-red-300">
               {flag}
             </span>
           ))}
@@ -401,73 +454,80 @@ function ExpandedDetails({
         <div>
           <label className="block">
             <span className="mb-1 block text-xs font-semibold text-slate-600 dark:text-slate-300">
-              Connection names <span className="font-normal text-slate-400">(your reference — not used for scoring)</span>
+              Connection names <span className="font-normal text-slate-400">(reference only)</span>
             </span>
             <input
               type="text"
               value={connection.names || ''}
               onChange={(e) => onConnection({ ...connection, names: e.target.value })}
-              placeholder="e.g. Dr. Ahmed Khan, Dr. Sarah Mitchell"
+              placeholder="e.g. Dr. Ahmed Khan"
               className="w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-violet-400 focus:outline-none focus:ring-1 focus:ring-violet-400 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:placeholder-slate-500"
             />
           </label>
         </div>
       )}
 
-      <div>
-        <h4 className="mb-2 text-sm font-semibold text-slate-800 dark:text-slate-200">Score Breakdown</h4>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-slate-200 text-left text-slate-500 dark:border-slate-700 dark:text-slate-400">
-                <th className="pb-2 pr-4 font-medium">Component</th>
-                <th className="pb-2 pr-4 font-medium">Score</th>
-                <th className="pb-2 font-medium">Note</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.entries(program.score_breakdown ?? {}).map(([key, { score, note: rowNote }]) => (
-                <tr key={key} className="border-b border-slate-100 dark:border-slate-700">
-                  <td className="whitespace-nowrap py-2.5 pr-4 font-medium text-slate-700 dark:text-slate-300">
-                    {BREAKDOWN_LABELS[key]}
-                  </td>
-                  <td className={`whitespace-nowrap py-2.5 pr-4 font-semibold
-                    ${score > 0 ? 'text-emerald-700 dark:text-emerald-400' : score < 0 ? 'text-red-600 dark:text-red-400' : 'text-slate-400'}`}>
-                    {score > 0 ? `+${score}` : score}
-                  </td>
-                  <td className="py-2.5 text-slate-600 dark:text-slate-400">{rowNote}</td>
-                </tr>
-              ))}
-            </tbody>
-            <tfoot>
-              <tr className="border-t-2 border-slate-300 dark:border-slate-600">
-                <td className="pt-2 pr-4 font-bold text-slate-800 dark:text-slate-200">Total</td>
-                <td className="pt-2 pr-4 font-bold text-slate-900 dark:text-slate-100">{program.computed_score}</td>
-                <td className="pt-2 text-slate-500 dark:text-slate-400">Min 0, no upper cap</td>
-              </tr>
-            </tfoot>
-          </table>
+      {advanced && (
+        <div className="space-y-2">
+          <DetailSection
+            title="Score breakdown"
+            summary={`${program.computed_tier} · ${program.computed_score} pts`}
+          >
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="border-b border-slate-200 text-left text-slate-500 dark:border-slate-700 dark:text-slate-400">
+                    <th className="pb-1.5 pr-3 font-medium">Component</th>
+                    <th className="pb-1.5 pr-3 font-medium">Score</th>
+                    <th className="pb-1.5 font-medium">Note</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(program.score_breakdown ?? {}).map(([key, { score, note: rowNote }]) => (
+                    <tr key={key} className="border-b border-slate-100 dark:border-slate-700">
+                      <td className="whitespace-nowrap py-1.5 pr-3 font-medium text-slate-700 dark:text-slate-300">
+                        {BREAKDOWN_LABELS[key]}
+                      </td>
+                      <td className={`whitespace-nowrap py-1.5 pr-3 font-semibold
+                        ${score > 0 ? 'text-emerald-700 dark:text-emerald-400' : score < 0 ? 'text-red-600 dark:text-red-400' : 'text-slate-400'}`}>
+                        {score > 0 ? `+${score}` : score}
+                      </td>
+                      <td className="py-1.5 text-slate-600 dark:text-slate-400">{rowNote}</td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr className="border-t border-slate-300 dark:border-slate-600">
+                    <td className="pt-1.5 pr-3 font-bold text-slate-800 dark:text-slate-200">Total</td>
+                    <td className="pt-1.5 pr-3 font-bold text-slate-900 dark:text-slate-100">{program.computed_score}</td>
+                    <td className="pt-1.5 text-slate-500 dark:text-slate-400">Min 0</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </DetailSection>
+
+          {detailFields.length > 0 && (
+            <DetailSection
+              title="Program details"
+              summary={[program.pd_name, program.pgy_positions].filter(Boolean).join(' · ') || 'Contact & notes'}
+            >
+              <dl className="grid gap-2.5 text-xs md:grid-cols-2">
+                {detailFields.map(({ label, value, wide }) => (
+                  <div key={label} className={wide ? 'md:col-span-2' : ''}>
+                    <dt className="font-medium text-slate-700 dark:text-slate-300">{label}</dt>
+                    <dd className="mt-0.5 leading-relaxed text-slate-600 dark:text-slate-400">{value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </DetailSection>
+          )}
+
+          <DetailSection title="Data provenance" summary="Sources & verification links">
+            <ProgramDataProvenance program={program} compact />
+          </DetailSection>
         </div>
-      </div>
-
-      <div className="grid gap-4 text-sm md:grid-cols-2 md:gap-5">
-        <Detail label="Program Director" value={program.pd_name} />
-        <Detail label="Phone" value={program.phone} />
-        <Detail label="Email" value={program.email} />
-        <Detail
-          label="Website"
-          value={program.website
-            ? <a href={program.website} target="_blank" rel="noopener noreferrer" className="break-all text-blue-600 hover:underline dark:text-blue-400">{program.website}</a>
-            : null}
-        />
-        <Detail label="Known Contacts" value={program.known_contacts} />
-        <Detail label="Community reports" value={program.crowdsourced_outcomes} />
-        <Detail label="Program Notes" value={program.program_notes} className="md:col-span-2" />
-        <Detail label="PGY Positions" value={program.pgy_positions} />
-        <Detail label="Median Step 2 (crowdsourced)" value={program.median_step2} />
-      </div>
-
-      <ProgramDataProvenance program={program} />
+      )}
     </div>
   )
 }
@@ -501,6 +561,7 @@ export default function ProgramCard({
   const hasNote = Boolean(note?.trim())
   const statusInfo = STATUS_MAP[status] ?? STATUS_MAP['not_applied']
   const whyTier = profileActive ? buildWhyThisTier(program.score_breakdown) : null
+  const isAdvanced = cardMode === 'advanced'
 
   const nameBadges = (
     <>
@@ -543,17 +604,6 @@ export default function ProgramCard({
     </>
   )
 
-  const signalConnectionControls = (
-    <>
-      <ControlSection label="Signals">
-        <SignalSelector signal={signal} onSignal={onSignal} goldUsed={goldUsed} silverUsed={silverUsed} />
-      </ControlSection>
-      <ControlSection label="Connections">
-        <ConnectionSelector connection={connection} onConnection={onConnection} />
-      </ControlSection>
-    </>
-  )
-
   return (
     <article
       className={`rounded-xl border bg-white shadow-sm transition-[border-color,box-shadow] duration-300 ease-out dark:bg-slate-800 ${
@@ -587,7 +637,9 @@ export default function ProgramCard({
               </p>
             )}
             {!expanded && (
-              <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">Click card for signals, notes, and full breakdown</p>
+              <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">
+                {isAdvanced ? 'Click for actions, notes, and program details' : 'Click for signals, status, and notes'}
+              </p>
             )}
           </div>
           <div className="flex shrink-0 items-start gap-2">
@@ -598,12 +650,20 @@ export default function ProgramCard({
       </button>
 
       <ExpandablePanel expanded={expanded}>
-        <div className="space-y-4 border-t border-slate-100 px-5 pb-5 pt-4 dark:border-slate-700 md:px-6 md:pb-6">
-          <ControlSection label="Application">
-            {applicationControls}
-          </ControlSection>
-
-          {signalConnectionControls}
+        <div className="space-y-3 border-t border-slate-100 px-5 pb-4 pt-3 dark:border-slate-700 md:px-6">
+          <div className="grid gap-3 md:grid-cols-2">
+            <ControlSection label="Application">
+              {applicationControls}
+            </ControlSection>
+            <div className="space-y-3">
+              <ControlSection label="Signals">
+                <SignalSelector signal={signal} onSignal={onSignal} goldUsed={goldUsed} silverUsed={silverUsed} />
+              </ControlSection>
+              <ControlSection label="Connections">
+                <ConnectionSelector connection={connection} onConnection={onConnection} />
+              </ControlSection>
+            </div>
+          </div>
 
           <ExpandedDetails
             program={program}
@@ -612,19 +672,10 @@ export default function ProgramCard({
             connection={connection}
             onConnection={onConnection}
             embedded
+            advanced={isAdvanced}
           />
         </div>
       </ExpandablePanel>
     </article>
-  )
-}
-
-function Detail({ label, value, className = '' }) {
-  if (!value) return null
-  return (
-    <div className={className}>
-      <dt className="font-medium text-slate-700 dark:text-slate-300">{label}</dt>
-      <dd className="mt-1 leading-relaxed text-slate-600 dark:text-slate-400">{value}</dd>
-    </div>
   )
 }
