@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import DataDisclaimer from '../components/DataDisclaimer'
-import { DISCLAIMER_SHORT } from '../utils/dataSources'
+import { DISCLAIMER_SHORT, PRIVACY_LOCAL } from '../utils/dataSources'
 
 const FEATURES = [
   {
@@ -20,7 +20,7 @@ const FEATURES = [
   },
   {
     title: 'Private by default',
-    desc: 'All data lives in your browser. Nothing is uploaded to a server unless you choose to export.',
+    desc: PRIVACY_LOCAL,
     icon: '🔒',
   },
   {
@@ -52,7 +52,7 @@ export default function LandingPage({ onSignIn, onSignUp }) {
       <header className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 md:px-6">
           <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="ResidencyCompass" className="h-10 w-10 rounded-xl object-contain shadow-sm" />
+            <img src="/favicon.svg" alt="ResidencyCompass" className="h-10 w-10 rounded-xl object-contain shadow-sm" />
             <span className="text-lg font-bold">ResidencyCompass</span>
           </div>
           <div className="flex items-center gap-2">
@@ -114,7 +114,7 @@ export default function LandingPage({ onSignIn, onSignUp }) {
               </button>
             </div>
             <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
-              Free · No credit card · Your data stays on your device
+              Free · No credit card · Your private list stays in your browser
             </p>
           </div>
         </div>
@@ -127,7 +127,7 @@ export default function LandingPage({ onSignIn, onSignUp }) {
           <p className="mx-auto mt-2 max-w-xl text-center text-slate-600 dark:text-slate-400">
             One tool for scoring, filtering, shortlisting, and tracking your IM match season.
           </p>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {FEATURES.map((f) => (
               <div
                 key={f.title}

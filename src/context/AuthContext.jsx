@@ -78,6 +78,9 @@ export function AuthProvider({ children }) {
 
   async function signUp({ email, password, name }) {
     if (!isSupabaseConfigured) {
+      if (import.meta.env.PROD) {
+        throw new Error('Sign-in is temporarily unavailable. Please try again later.')
+      }
       const session = { email, name, signedInAt: new Date().toISOString() }
       writeLocalSession(session)
       setUser(profileFromLocal(session))
@@ -100,6 +103,9 @@ export function AuthProvider({ children }) {
 
   async function signIn({ email, password }) {
     if (!isSupabaseConfigured) {
+      if (import.meta.env.PROD) {
+        throw new Error('Sign-in is temporarily unavailable. Please try again later.')
+      }
       const local = readLocalSession()
       const session = {
         email,

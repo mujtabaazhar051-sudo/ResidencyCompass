@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
+import { PRIVACY_SHORT } from '../utils/dataSources'
 
 export default function AuthModal({ mode = 'signin', onClose, onSuccess, onSwitchMode }) {
   const { signIn, signUp, isConfigured, configError, envDebug } = useAuth()
@@ -49,7 +50,11 @@ export default function AuthModal({ mode = 'signin', onClose, onSuccess, onSwitc
     } catch (err) {
       const msg = err?.message ?? ''
       if (msg.includes('JSON') || msg.includes('fetch')) {
-        setError('Could not reach Supabase. Check VITE_SUPABASE_URL (must be https://xxxx.supabase.co) and VITE_SUPABASE_ANON_KEY (anon public key starting with eyJ), then restart npm run dev.')
+        setError(
+          import.meta.env.DEV
+            ? 'Could not reach Supabase. Check VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env, then restart npm run dev.'
+            : 'Sign-in is temporarily unavailable. Please try again later.',
+        )
       } else {
         setError(msg || 'Sign in failed. Try again.')
       }
@@ -81,7 +86,7 @@ export default function AuthModal({ mode = 'signin', onClose, onSuccess, onSwitc
         </button>
 
         <div className="mb-6 flex items-center gap-3">
-          <img src="/logo.png" alt="" className="h-10 w-10 rounded-xl object-contain" />
+          <img src="/favicon.svg" alt="" className="h-10 w-10 rounded-xl object-contain" />
           <div>
             <h2 id="auth-modal-title" className="text-lg font-bold text-slate-900 dark:text-slate-100">
               {isSignUp ? 'Create your account' : 'Welcome back'}
@@ -100,11 +105,17 @@ export default function AuthModal({ mode = 'signin', onClose, onSuccess, onSwitc
         )}
 
         {!isConfigured && (
-          <p className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:border-amber-800 dark:bg-amber-900/20 dark:text-amber-300">
-            {configError ?? (
-              <>Supabase is not configured. Add <code className="rounded bg-amber-100 px-1 dark:bg-amber-900/40">VITE_SUPABASE_URL</code> and <code className="rounded bg-amber-100 px-1 dark:bg-amber-900/40">VITE_SUPABASE_ANON_KEY</code> to <code className="rounded bg-amber-100 px-1 dark:bg-amber-900/40">.env</code>, then restart <code className="rounded bg-amber-100 px-1 dark:bg-amber-900/40">npm run dev</code>. See docs/DEPLOY.md.</>
-            )}
-          </p>
+          import.meta.env.DEV ? (
+            <p className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:border-amber-800 dark:bg-amber-900/20 dark:text-amber-300">
+              {configError ?? (
+                <>Supabase is not configured. Add <code className="rounded bg-amber-100 px-1 dark:bg-amber-900/40">VITE_SUPABASE_URL</code> and <code className="rounded bg-amber-100 px-1 dark:bg-amber-900/40">VITE_SUPABASE_ANON_KEY</code> to <code className="rounded bg-amber-100 px-1 dark:bg-amber-900/40">.env</code>, then restart dev. See docs/DEPLOY.md.</>
+              )}
+            </p>
+          ) : (
+            <p className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:border-amber-800 dark:bg-amber-900/20 dark:text-amber-300">
+              Sign-in is temporarily unavailable. Please try again later.
+            </p>
+          )
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -160,7 +171,7 @@ export default function AuthModal({ mode = 'signin', onClose, onSuccess, onSwitc
 
           <button
             type="submit"
-            disabled={busy}
+            disabled={busy || (!isConfigured && import.meta.env.PROD)}
             className="w-full rounded-lg bg-blue-600 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 active:bg-blue-800 disabled:opacity-60"
           >
             {busy ? 'Please wait…' : isSignUp ? 'Create account' : 'Sign in'}
@@ -179,7 +190,7 @@ export default function AuthModal({ mode = 'signin', onClose, onSuccess, onSwitc
         </p>
 
         <p className="mt-4 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-500 dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-400">
-          Your tier list and notes stay in your browser. Your account lets you sign in across devices; community submissions are stored securely in Supabase.
+          {PRIVACY_SHORT}
         </p>
       </div>
     </div>

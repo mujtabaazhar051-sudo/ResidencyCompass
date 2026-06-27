@@ -2,6 +2,8 @@ import DataDisclaimer from './DataDisclaimer'
 import {
   OFFICIAL_SOURCES,
   PROGRAM_FIELD_SOURCES,
+  PRIVACY_ACCOUNT,
+  PRIVACY_LOCAL,
 } from '../utils/dataSources'
 
 export default function AboutTab() {
@@ -11,7 +13,7 @@ export default function AboutTab() {
       {/* Hero */}
       <div className="rounded-xl border border-blue-200 bg-gradient-to-br from-blue-50 to-emerald-50 px-6 py-8 dark:border-slate-700 dark:from-slate-800 dark:to-slate-800">
         <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-          <img src="/logo.png" alt="ResidencyCompass logo" className="h-16 w-16 rounded-2xl object-contain shadow-md" />
+          <img src="/favicon.svg" alt="ResidencyCompass logo" className="h-16 w-16 rounded-2xl object-contain shadow-md" />
           <div>
             <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">ResidencyCompass</h2>
             <p className="mt-1 text-slate-600 dark:text-slate-400">
@@ -148,10 +150,9 @@ export default function AboutTab() {
       {/* Privacy */}
       <Card title="Privacy">
         <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-          ResidencyCompass stores <strong>nothing on any server</strong>. Your profile, signals, connections, notes, and
-          application statuses are saved exclusively in your browser's local storage. They never leave your device.
-          Clearing your browser data or using a different device will start fresh — so export your list (⭐ My List)
-          if you want a backup.
+          {PRIVACY_LOCAL}{' '}
+          {PRIVACY_ACCOUNT}{' '}
+          Clearing browser data or switching devices starts fresh for your list — export via <strong>⭐ My List</strong> if you want a backup.
         </p>
       </Card>
 

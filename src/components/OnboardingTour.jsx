@@ -29,7 +29,7 @@ const STEPS = [
     icon: '📬',
     title: 'Track applications & interviews',
     desc: 'Use the Status dropdown on each card (Applied → II Received → etc.). Programs you mark as II Received automatically appear in the Interviews tab where you can track dates and notes.',
-    tip: 'All your data is saved in your browser\'s local storage — it persists between sessions and never leaves your device.',
+    tip: 'Your list, signals, and notes stay in this browser. Sign-in is only for account access and optional community submissions.',
   },
 ]
 

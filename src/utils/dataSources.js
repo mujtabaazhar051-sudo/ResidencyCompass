@@ -53,6 +53,14 @@ export const PROGRAM_FIELD_SOURCES = [
 export const DISCLAIMER_SHORT =
   'Independent tool — not affiliated with NRMP, AAMC, AMA, ECFMG, or any residency program. Scores are heuristics, not predictions. Verify all program information before applying.'
 
+export const PRIVACY_LOCAL =
+  'Your profile, tier list, signals, connections, notes, and application statuses stay in this browser — your private list is not uploaded to our servers.'
+
+export const PRIVACY_ACCOUNT =
+  'Sign-in and optional community submissions (interview reports, corrections) are stored securely so you can contribute across sessions.'
+
+export const PRIVACY_SHORT = `${PRIVACY_LOCAL} ${PRIVACY_ACCOUNT}`
+
 export const DISCLAIMER_FOOTER =
   'ResidencyCompass is an independent list-building aid. Program facts are manually curated from NRMP program identifiers, ResidencyMatch.net crowdsourced reports, and community reports. We do not copy, scrape, or redistribute data from FREIDA (AMA) or Residency Explorer (AAMC). Always verify on program websites and other official sources before applying.'
 

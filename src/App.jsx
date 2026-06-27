@@ -19,7 +19,7 @@ import FilterChips from './components/FilterChips'
 import RerankBanner from './components/RerankBanner'
 import Toast from './components/Toast'
 import DataDisclaimer from './components/DataDisclaimer'
-import { computeListFreshness } from './utils/dataSources'
+import { computeListFreshness, PRIVACY_LOCAL } from './utils/dataSources'
 import {
   isValidStep2,
   PROFILE_COLLAPSE_KEY,
@@ -777,7 +777,7 @@ export default function App({ onLeaveApp }) {
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex min-w-0 items-center gap-3">
                 <img
-                  src="/logo.png"
+                  src="/favicon.svg"
                   alt="ResidencyCompass logo"
                   className="h-11 w-11 shrink-0 rounded-xl object-contain shadow-sm md:h-12 md:w-12"
                 />
@@ -1040,7 +1040,7 @@ export default function App({ onLeaveApp }) {
         <div className="mx-auto max-w-4xl space-y-2 px-4 md:px-6">
           <DataDisclaimer variant="footer" className="text-center" />
           <p className="text-center text-xs text-slate-400 dark:text-slate-500">
-            Your profile, signals, connections, and notes are saved in your browser only — never uploaded to a server.
+            {PRIVACY_LOCAL}
           </p>
         </div>
       </footer>

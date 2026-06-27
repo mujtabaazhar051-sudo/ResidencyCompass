@@ -53,13 +53,10 @@ const REPORT_TYPES = [
 function SetupNotice() {
   return (
     <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-900/20 dark:text-amber-200">
-      <p className="font-semibold">Community database not connected</p>
-      <p className="mt-1">
-        Create a Supabase project, run <code className="rounded bg-amber-100 px-1 dark:bg-amber-900/40">supabase/schema.sql</code>, and set{' '}
-        <code className="rounded bg-amber-100 px-1 dark:bg-amber-900/40">VITE_SUPABASE_URL</code> and{' '}
-        <code className="rounded bg-amber-100 px-1 dark:bg-amber-900/40">VITE_SUPABASE_ANON_KEY</code> in Vercel (or <code className="rounded bg-amber-100 px-1 dark:bg-amber-900/40">.env.local</code> locally).
+      <p className="font-semibold">Community submissions temporarily unavailable</p>
+      <p className="mt-1 leading-relaxed">
+        Interview reports and program feedback are offline right now. Your tier list, signals, and notes still work in your browser.
       </p>
-      <p className="mt-2 text-xs">Full steps: <strong>docs/DEPLOY.md</strong></p>
     </div>
   )
 }

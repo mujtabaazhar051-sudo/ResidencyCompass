@@ -1,16 +1,27 @@
-# React + Vite
+# ResidencyCompass
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+An Internal Medicine residency program ranker built for Pakistani IMG applicants. Score and tier programs from your Step 2, visa need, connections, rotations, and research — then track signals, shortlists, and interviews through match season.
 
-Currently, two official plugins are available:
+**Live site:** deploy via [Vercel](https://vercel.com) from this repo.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- Personalized TARGET / LIKELY / REACH / LONG SHOT tiers
+- Per-program Gold & Silver ERAS signals (3 + 12 cap)
+- Connection strength scoring, shortlist, compare, interview tracker
+- Community IV reports (optional Supabase backend)
+- Private by default — your list stays in browser local storage
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Local development
 
-## Expanding the Oxlint configuration
+```bash
+npm install
+cp .env.example .env   # add Supabase URL + anon key
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+See [docs/DEPLOY.md](docs/DEPLOY.md) for Vercel + Supabase setup.
+
+## Disclaimer
+
+ResidencyCompass is an independent tool — not affiliated with NRMP, AAMC, AMA, or any residency program. Scores are heuristics, not predictions. Always verify program data on official sources before applying.
