@@ -467,67 +467,69 @@ function ExpandedDetails({
         </div>
       )}
 
-      {advanced && (
-        <div className="space-y-2">
+      <div className="space-y-2">
+        {detailFields.length > 0 && (
           <DetailSection
-            title="Score breakdown"
-            summary={`${program.computed_tier} · ${program.computed_score} pts`}
+            title="Program details"
+            summary={[program.pd_name, program.pgy_positions].filter(Boolean).join(' · ') || 'Contact & notes'}
           >
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="border-b border-slate-200 text-left text-slate-500 dark:border-slate-700 dark:text-slate-400">
-                    <th className="pb-1.5 pr-3 font-medium">Component</th>
-                    <th className="pb-1.5 pr-3 font-medium">Score</th>
-                    <th className="pb-1.5 font-medium">Note</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {Object.entries(program.score_breakdown ?? {}).map(([key, { score, note: rowNote }]) => (
-                    <tr key={key} className="border-b border-slate-100 dark:border-slate-700">
-                      <td className="whitespace-nowrap py-1.5 pr-3 font-medium text-slate-700 dark:text-slate-300">
-                        {BREAKDOWN_LABELS[key]}
-                      </td>
-                      <td className={`whitespace-nowrap py-1.5 pr-3 font-semibold
-                        ${score > 0 ? 'text-emerald-700 dark:text-emerald-400' : score < 0 ? 'text-red-600 dark:text-red-400' : 'text-slate-400'}`}>
-                        {score > 0 ? `+${score}` : score}
-                      </td>
-                      <td className="py-1.5 text-slate-600 dark:text-slate-400">{rowNote}</td>
-                    </tr>
-                  ))}
-                </tbody>
-                <tfoot>
-                  <tr className="border-t border-slate-300 dark:border-slate-600">
-                    <td className="pt-1.5 pr-3 font-bold text-slate-800 dark:text-slate-200">Total</td>
-                    <td className="pt-1.5 pr-3 font-bold text-slate-900 dark:text-slate-100">{program.computed_score}</td>
-                    <td className="pt-1.5 text-slate-500 dark:text-slate-400">Min 0</td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
+            <dl className="grid gap-2.5 text-xs md:grid-cols-2">
+              {detailFields.map(({ label, value, wide }) => (
+                <div key={label} className={wide ? 'md:col-span-2' : ''}>
+                  <dt className="font-medium text-slate-700 dark:text-slate-300">{label}</dt>
+                  <dd className="mt-0.5 leading-relaxed text-slate-600 dark:text-slate-400">{value}</dd>
+                </div>
+              ))}
+            </dl>
           </DetailSection>
+        )}
 
-          {detailFields.length > 0 && (
+        {advanced && (
+          <>
             <DetailSection
-              title="Program details"
-              summary={[program.pd_name, program.pgy_positions].filter(Boolean).join(' · ') || 'Contact & notes'}
+              title="Score breakdown"
+              summary={`${program.computed_tier} · ${program.computed_score} pts`}
             >
-              <dl className="grid gap-2.5 text-xs md:grid-cols-2">
-                {detailFields.map(({ label, value, wide }) => (
-                  <div key={label} className={wide ? 'md:col-span-2' : ''}>
-                    <dt className="font-medium text-slate-700 dark:text-slate-300">{label}</dt>
-                    <dd className="mt-0.5 leading-relaxed text-slate-600 dark:text-slate-400">{value}</dd>
-                  </div>
-                ))}
-              </dl>
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="border-b border-slate-200 text-left text-slate-500 dark:border-slate-700 dark:text-slate-400">
+                      <th className="pb-1.5 pr-3 font-medium">Component</th>
+                      <th className="pb-1.5 pr-3 font-medium">Score</th>
+                      <th className="pb-1.5 font-medium">Note</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(program.score_breakdown ?? {}).map(([key, { score, note: rowNote }]) => (
+                      <tr key={key} className="border-b border-slate-100 dark:border-slate-700">
+                        <td className="whitespace-nowrap py-1.5 pr-3 font-medium text-slate-700 dark:text-slate-300">
+                          {BREAKDOWN_LABELS[key]}
+                        </td>
+                        <td className={`whitespace-nowrap py-1.5 pr-3 font-semibold
+                          ${score > 0 ? 'text-emerald-700 dark:text-emerald-400' : score < 0 ? 'text-red-600 dark:text-red-400' : 'text-slate-400'}`}>
+                          {score > 0 ? `+${score}` : score}
+                        </td>
+                        <td className="py-1.5 text-slate-600 dark:text-slate-400">{rowNote}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <tfoot>
+                    <tr className="border-t border-slate-300 dark:border-slate-600">
+                      <td className="pt-1.5 pr-3 font-bold text-slate-800 dark:text-slate-200">Total</td>
+                      <td className="pt-1.5 pr-3 font-bold text-slate-900 dark:text-slate-100">{program.computed_score}</td>
+                      <td className="pt-1.5 text-slate-500 dark:text-slate-400">Min 0</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
             </DetailSection>
-          )}
 
-          <DetailSection title="Data provenance" summary="Sources & verification links">
-            <ProgramDataProvenance program={program} compact />
-          </DetailSection>
-        </div>
-      )}
+            <DetailSection title="Data provenance" summary="Sources & verification links">
+              <ProgramDataProvenance program={program} compact />
+            </DetailSection>
+          </>
+        )}
+      </div>
     </div>
   )
 }
@@ -638,7 +640,7 @@ export default function ProgramCard({
             )}
             {!expanded && (
               <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">
-                {isAdvanced ? 'Click for actions, notes, and program details' : 'Click for signals, status, and notes'}
+                {isAdvanced ? 'Click for actions, notes, and program details' : 'Click for signals, notes, and program details'}
               </p>
             )}
           </div>
