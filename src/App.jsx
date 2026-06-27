@@ -69,34 +69,41 @@ function loadSaved() {
   }
 }
 
-export default function App({ onLeaveApp }) {
+export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
   const { user: session } = useAuth()
-  // Initialise from localStorage on first render, falling back to defaults
+  // Initialise from localStorage on first render, falling back to defaults (skipped in demo)
   const [profile, setProfile] = useState(() => {
+    if (demoMode) return DEFAULT_PROFILE
     const saved = loadSaved()
     return saved?.profile ? { ...DEFAULT_PROFILE, ...saved.profile } : DEFAULT_PROFILE
   })
   const [signals, setSignals] = useState(() => {
+    if (demoMode) return DEFAULT_SIGNALS
     const saved = loadSaved()
     return saved?.signals ?? SEED_SIGNALS
   })
   const [connections, setConnections] = useState(() => {
+    if (demoMode) return DEFAULT_CONNECTIONS
     const saved = loadSaved()
     return saved?.connections ?? SEED_CONNECTIONS
   })
   const [notes, setNotes] = useState(() => {
+    if (demoMode) return {}
     const saved = loadSaved()
     return saved?.notes ?? {}
   })
   const [statuses, setStatuses] = useState(() => {
+    if (demoMode) return {}
     const saved = loadSaved()
     return saved?.statuses ?? {}
   })
   const [ivDates, setIvDates] = useState(() => {
+    if (demoMode) return {}
     const saved = loadSaved()
     return saved?.ivDates ?? {}
   })
   const [shortlist, setShortlist] = useState(() => {
+    if (demoMode) return {}
     const saved = loadSaved()
     return saved?.shortlist ?? {}
   })
@@ -124,6 +131,7 @@ export default function App({ onLeaveApp }) {
   const [showImport, setShowImport] = useState(false)
   const [showClearModal, setShowClearModal] = useState(false)
   const [activeTab, setActiveTab] = useState(() => {
+    if (demoMode) return 'profile'
     const saved = loadSaved()
     const step2 = saved?.profile?.step2 ?? DEFAULT_PROFILE.step2
     return isValidStep2(step2) ? 'programs' : 'profile'
@@ -145,8 +153,10 @@ export default function App({ onLeaveApp }) {
   const [toast, setToast] = useState(null)
   const restoreInputRef = useRef(null)
   const profileSectionRef = useRef(null)
+  const demoAutoRankedRef = useRef(false)
 
   const [filtersCollapsed, setFiltersCollapsed] = useState(() => {
+    if (demoMode) return false
     try { return localStorage.getItem(FILTERS_COLLAPSE_KEY) === 'true' } catch { return false }
   })
 
@@ -171,14 +181,17 @@ export default function App({ onLeaveApp }) {
 
   function persistFiltersCollapsed(value) {
     setFiltersCollapsed(value)
+    if (demoMode) return
     try { localStorage.setItem(FILTERS_COLLAPSE_KEY, String(value)) } catch {}
   }
 
   function collapsePanelsAfterFirstRank() {
-    try {
-      if (localStorage.getItem(PANELS_AUTO_COLLAPSED_KEY) === '1') return
-      localStorage.setItem(PANELS_AUTO_COLLAPSED_KEY, '1')
-    } catch {}
+    if (!demoMode) {
+      try {
+        if (localStorage.getItem(PANELS_AUTO_COLLAPSED_KEY) === '1') return
+        localStorage.setItem(PANELS_AUTO_COLLAPSED_KEY, '1')
+      } catch {}
+    }
     persistFiltersCollapsed(true)
   }
 
@@ -186,19 +199,23 @@ export default function App({ onLeaveApp }) {
     setActiveTab('profile')
   }
 
-  // Persist all user state whenever it changes
+  // Persist all user state whenever it changes (skipped in demo)
   useEffect(() => {
+    if (demoMode) return
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ profile, signals, connections, notes, statuses, ivDates, shortlist }))
       setSavedFlash(true)
       const t = setTimeout(() => setSavedFlash(false), 1500)
       return () => clearTimeout(t)
     } catch {}
-  }, [profile, signals, connections, notes, statuses, ivDates, shortlist])
+  }, [demoMode, profile, signals, connections, notes, statuses, ivDates, shortlist])
 
   // Snapshot of the last "applied" state — the list only re-sorts/re-tiers
   // when the user explicitly clicks Apply or Re-rank.
   const [rankedState, setRankedState] = useState(() => {
+    if (demoMode) {
+      return { profile: DEFAULT_PROFILE, signals: DEFAULT_SIGNALS, connections: DEFAULT_CONNECTIONS }
+    }
     const saved = loadSaved()
     return {
       profile:     saved?.profile     ? { ...DEFAULT_PROFILE, ...saved.profile } : DEFAULT_PROFILE,
@@ -223,6 +240,7 @@ export default function App({ onLeaveApp }) {
 
   // Mark auto-rank complete for returning users who already ranked
   useEffect(() => {
+    if (demoMode) return
     if (isValidStep2(profile.step2) && rankedState.profile.step2 === profile.step2) {
       try { localStorage.setItem(AUTO_RANKED_KEY, '1') } catch {}
     }
@@ -232,11 +250,16 @@ export default function App({ onLeaveApp }) {
   useEffect(() => {
     if (!isValidStep2(profile.step2)) return
     if (rankedState.profile.step2 === profile.step2) return
-    try {
-      if (localStorage.getItem(AUTO_RANKED_KEY) === '1') return
-      localStorage.setItem(AUTO_RANKED_KEY, '1')
-    } catch {
-      return
+    if (demoMode) {
+      if (demoAutoRankedRef.current) return
+      demoAutoRankedRef.current = true
+    } else {
+      try {
+        if (localStorage.getItem(AUTO_RANKED_KEY) === '1') return
+        localStorage.setItem(AUTO_RANKED_KEY, '1')
+      } catch {
+        return
+      }
     }
     triggerRerank({
       message: `Ranked ${programs.length} programs — finish your profile, then open the Programs tab when ready`,
@@ -498,13 +521,17 @@ export default function App({ onLeaveApp }) {
   }
 
   function clearAllData() {
-    try {
-      localStorage.removeItem(STORAGE_KEY)
-      localStorage.removeItem(AUTO_RANKED_KEY)
-      localStorage.removeItem(PANELS_AUTO_COLLAPSED_KEY)
-      localStorage.removeItem(PROFILE_COLLAPSE_KEY)
-      localStorage.removeItem(FILTERS_COLLAPSE_KEY)
-    } catch {}
+    if (!demoMode) {
+      try {
+        localStorage.removeItem(STORAGE_KEY)
+        localStorage.removeItem(AUTO_RANKED_KEY)
+        localStorage.removeItem(PANELS_AUTO_COLLAPSED_KEY)
+        localStorage.removeItem(PROFILE_COLLAPSE_KEY)
+        localStorage.removeItem(FILTERS_COLLAPSE_KEY)
+      } catch {}
+    } else {
+      demoAutoRankedRef.current = false
+    }
     setProfile(DEFAULT_PROFILE)
     setSignals(DEFAULT_SIGNALS)
     setConnections(DEFAULT_CONNECTIONS)
@@ -786,7 +813,26 @@ export default function App({ onLeaveApp }) {
                 </h1>
               </div>
               <div className="flex shrink-0 items-center gap-2">
-                {session?.email && (
+                {demoMode ? (
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={onCreateAccount}
+                      className="rounded-lg bg-blue-600 px-2.5 py-1.5 text-xs font-semibold text-white hover:bg-blue-700"
+                    >
+                      Create account
+                    </button>
+                    {onLeaveApp && (
+                      <button
+                        type="button"
+                        onClick={() => onLeaveApp()}
+                        className="rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
+                      >
+                        Exit demo
+                      </button>
+                    )}
+                  </div>
+                ) : session?.email ? (
                   <div className="hidden items-center gap-2 sm:flex">
                     <span className="max-w-[140px] truncate text-xs text-slate-500 dark:text-slate-400" title={session.email}>
                       {session.name || session.email}
@@ -801,7 +847,7 @@ export default function App({ onLeaveApp }) {
                       </button>
                     )}
                   </div>
-                )}
+                ) : null}
                 <button
                   type="button"
                   onClick={() => setShowTour(true)}
@@ -821,7 +867,10 @@ export default function App({ onLeaveApp }) {
               </div>
             </div>
             <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-              IM program ranker for Pakistani IMGs · data saved in your browser
+              {demoMode
+                ? 'Demo mode — your profile and list are not saved'
+                : 'IM program ranker for Pakistani IMGs · data saved in your browser'}
+              {!demoMode && (
               <span
                 className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium transition-opacity duration-500 ${
                   savedFlash ? 'opacity-100 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300' : 'opacity-0'
@@ -829,6 +878,7 @@ export default function App({ onLeaveApp }) {
               >
                 ✓ saved
               </span>
+              )}
             </p>
             {dataFreshness.verifiedLabel && (
               <p
@@ -925,6 +975,19 @@ export default function App({ onLeaveApp }) {
         </div>
       </header>
 
+      {demoMode && (
+        <div className="border-b border-amber-200 bg-amber-50 px-4 py-2.5 text-center text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
+          <strong>Demo mode.</strong> Explore scoring and tiers freely — nothing is saved when you leave.{' '}
+          <button
+            type="button"
+            onClick={onCreateAccount}
+            className="font-semibold text-amber-800 underline underline-offset-2 hover:text-amber-950 dark:text-amber-300 dark:hover:text-amber-100"
+          >
+            Create an account to save your list
+          </button>
+        </div>
+      )}
+
       {/* ── Main ── */}
       <main className="mx-auto max-w-4xl space-y-4 px-4 py-6 md:px-6 md:py-8">
 
@@ -959,7 +1022,7 @@ export default function App({ onLeaveApp }) {
         )}
 
         {/* Community tab */}
-        {activeTab === 'community' && <CommunityTab programs={programs} />}
+        {activeTab === 'community' && <CommunityTab programs={programs} demoMode={demoMode} onCreateAccount={onCreateAccount} />}
 
         {/* Scoring tab */}
         {activeTab === 'scoring' && <ScoringTab />}

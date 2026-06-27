@@ -8,16 +8,31 @@ function RootInner() {
   const { isAuthenticated, loading, signOut } = useAuth()
   const [authModal, setAuthModal] = useState(null)
   const [inApp, setInApp] = useState(false)
+  const [demoMode, setDemoMode] = useState(false)
 
   const showApp = inApp || isAuthenticated
+  const isDemo = demoMode && !isAuthenticated
 
   function enterApp() {
     setAuthModal(null)
+    setDemoMode(false)
+    setInApp(true)
+  }
+
+  function enterDemo() {
+    setAuthModal(null)
+    setDemoMode(true)
     setInApp(true)
   }
 
   async function leaveApp() {
+    if (isDemo) {
+      setDemoMode(false)
+      setInApp(false)
+      return
+    }
     await signOut()
+    setDemoMode(false)
     setInApp(false)
   }
 
@@ -35,6 +50,7 @@ function RootInner() {
         <LandingPage
           onSignIn={() => setAuthModal('signin')}
           onSignUp={() => setAuthModal('signup')}
+          onTryDemo={enterDemo}
         />
         {authModal && (
           <AuthModal
@@ -48,7 +64,23 @@ function RootInner() {
     )
   }
 
-  return <App onLeaveApp={leaveApp} />
+  return (
+    <>
+      <App
+        demoMode={isDemo}
+        onLeaveApp={leaveApp}
+        onCreateAccount={() => setAuthModal('signup')}
+      />
+      {authModal && (
+        <AuthModal
+          mode={authModal}
+          onClose={() => setAuthModal(null)}
+          onSuccess={enterApp}
+          onSwitchMode={setAuthModal}
+        />
+      )}
+    </>
+  )
 }
 
 export default function Root() {

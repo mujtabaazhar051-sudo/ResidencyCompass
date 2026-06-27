@@ -406,8 +406,26 @@ function ReportForm({ programs, userId, onSubmitted }) {
   )
 }
 
-export default function CommunityTab({ programs }) {
-  const { userId, isConfigured } = useAuth()
+function DemoSignInNotice({ onCreateAccount }) {
+  return (
+    <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 text-center dark:border-slate-700 dark:bg-slate-900/40">
+      <p className="font-semibold text-slate-800 dark:text-slate-200">Sign in to submit community reports</p>
+      <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+        Demo mode lets you explore the ranker without an account. Create an account to save your list and contribute interview data.
+      </p>
+      <button
+        type="button"
+        onClick={onCreateAccount}
+        className="mt-4 rounded-lg bg-blue-600 px-5 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+      >
+        Create account
+      </button>
+    </div>
+  )
+}
+
+export default function CommunityTab({ programs, demoMode = false, onCreateAccount }) {
+  const { userId, isConfigured, isAuthenticated } = useAuth()
   const [activeForm, setActiveForm] = useState('iv')
   const [counts, setCounts] = useState({ iv: 0, reports: 0 })
 
@@ -459,7 +477,9 @@ export default function CommunityTab({ programs }) {
       </div>
 
       <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800">
-        {activeForm === 'iv' ? (
+        {demoMode || !isAuthenticated ? (
+          <DemoSignInNotice onCreateAccount={onCreateAccount} />
+        ) : activeForm === 'iv' ? (
           <>
             <h3 className="mb-1 text-base font-semibold text-slate-900 dark:text-slate-100">Interview Invite Report</h3>
             <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">

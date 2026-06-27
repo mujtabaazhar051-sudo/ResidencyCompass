@@ -36,7 +36,7 @@ const STEPS = [
   { n: '3', title: 'Track the season', desc: 'Mark application status, log interviews, and compare programs side by side.' },
 ]
 
-export default function LandingPage({ onSignIn, onSignUp }) {
+export default function LandingPage({ onSignIn, onSignUp, onTryDemo }) {
   const [darkMode, setDarkMode] = useState(() => {
     try { return localStorage.getItem('imresidency_dark') === '1' } catch { return false }
   })
@@ -63,6 +63,13 @@ export default function LandingPage({ onSignIn, onSignUp }) {
               aria-label="Toggle dark mode"
             >
               {darkMode ? '☀️' : '🌙'}
+            </button>
+            <button
+              type="button"
+              onClick={onTryDemo}
+              className="hidden rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800 sm:inline-flex"
+            >
+              Try demo
             </button>
             <button
               type="button"
@@ -112,9 +119,16 @@ export default function LandingPage({ onSignIn, onSignUp }) {
               >
                 Sign in
               </button>
+              <button
+                type="button"
+                onClick={onTryDemo}
+                className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-6 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:bg-slate-800"
+              >
+                Try demo
+              </button>
             </div>
             <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
-              Free · No credit card · Your private list stays in your browser
+              Free · No credit card · Demo mode does not save your list
             </p>
           </div>
         </div>
@@ -168,7 +182,7 @@ export default function LandingPage({ onSignIn, onSignUp }) {
         <div className="mx-auto max-w-6xl px-4 text-center md:px-6">
           <h2 className="text-2xl font-bold text-white md:text-3xl">Ready to build your program list?</h2>
           <p className="mx-auto mt-2 max-w-lg text-blue-100">
-            Sign in or create an account to start ranking programs tailored to your profile.
+            Sign in to save your list, or try the demo with no account.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <button
@@ -177,6 +191,13 @@ export default function LandingPage({ onSignIn, onSignUp }) {
               className="rounded-xl bg-white px-6 py-3 text-sm font-semibold text-blue-700 hover:bg-blue-50"
             >
               Create account
+            </button>
+            <button
+              type="button"
+              onClick={onTryDemo}
+              className="rounded-xl border border-white/60 bg-white/10 px-6 py-3 text-sm font-semibold text-white hover:bg-white/20"
+            >
+              Try demo
             </button>
             <button
               type="button"
