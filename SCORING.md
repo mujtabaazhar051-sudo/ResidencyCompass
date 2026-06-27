@@ -261,7 +261,7 @@ Programs with a `last_verified` date more than two years ago show a ⚠ warning 
 ## Limitations
 
 - Scoring reflects heuristics tuned for Pakistani IMG applicants applying to Internal Medicine. It is **not** a prediction or guarantee of interview invites or match outcomes.
-- Crowdsourced outcome data may be incomplete, outdated, or inaccurate — always verify with official sources (FREIDA, NRMP, program websites).
+- Crowdsourced outcome data may be incomplete, outdated, or inaccurate — always verify with official sources (NRMP, program websites).
 - Median Step 2 data is sourced from ResidencyMatch.net and may not reflect the current cycle.
 - Adding or editing programs requires only modifying `src/data/programs.json` — no code changes needed.
 

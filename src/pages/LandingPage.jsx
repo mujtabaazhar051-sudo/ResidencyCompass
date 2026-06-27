@@ -25,7 +25,7 @@ const FEATURES = [
   },
   {
     title: 'Verify on official sources',
-    desc: 'We reference FREIDA, NRMP, and community reports only — not AAMC Residency Explorer data, which must be viewed on AAMC’s site with your own login.',
+    desc: 'Program data comes from NRMP identifiers, ResidencyMatch.net crowdsourced reports, and community submissions — not from FREIDA or AAMC Residency Explorer.',
     icon: '✓',
   },
 ]

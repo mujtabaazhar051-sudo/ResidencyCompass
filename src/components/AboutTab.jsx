@@ -63,7 +63,7 @@ export default function AboutTab() {
             { n: '2', title: 'Add your connections', desc: 'Open each program card and log your connection strength. Even a weak connection can significantly shift a score.' },
             { n: '3', title: 'Use your signals wisely', desc: 'You have 3 Gold and 12 Silver signals. Use them on programs where you genuinely want to match — not just the most prestigious ones.' },
             { n: '4', title: 'Review the How Scoring Works tab', desc: 'Understanding the scoring weights helps you interpret results critically, not blindly.' },
-            { n: '5', title: 'Cross-check with official sources', desc: 'Always verify program data (positions, visa types, PD details) on FREIDA and program websites before applying.' },
+            { n: '5', title: 'Cross-check with official sources', desc: 'Always verify program data (positions, visa types, PD details) on each program website before applying.' },
           ].map((step) => (
             <li key={step.n} className="flex gap-3">
               <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">

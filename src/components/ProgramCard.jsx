@@ -478,7 +478,7 @@ export default function ProgramCard({
   const nameBadges = (
     <>
       {stale && (
-        <span title="Last curator check was over 2 years ago — verify on FREIDA" className="text-sm text-amber-500">May be outdated</span>
+        <span title="Last curator check was over 2 years ago — verify on the program website" className="text-sm text-amber-500">May be outdated</span>
       )}
       {program.user_has_connection && (
         <span className="rounded-full bg-violet-100 px-2 py-0.5 text-xs font-medium text-violet-700 dark:bg-violet-900/40 dark:text-violet-300">

@@ -1,13 +1,5 @@
-/** Official sources users should verify against — we are not affiliated with any of them. */
+/** Official sources users may consult — we are not affiliated with any of them and do not republish their data. */
 export const OFFICIAL_SOURCES = [
-  {
-    id: 'freida',
-    name: 'FREIDA',
-    fullName: 'AMA FREIDA Residency Database',
-    url: 'https://freida.ama-assn.org/',
-    usage:
-      'Program names, contact details, visa sponsorship, and PGY positions should be confirmed here or on the program website.',
-  },
   {
     id: 'nrmp',
     name: 'NRMP',
@@ -51,8 +43,8 @@ export const OFFICIAL_SOURCES = [
 
 /** Which fields in programs.json typically draw from which sources. */
 export const PROGRAM_FIELD_SOURCES = [
-  { fields: 'Program code & name', sources: ['NRMP', 'FREIDA'], note: 'Cross-check on FREIDA before applying.' },
-  { fields: 'Visa type, PGY positions, PD contact', sources: ['FREIDA', 'Program website'], note: 'Changes each cycle — verify directly.' },
+  { fields: 'Program code & name', sources: ['NRMP identifiers', 'Manual curation'], note: 'Cross-check on each program website before applying.' },
+  { fields: 'Visa type, PGY positions, PD contact', sources: ['Program website', 'Community reports'], note: 'Changes each cycle — verify directly.' },
   { fields: 'Median Step 2', sources: ['ResidencyMatch.net'], note: 'Crowdsourced; may not reflect this cycle.' },
   { fields: 'Dow / Pak matched flags', sources: ['Community reports'], note: 'Based on reported outcomes, not official NRMP data.' },
   { fields: 'Crowdsourced outcomes & notes', sources: ['Community reports', 'ResidencyMatch.net'], note: 'Anecdotal — use for context only.' },
@@ -62,14 +54,14 @@ export const DISCLAIMER_SHORT =
   'Independent tool — not affiliated with NRMP, AAMC, AMA, ECFMG, or any residency program. Scores are heuristics, not predictions. Verify all program information before applying.'
 
 export const DISCLAIMER_FOOTER =
-  'ResidencyCompass is an independent list-building aid. Program facts are manually curated from FREIDA-aligned public info, NRMP program identifiers, ResidencyMatch.net crowdsourced reports, and community reports. Residency Explorer (AAMC) data is not included in this app — use your own AAMC login on their site. Always verify on official sources before applying.'
+  'ResidencyCompass is an independent list-building aid. Program facts are manually curated from NRMP program identifiers, ResidencyMatch.net crowdsourced reports, and community reports. We do not copy, scrape, or redistribute data from FREIDA (AMA) or Residency Explorer (AAMC). Always verify on program websites and other official sources before applying.'
 
 export const DISCLAIMER_BULLETS = [
   'Scores are heuristics tuned for Pakistani IMG applicants. They are not predictions or guarantees of interview invites or match outcomes.',
-  'ResidencyCompass is not affiliated with, endorsed by, or authorized to redistribute data from NRMP, AAMC, AMA (FREIDA), ECFMG, or any residency program.',
-  'Residency Explorer™ material is owned by AAMC and may only be used on residencyexplorer.org for personal application research. This app does not store, scrape, or republish it.',
-  'Program fields are compiled from public references and community reports. They may be incomplete, outdated, or inaccurate.',
-  'Median Step 2 values and interview reports from ResidencyMatch.net and similar sites are crowdsourced — confirm on FREIDA and program websites.',
+  'ResidencyCompass is not affiliated with, endorsed by, or authorized to redistribute data from NRMP, AAMC, AMA, ECFMG, or any residency program.',
+  'We do not copy, scrape, or republish FREIDA (AMA) or Residency Explorer™ material. Residency Explorer may only be used on residencyexplorer.org for personal application research.',
+  'Program fields are compiled from manual curation and community reports. They may be incomplete, outdated, or inaccurate.',
+  'Median Step 2 values and interview reports from ResidencyMatch.net and similar sites are crowdsourced — confirm on program websites.',
   'Always verify visa sponsorship, position counts, PD details, and deadlines directly with each program before applying.',
 ]
 
@@ -124,13 +116,13 @@ export function getProgramFieldHints(program) {
       label: 'Median Step 2',
       value: program.median_step2,
       sources: 'ResidencyMatch.net (crowdsourced)',
-      verify: 'FREIDA / program website',
+      verify: 'Program website',
     },
     {
       label: 'Visa & positions',
       value: program.visa_type || program.pgy_positions,
-      sources: 'FREIDA / program website',
-      verify: 'FREIDA',
+      sources: 'Manual curation · community reports',
+      verify: 'Program website',
     },
     {
       label: 'Dow / Pak matched',

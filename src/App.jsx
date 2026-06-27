@@ -850,7 +850,7 @@ export default function App({ onLeaveApp }) {
                   )}
                 </span>
                 <span className="text-xs text-slate-400 dark:text-slate-500">
-                  Verify on FREIDA before applying
+                  Verify on program websites before applying
                 </span>
               </p>
             )}
