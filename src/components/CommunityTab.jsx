@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import DataDisclaimer from './DataDisclaimer'
 import { useAuth } from '../context/AuthContext'
 import { isSupabaseConfigured } from '../lib/supabase'
-import { fetchSubmissionCounts, submitCommunityReport, submitIvReport } from '../lib/community'
+import { fetchSubmissionCounts, submitCommunityReport, submitConnectionReport, submitIvReport } from '../lib/community'
 
 const CYCLES = ['2026–27', '2025–26', '2024–25', '2023–24']
 
@@ -28,6 +28,13 @@ const RESEARCH_OPTIONS = [
   { value: 'none', label: 'No research' },
 ]
 
+const CONNECTION_OPTIONS = [
+  { value: 'none', label: 'No connection', hint: 'No contact at this program' },
+  { value: 'weak', label: 'Weak', hint: 'Peripheral / second-degree' },
+  { value: 'moderate', label: 'Moderate', hint: 'Met them, exchanged emails' },
+  { value: 'strong', label: 'Strong', hint: 'Direct mentor, PD, or faculty' },
+]
+
 const EMPTY_IV_FORM = {
   program_code: '',
   cycle: CYCLES[0],
@@ -39,8 +46,75 @@ const EMPTY_IV_FORM = {
   research: 'none',
   rotation_months: '',
   got_invite: '',
+  signal: '',
+  connection: '',
   notes: '',
   contact: '',
+}
+
+const EMPTY_CONNECTION_FORM = {
+  program_code: '',
+  cycle: CYCLES[0],
+  connection: '',
+  notes: '',
+  contact: '',
+}
+
+function ConnectionStrengthPicker({ name, value, onChange }) {
+  return (
+    <div className="flex flex-wrap gap-3">
+      {CONNECTION_OPTIONS.map((o) => (
+        <label
+          key={o.value}
+          title={o.hint}
+          className={`flex cursor-pointer flex-col rounded-lg border px-3 py-2.5 text-sm transition-colors ${
+            value === o.value
+              ? o.value === 'strong'
+                ? 'border-violet-400 bg-violet-50 font-semibold text-violet-900 dark:border-violet-700 dark:bg-violet-900/30 dark:text-violet-200'
+                : o.value === 'moderate'
+                ? 'border-blue-400 bg-blue-50 font-semibold text-blue-900 dark:border-blue-700 dark:bg-blue-900/30 dark:text-blue-200'
+                : o.value === 'weak'
+                ? 'border-orange-400 bg-orange-50 font-semibold text-orange-900 dark:border-orange-700 dark:bg-orange-900/30 dark:text-orange-200'
+                : 'border-slate-400 bg-slate-50 font-semibold text-slate-800 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200'
+              : 'border-slate-200 text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800'
+          }`}
+        >
+          <span className="flex items-center gap-2">
+            <input
+              type="radio"
+              name={name}
+              value={o.value}
+              checked={value === o.value}
+              onChange={() => onChange(o.value)}
+              className="accent-blue-600"
+            />
+            {o.label}
+          </span>
+        </label>
+      ))}
+    </div>
+  )
+}
+
+function ProgramSelect({ programs, value, onChange, required = true }) {
+  return (
+    <label className="block md:col-span-2">
+      <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
+        Program {required && <span className="text-red-500">*</span>}
+      </span>
+      <select
+        required={required}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+      >
+        <option value="">— Select program —</option>
+        {programs.map((p) => (
+          <option key={p.program_code} value={p.program_code}>{p.program_name} ({p.state})</option>
+        ))}
+      </select>
+    </label>
+  )
 }
 
 const REPORT_TYPES = [
@@ -71,7 +145,7 @@ function IVReportForm({ programs, userId, onSubmitted }) {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    if (!form.program_code || !form.step2 || !form.got_invite) return
+    if (!form.program_code || !form.step2 || !form.got_invite || !form.signal || !form.connection) return
     setStatus('loading')
     try {
       const program = programs.find((p) => p.program_code === form.program_code)
@@ -82,7 +156,8 @@ function IVReportForm({ programs, userId, onSubmitted }) {
       setStatus('success')
       onSubmitted?.()
       setForm({ ...EMPTY_IV_FORM })
-    } catch {
+    } catch (err) {
+      console.error(err)
       setStatus('error')
     }
   }
@@ -109,20 +184,11 @@ function IVReportForm({ programs, userId, onSubmitted }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid gap-4 md:grid-cols-2">
-        <label className="block md:col-span-2">
-          <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Program <span className="text-red-500">*</span></span>
-          <select
-            required
-            value={form.program_code}
-            onChange={(e) => update('program_code', e.target.value)}
-            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
-          >
-            <option value="">— Select program —</option>
-            {programs.map((p) => (
-              <option key={p.program_code} value={p.program_code}>{p.program_name} ({p.state})</option>
-            ))}
-          </select>
-        </label>
+        <ProgramSelect
+          programs={programs}
+          value={form.program_code}
+          onChange={(v) => update('program_code', v)}
+        />
 
         <label className="block">
           <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Application Cycle</span>
@@ -251,6 +317,53 @@ function IVReportForm({ programs, userId, onSubmitted }) {
           </div>
         </div>
 
+        <div className="block md:col-span-2">
+          <span className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+            Did you signal this program? <span className="text-red-500">*</span>
+          </span>
+          <div className="flex flex-wrap gap-3">
+            {[
+              { value: 'gold', label: 'Gold signal' },
+              { value: 'silver', label: 'Silver signal' },
+              { value: 'none', label: 'No signal' },
+            ].map((o) => (
+              <label
+                key={o.value}
+                className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2.5 text-sm transition-colors ${
+                  form.signal === o.value
+                    ? o.value === 'gold'
+                      ? 'border-yellow-400 bg-yellow-50 font-semibold text-yellow-900 dark:border-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-200'
+                      : o.value === 'silver'
+                      ? 'border-slate-400 bg-slate-100 font-semibold text-slate-800 dark:border-slate-500 dark:bg-slate-700 dark:text-slate-200'
+                      : 'border-slate-400 bg-slate-50 font-semibold text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300'
+                    : 'border-slate-200 text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800'
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="signal"
+                  value={o.value}
+                  checked={form.signal === o.value}
+                  onChange={() => update('signal', o.value)}
+                  className="accent-blue-600"
+                />
+                {o.label}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div className="block md:col-span-2">
+          <span className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+            Connection at this program <span className="text-red-500">*</span>
+          </span>
+          <ConnectionStrengthPicker
+            name="iv_connection"
+            value={form.connection}
+            onChange={(v) => update('connection', v)}
+          />
+        </div>
+
         <label className="block md:col-span-2">
           <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Additional notes <span className="font-normal text-slate-400">(optional)</span></span>
           <textarea
@@ -273,16 +386,138 @@ function IVReportForm({ programs, userId, onSubmitted }) {
       </div>
 
       {status === 'error' && (
-        <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-300">Submission failed — check your connection and try again.</p>
+        <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-300">
+          Submission failed. Check your connection and try again. If this is a new form field, run the latest SQL migration in Supabase.
+        </p>
       )}
 
       <div className="flex justify-end">
         <button
           type="submit"
-          disabled={status === 'loading' || !form.program_code || !form.step2 || !form.got_invite}
+          disabled={status === 'loading' || !form.program_code || !form.step2 || !form.got_invite || !form.signal || !form.connection}
           className="flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 disabled:opacity-50"
         >
           {status === 'loading' ? 'Submitting…' : 'Submit Report'}
+        </button>
+      </div>
+    </form>
+  )
+}
+
+function ConnectionReportForm({ programs, userId, onSubmitted }) {
+  const [form, setForm] = useState({ ...EMPTY_CONNECTION_FORM })
+  const [status, setStatus] = useState('idle')
+
+  function update(field, value) {
+    setForm((prev) => ({ ...prev, [field]: value }))
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    if (!form.program_code || !form.connection) return
+    setStatus('loading')
+    try {
+      const program = programs.find((p) => p.program_code === form.program_code)
+      await submitConnectionReport(
+        { ...form, program_name: program?.program_name ?? form.program_code },
+        userId,
+      )
+      setStatus('success')
+      onSubmitted?.()
+      setForm({ ...EMPTY_CONNECTION_FORM })
+    } catch (err) {
+      console.error(err)
+      setStatus('error')
+    }
+  }
+
+  if (!isSupabaseConfigured) return <SetupNotice />
+
+  if (status === 'success') {
+    return (
+      <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-6 text-center dark:border-emerald-800 dark:bg-emerald-900/20">
+        <p className="text-2xl">🎉</p>
+        <p className="mt-2 font-semibold text-emerald-800 dark:text-emerald-200">Thank you for submitting!</p>
+        <p className="mt-1 text-sm text-emerald-700 dark:text-emerald-300">Connection report saved for review.</p>
+        <button
+          type="button"
+          onClick={() => setStatus('idle')}
+          className="mt-4 rounded-lg border border-emerald-300 px-4 py-1.5 text-sm font-medium text-emerald-700 hover:bg-emerald-100 dark:border-emerald-700 dark:text-emerald-300 dark:hover:bg-emerald-900/40"
+        >
+          Submit another
+        </button>
+      </div>
+    )
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid gap-4 md:grid-cols-2">
+        <ProgramSelect
+          programs={programs}
+          value={form.program_code}
+          onChange={(v) => update('program_code', v)}
+        />
+
+        <label className="block">
+          <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Application Cycle</span>
+          <select
+            value={form.cycle}
+            onChange={(e) => update('cycle', e.target.value)}
+            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+          >
+            {CYCLES.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+        </label>
+
+        <div className="block md:col-span-2">
+          <span className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+            Do you have a connection at this program? <span className="text-red-500">*</span>
+          </span>
+          <ConnectionStrengthPicker
+            name="connection_report"
+            value={form.connection}
+            onChange={(v) => update('connection', v)}
+          />
+        </div>
+
+        <label className="block md:col-span-2">
+          <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
+            Details <span className="font-normal text-slate-400">(optional — e.g. who you know, how you met)</span>
+          </span>
+          <textarea
+            rows={3}
+            value={form.notes}
+            onChange={(e) => update('notes', e.target.value)}
+            placeholder="e.g. Met PD at conference, email with chief resident…"
+            className="w-full resize-y rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+          />
+        </label>
+
+        <label className="block md:col-span-2">
+          <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Email <span className="font-normal text-slate-400">(optional)</span></span>
+          <input
+            type="email"
+            value={form.contact}
+            onChange={(e) => update('contact', e.target.value)}
+            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+          />
+        </label>
+      </div>
+
+      {status === 'error' && (
+        <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-300">
+          Submission failed. Run the latest SQL migration in Supabase if you have not already.
+        </p>
+      )}
+
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          disabled={status === 'loading' || !form.program_code || !form.connection}
+          className="flex items-center gap-2 rounded-lg bg-violet-600 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-700 disabled:opacity-50"
+        >
+          {status === 'loading' ? 'Submitting…' : 'Submit Connection Report'}
         </button>
       </div>
     </form>
@@ -427,7 +662,7 @@ function DemoSignInNotice({ onCreateAccount }) {
 export default function CommunityTab({ programs, demoMode = false, onCreateAccount }) {
   const { userId, isConfigured, isAuthenticated } = useAuth()
   const [activeForm, setActiveForm] = useState('iv')
-  const [counts, setCounts] = useState({ iv: 0, reports: 0 })
+  const [counts, setCounts] = useState({ iv: 0, reports: 0, connections: 0 })
 
   async function refreshCounts() {
     if (!isConfigured || !userId || userId === 'local') return
@@ -448,31 +683,40 @@ export default function CommunityTab({ programs, demoMode = false, onCreateAccou
         </p>
         {isConfigured && userId && userId !== 'local' && (
           <p className="mt-2 text-xs text-blue-700 dark:text-blue-400">
-            Your submissions: {counts.iv} IV report{counts.iv !== 1 ? 's' : ''}, {counts.reports} other report{counts.reports !== 1 ? 's' : ''}
+            Your submissions: {counts.iv} IV report{counts.iv !== 1 ? 's' : ''}, {counts.connections} connection report{counts.connections !== 1 ? 's' : ''}, {counts.reports} other report{counts.reports !== 1 ? 's' : ''}
           </p>
         )}
       </div>
 
       <DataDisclaimer variant="banner" />
 
-      <div className="flex gap-1 rounded-xl border border-slate-200 bg-slate-100 p-1 dark:border-slate-700 dark:bg-slate-800">
+      <div className="flex flex-col gap-1 rounded-xl border border-slate-200 bg-slate-100 p-1 sm:flex-row dark:border-slate-700 dark:bg-slate-800">
         <button
           type="button"
           onClick={() => setActiveForm('iv')}
-          className={`flex-1 rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
+          className={`flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
             activeForm === 'iv' ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-slate-100' : 'text-slate-600 dark:text-slate-400'
           }`}
         >
-          Submit Interview Invite Report
+          Interview Report
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveForm('connection')}
+          className={`flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+            activeForm === 'connection' ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-slate-100' : 'text-slate-600 dark:text-slate-400'
+          }`}
+        >
+          Connection Report
         </button>
         <button
           type="button"
           onClick={() => setActiveForm('report')}
-          className={`flex-1 rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
+          className={`flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
             activeForm === 'report' ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-slate-100' : 'text-slate-600 dark:text-slate-400'
           }`}
         >
-          Report Error / Ask a Question
+          Error / Question
         </button>
       </div>
 
@@ -483,9 +727,17 @@ export default function CommunityTab({ programs, demoMode = false, onCreateAccou
           <>
             <h3 className="mb-1 text-base font-semibold text-slate-900 dark:text-slate-100">Interview Invite Report</h3>
             <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
-              Share whether you received an interview at a program — Step 2/3, school, visa, research, and rotation months help the community.
+              Share whether you received an interview — include Step 2/3, signal type, and connection strength at that program.
             </p>
             <IVReportForm programs={programs} userId={userId} onSubmitted={refreshCounts} />
+          </>
+        ) : activeForm === 'connection' ? (
+          <>
+            <h3 className="mb-1 text-base font-semibold text-slate-900 dark:text-slate-100">Connection Report</h3>
+            <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
+              Tell the community whether you have a connection at a program — even if you have not applied or interviewed yet.
+            </p>
+            <ConnectionReportForm programs={programs} userId={userId} onSubmitted={refreshCounts} />
           </>
         ) : (
           <>

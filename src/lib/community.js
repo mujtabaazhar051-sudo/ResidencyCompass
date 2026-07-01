@@ -18,6 +18,26 @@ export async function submitIvReport(payload, userId) {
     research: payload.research ?? null,
     rotation_months: payload.rotation_months ? parseInt(payload.rotation_months, 10) : null,
     got_invite: payload.got_invite,
+    signal: payload.signal,
+    connection: payload.connection,
+    notes: payload.notes?.trim() || null,
+    contact_email: payload.contact?.trim() || null,
+  })
+
+  if (error) throw error
+}
+
+export async function submitConnectionReport(payload, userId) {
+  if (!isSupabaseConfigured || !supabase) {
+    throw new Error('SUPABASE_NOT_CONFIGURED')
+  }
+
+  const { error } = await supabase.from('connection_reports').insert({
+    user_id: userId,
+    program_code: payload.program_code,
+    program_name: payload.program_name ?? null,
+    cycle: payload.cycle ?? null,
+    connection: payload.connection,
     notes: payload.notes?.trim() || null,
     contact_email: payload.contact?.trim() || null,
   })
@@ -44,16 +64,18 @@ export async function submitCommunityReport(payload, userId) {
 
 export async function fetchSubmissionCounts(userId) {
   if (!isSupabaseConfigured || !supabase || !userId) {
-    return { iv: 0, reports: 0 }
+    return { iv: 0, reports: 0, connections: 0 }
   }
 
-  const [iv, reports] = await Promise.all([
+  const [iv, connections, reports] = await Promise.all([
     supabase.from('iv_reports').select('id', { count: 'exact', head: true }).eq('user_id', userId),
+    supabase.from('connection_reports').select('id', { count: 'exact', head: true }).eq('user_id', userId),
     supabase.from('community_reports').select('id', { count: 'exact', head: true }).eq('user_id', userId),
   ])
 
   return {
     iv: iv.count ?? 0,
+    connections: connections.count ?? 0,
     reports: reports.count ?? 0,
   }
 }
