@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import DataDisclaimer from './DataDisclaimer'
 import { useAuth } from '../context/AuthContext'
 import { isSupabaseConfigured } from '../lib/supabase'
-import { fetchSubmissionCounts, submitCommunityReport, submitConnectionReport, submitIvReport } from '../lib/community'
+import { fetchSubmissionCounts, submitCommunityReport, submitIvReport } from '../lib/community'
 
 const CYCLES = ['2026–27', '2025–26', '2024–25', '2023–24']
 
@@ -47,14 +47,6 @@ const EMPTY_IV_FORM = {
   rotation_months: '',
   got_invite: '',
   signal: '',
-  connection: '',
-  notes: '',
-  contact: '',
-}
-
-const EMPTY_CONNECTION_FORM = {
-  program_code: '',
-  cycle: CYCLES[0],
   connection: '',
   notes: '',
   contact: '',
@@ -404,126 +396,6 @@ function IVReportForm({ programs, userId, onSubmitted }) {
   )
 }
 
-function ConnectionReportForm({ programs, userId, onSubmitted }) {
-  const [form, setForm] = useState({ ...EMPTY_CONNECTION_FORM })
-  const [status, setStatus] = useState('idle')
-
-  function update(field, value) {
-    setForm((prev) => ({ ...prev, [field]: value }))
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault()
-    if (!form.program_code || !form.connection) return
-    setStatus('loading')
-    try {
-      const program = programs.find((p) => p.program_code === form.program_code)
-      await submitConnectionReport(
-        { ...form, program_name: program?.program_name ?? form.program_code },
-        userId,
-      )
-      setStatus('success')
-      onSubmitted?.()
-      setForm({ ...EMPTY_CONNECTION_FORM })
-    } catch (err) {
-      console.error(err)
-      setStatus('error')
-    }
-  }
-
-  if (!isSupabaseConfigured) return <SetupNotice />
-
-  if (status === 'success') {
-    return (
-      <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-6 text-center dark:border-emerald-800 dark:bg-emerald-900/20">
-        <p className="text-2xl">🎉</p>
-        <p className="mt-2 font-semibold text-emerald-800 dark:text-emerald-200">Thank you for submitting!</p>
-        <p className="mt-1 text-sm text-emerald-700 dark:text-emerald-300">Connection report saved for review.</p>
-        <button
-          type="button"
-          onClick={() => setStatus('idle')}
-          className="mt-4 rounded-lg border border-emerald-300 px-4 py-1.5 text-sm font-medium text-emerald-700 hover:bg-emerald-100 dark:border-emerald-700 dark:text-emerald-300 dark:hover:bg-emerald-900/40"
-        >
-          Submit another
-        </button>
-      </div>
-    )
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid gap-4 md:grid-cols-2">
-        <ProgramSelect
-          programs={programs}
-          value={form.program_code}
-          onChange={(v) => update('program_code', v)}
-        />
-
-        <label className="block">
-          <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Application Cycle</span>
-          <select
-            value={form.cycle}
-            onChange={(e) => update('cycle', e.target.value)}
-            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
-          >
-            {CYCLES.map((c) => <option key={c} value={c}>{c}</option>)}
-          </select>
-        </label>
-
-        <div className="block md:col-span-2">
-          <span className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-            Do you have a connection at this program? <span className="text-red-500">*</span>
-          </span>
-          <ConnectionStrengthPicker
-            name="connection_report"
-            value={form.connection}
-            onChange={(v) => update('connection', v)}
-          />
-        </div>
-
-        <label className="block md:col-span-2">
-          <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-            Details <span className="font-normal text-slate-400">(optional — e.g. who you know, how you met)</span>
-          </span>
-          <textarea
-            rows={3}
-            value={form.notes}
-            onChange={(e) => update('notes', e.target.value)}
-            placeholder="e.g. Met PD at conference, email with chief resident…"
-            className="w-full resize-y rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
-          />
-        </label>
-
-        <label className="block md:col-span-2">
-          <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Email <span className="font-normal text-slate-400">(optional)</span></span>
-          <input
-            type="email"
-            value={form.contact}
-            onChange={(e) => update('contact', e.target.value)}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
-          />
-        </label>
-      </div>
-
-      {status === 'error' && (
-        <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-300">
-          Submission failed. Run the latest SQL migration in Supabase if you have not already.
-        </p>
-      )}
-
-      <div className="flex justify-end">
-        <button
-          type="submit"
-          disabled={status === 'loading' || !form.program_code || !form.connection}
-          className="flex items-center gap-2 rounded-lg bg-violet-600 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-700 disabled:opacity-50"
-        >
-          {status === 'loading' ? 'Submitting…' : 'Submit Connection Report'}
-        </button>
-      </div>
-    </form>
-  )
-}
-
 function ReportForm({ programs, userId, onSubmitted }) {
   const [form, setForm] = useState({ type: 'error', program_code: '', description: '', contact: '' })
   const [status, setStatus] = useState('idle')
@@ -662,7 +534,7 @@ function DemoSignInNotice({ onCreateAccount }) {
 export default function CommunityTab({ programs, demoMode = false, onCreateAccount }) {
   const { userId, isConfigured, isAuthenticated } = useAuth()
   const [activeForm, setActiveForm] = useState('iv')
-  const [counts, setCounts] = useState({ iv: 0, reports: 0, connections: 0 })
+  const [counts, setCounts] = useState({ iv: 0, reports: 0 })
 
   async function refreshCounts() {
     if (!isConfigured || !userId || userId === 'local') return
@@ -683,7 +555,7 @@ export default function CommunityTab({ programs, demoMode = false, onCreateAccou
         </p>
         {isConfigured && userId && userId !== 'local' && (
           <p className="mt-2 text-xs text-blue-700 dark:text-blue-400">
-            Your submissions: {counts.iv} IV report{counts.iv !== 1 ? 's' : ''}, {counts.connections} connection report{counts.connections !== 1 ? 's' : ''}, {counts.reports} other report{counts.reports !== 1 ? 's' : ''}
+            Your submissions: {counts.iv} IV report{counts.iv !== 1 ? 's' : ''}, {counts.reports} other report{counts.reports !== 1 ? 's' : ''}
           </p>
         )}
       </div>
@@ -699,15 +571,6 @@ export default function CommunityTab({ programs, demoMode = false, onCreateAccou
           }`}
         >
           Interview Report
-        </button>
-        <button
-          type="button"
-          onClick={() => setActiveForm('connection')}
-          className={`flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
-            activeForm === 'connection' ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-slate-100' : 'text-slate-600 dark:text-slate-400'
-          }`}
-        >
-          Connection Report
         </button>
         <button
           type="button"
@@ -730,14 +593,6 @@ export default function CommunityTab({ programs, demoMode = false, onCreateAccou
               Share whether you received an interview — include Step 2/3, signal type, and connection strength at that program.
             </p>
             <IVReportForm programs={programs} userId={userId} onSubmitted={refreshCounts} />
-          </>
-        ) : activeForm === 'connection' ? (
-          <>
-            <h3 className="mb-1 text-base font-semibold text-slate-900 dark:text-slate-100">Connection Report</h3>
-            <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
-              Tell the community whether you have a connection at a program — even if you have not applied or interviewed yet.
-            </p>
-            <ConnectionReportForm programs={programs} userId={userId} onSubmitted={refreshCounts} />
           </>
         ) : (
           <>
