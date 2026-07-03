@@ -28,6 +28,15 @@ import {
   AUTO_RANKED_KEY,
 } from './utils/profile'
 import { useAuth } from './context/AuthContext'
+import {
+  fetchRemoteUserState,
+  hasAppStateData,
+  loadLocalState,
+  localStorageKey,
+  packAppState,
+  saveLocalState,
+  saveRemoteUserState,
+} from './lib/userState'
 
 const STORAGE_KEY = 'imresidency_v1'
 
@@ -60,17 +69,12 @@ const DEFAULT_FILTERS = {
   shortlistOnly: false,
 }
 
-function loadSaved() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    return raw ? JSON.parse(raw) : null
-  } catch {
-    return null
-  }
+function loadSaved(userId = null) {
+  return loadLocalState(userId)
 }
 
 export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
-  const { user: session } = useAuth()
+  const { user: session, userId, isConfigured } = useAuth()
   // Initialise from localStorage on first render, falling back to defaults (skipped in demo)
   const [profile, setProfile] = useState(() => {
     if (demoMode) return DEFAULT_PROFILE
@@ -154,6 +158,8 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
   const restoreInputRef = useRef(null)
   const profileSectionRef = useRef(null)
   const demoAutoRankedRef = useRef(false)
+  const cloudHydratingRef = useRef(false)
+  const cloudSaveTimerRef = useRef(null)
 
   const [filtersCollapsed, setFiltersCollapsed] = useState(() => {
     if (demoMode) return false
@@ -202,13 +208,27 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
   // Persist all user state whenever it changes (skipped in demo)
   useEffect(() => {
     if (demoMode) return
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ profile, signals, connections, notes, statuses, ivDates, shortlist }))
-      setSavedFlash(true)
-      const t = setTimeout(() => setSavedFlash(false), 1500)
-      return () => clearTimeout(t)
-    } catch {}
-  }, [demoMode, profile, signals, connections, notes, statuses, ivDates, shortlist])
+    if (cloudHydratingRef.current) return
+
+    const state = packAppState({ profile, signals, connections, notes, statuses, ivDates, shortlist })
+    saveLocalState(userId, state)
+    setSavedFlash(true)
+    const t = setTimeout(() => setSavedFlash(false), 1500)
+
+    if (userId && userId !== 'local' && isConfigured) {
+      clearTimeout(cloudSaveTimerRef.current)
+      cloudSaveTimerRef.current = setTimeout(() => {
+        saveRemoteUserState(userId, state).catch((err) => {
+          console.error('Cloud save failed:', err)
+        })
+      }, 800)
+    }
+
+    return () => {
+      clearTimeout(t)
+      clearTimeout(cloudSaveTimerRef.current)
+    }
+  }, [demoMode, userId, isConfigured, profile, signals, connections, notes, statuses, ivDates, shortlist])
 
   // Snapshot of the last "applied" state — the list only re-sorts/re-tiers
   // when the user explicitly clicks Apply or Re-rank.
@@ -523,6 +543,7 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
   function clearAllData() {
     if (!demoMode) {
       try {
+        localStorage.removeItem(localStorageKey(userId))
         localStorage.removeItem(STORAGE_KEY)
         localStorage.removeItem(AUTO_RANKED_KEY)
         localStorage.removeItem(PANELS_AUTO_COLLAPSED_KEY)
@@ -645,6 +666,39 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
       connections: nextConnections,
     })
   }
+
+  // Load signed-in user's list from Supabase (survives redeploys / new browsers)
+  useEffect(() => {
+    if (demoMode || !userId || userId === 'local' || !isConfigured) return
+
+    let cancelled = false
+    cloudHydratingRef.current = true
+
+    ;(async () => {
+      try {
+        const remote = await fetchRemoteUserState(userId)
+        if (cancelled) return
+
+        if (remote?.state && hasAppStateData(remote.state)) {
+          applyBackup(remote.state)
+          saveLocalState(userId, remote.state)
+        } else {
+          const local = loadLocalState(userId)
+          if (local && hasAppStateData(local)) {
+            await saveRemoteUserState(userId, local)
+          }
+        }
+      } catch (err) {
+        console.error('Cloud sync failed:', err)
+      } finally {
+        if (!cancelled) cloudHydratingRef.current = false
+      }
+    })()
+
+    return () => {
+      cancelled = true
+    }
+  }, [userId, isConfigured, demoMode]) // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleRestoreFile(e) {
     const file = e.target.files?.[0]

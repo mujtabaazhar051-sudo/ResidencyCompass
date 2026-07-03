@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import DataDisclaimer from './DataDisclaimer'
 import { useAuth } from '../context/AuthContext'
 import { isSupabaseConfigured } from '../lib/supabase'
-import { fetchSubmissionCounts, submitCommunityReport, submitIvReport } from '../lib/community'
+import { fetchPublicIvReports, fetchSubmissionCounts, submitCommunityReport, submitIvReport } from '../lib/community'
 
 const CYCLES = ['2026–27', '2025–26', '2024–25', '2023–24']
 
@@ -161,7 +161,7 @@ function IVReportForm({ programs, userId, onSubmitted }) {
       <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-6 text-center dark:border-emerald-800 dark:bg-emerald-900/20">
         <p className="text-2xl">🎉</p>
         <p className="mt-2 font-semibold text-emerald-800 dark:text-emerald-200">Thank you for submitting!</p>
-        <p className="mt-1 text-sm text-emerald-700 dark:text-emerald-300">Saved to the community database for review.</p>
+        <p className="mt-1 text-sm text-emerald-700 dark:text-emerald-300">Visible to other users in Browse Reports (your email stays private).</p>
         <button
           type="button"
           onClick={() => setStatus('idle')}
@@ -513,6 +513,196 @@ function ReportForm({ programs, userId, onSubmitted }) {
   )
 }
 
+const MED_SCHOOL_LABELS = Object.fromEntries(MED_SCHOOLS.map((o) => [o.value, o.label]))
+const VISA_LABELS = Object.fromEntries(VISA_OPTIONS.map((o) => [o.value, o.label]))
+const RESEARCH_LABELS = Object.fromEntries(RESEARCH_OPTIONS.map((o) => [o.value, o.label]))
+const CONNECTION_LABELS = Object.fromEntries(CONNECTION_OPTIONS.map((o) => [o.value, o.label]))
+const SIGNAL_LABELS = { gold: 'Gold signal', silver: 'Silver signal', none: 'No signal' }
+
+function formatDate(iso) {
+  if (!iso) return '—'
+  return new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+}
+
+function IvReportsBrowse({ programs }) {
+  const [reports, setReports] = useState([])
+  const [status, setStatus] = useState('loading')
+  const [programFilter, setProgramFilter] = useState('')
+  const [cycleFilter, setCycleFilter] = useState('')
+  const [inviteFilter, setInviteFilter] = useState('')
+
+  useEffect(() => {
+    if (!isSupabaseConfigured) {
+      setStatus('unavailable')
+      return
+    }
+
+    let cancelled = false
+    setStatus('loading')
+
+    fetchPublicIvReports({
+      programCode: programFilter || undefined,
+      cycle: cycleFilter || undefined,
+      gotInvite: inviteFilter || undefined,
+    })
+      .then((data) => {
+        if (!cancelled) {
+          setReports(data)
+          setStatus('ready')
+        }
+      })
+      .catch((err) => {
+        console.error(err)
+        if (!cancelled) setStatus('error')
+      })
+
+    return () => { cancelled = true }
+  }, [programFilter, cycleFilter, inviteFilter])
+
+  if (!isSupabaseConfigured) return <SetupNotice />
+
+  return (
+    <div className="space-y-4">
+      <p className="text-sm text-slate-500 dark:text-slate-400">
+        Interview reports submitted by the community. Submitter emails are never shown.
+      </p>
+
+      <div className="grid gap-3 sm:grid-cols-3">
+        <label className="block">
+          <span className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-400">Program</span>
+          <select
+            value={programFilter}
+            onChange={(e) => setProgramFilter(e.target.value)}
+            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+          >
+            <option value="">All programs</option>
+            {programs.map((p) => (
+              <option key={p.program_code} value={p.program_code}>{p.program_name} ({p.state})</option>
+            ))}
+          </select>
+        </label>
+        <label className="block">
+          <span className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-400">Cycle</span>
+          <select
+            value={cycleFilter}
+            onChange={(e) => setCycleFilter(e.target.value)}
+            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+          >
+            <option value="">All cycles</option>
+            {CYCLES.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+        </label>
+        <label className="block">
+          <span className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-400">Interview outcome</span>
+          <select
+            value={inviteFilter}
+            onChange={(e) => setInviteFilter(e.target.value)}
+            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+          >
+            <option value="">All outcomes</option>
+            <option value="yes">Got interview</option>
+            <option value="no">No interview</option>
+          </select>
+        </label>
+      </div>
+
+      {status === 'loading' && (
+        <p className="py-8 text-center text-sm text-slate-500 dark:text-slate-400">Loading reports…</p>
+      )}
+
+      {status === 'error' && (
+        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-900/20 dark:text-red-300">
+          Could not load reports. If this is a new feature, run <code className="text-xs">migration_iv_reports_public.sql</code> in Supabase SQL Editor.
+        </div>
+      )}
+
+      {status === 'ready' && reports.length === 0 && (
+        <p className="py-8 text-center text-sm text-slate-500 dark:text-slate-400">No reports yet — be the first to submit one.</p>
+      )}
+
+      {status === 'ready' && reports.length > 0 && (
+        <>
+          <p className="text-xs text-slate-500 dark:text-slate-400">{reports.length} report{reports.length !== 1 ? 's' : ''}</p>
+          <div className="space-y-3 md:hidden">
+            {reports.map((r) => (
+              <article key={r.id} className="rounded-lg border border-slate-200 p-4 dark:border-slate-600">
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <h4 className="font-semibold text-slate-900 dark:text-slate-100">{r.program_name || r.program_code}</h4>
+                  <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+                    r.got_invite === 'yes'
+                      ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200'
+                      : 'bg-rose-100 text-rose-800 dark:bg-rose-900/40 dark:text-rose-200'
+                  }`}>
+                    {r.got_invite === 'yes' ? 'II received' : 'No II'}
+                  </span>
+                </div>
+                <dl className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1.5 text-xs text-slate-600 dark:text-slate-400">
+                  <div><dt className="inline font-medium">Cycle: </dt><dd className="inline">{r.cycle || '—'}</dd></div>
+                  <div><dt className="inline font-medium">Step 2: </dt><dd className="inline">{r.step2}</dd></div>
+                  {r.step3 && <div><dt className="inline font-medium">Step 3: </dt><dd className="inline">{r.step3}</dd></div>}
+                  <div><dt className="inline font-medium">Signal: </dt><dd className="inline">{SIGNAL_LABELS[r.signal] || r.signal}</dd></div>
+                  <div><dt className="inline font-medium">Connection: </dt><dd className="inline">{CONNECTION_LABELS[r.connection] || r.connection}</dd></div>
+                  <div className="col-span-2"><dt className="inline font-medium">School: </dt><dd className="inline">{MED_SCHOOL_LABELS[r.med_school] || r.med_school || '—'}</dd></div>
+                </dl>
+                {r.notes && <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{r.notes}</p>}
+                <p className="mt-2 text-[10px] text-slate-400">{formatDate(r.created_at)}</p>
+              </article>
+            ))}
+          </div>
+          <div className="hidden overflow-x-auto md:block">
+            <table className="w-full min-w-[720px] text-left text-sm">
+              <thead>
+                <tr className="border-b border-slate-200 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:border-slate-600 dark:text-slate-400">
+                  <th className="px-2 py-2">Program</th>
+                  <th className="px-2 py-2">Cycle</th>
+                  <th className="px-2 py-2">Step 2</th>
+                  <th className="px-2 py-2">Outcome</th>
+                  <th className="px-2 py-2">Signal</th>
+                  <th className="px-2 py-2">Connection</th>
+                  <th className="px-2 py-2">Profile</th>
+                  <th className="px-2 py-2">Submitted</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
+                {reports.map((r) => (
+                  <tr key={r.id} className="text-slate-700 dark:text-slate-300">
+                    <td className="px-2 py-2.5 font-medium text-slate-900 dark:text-slate-100">
+                      <div>{r.program_name || r.program_code}</div>
+                      {r.notes && <div className="mt-0.5 max-w-xs truncate text-xs font-normal text-slate-500 dark:text-slate-400" title={r.notes}>{r.notes}</div>}
+                    </td>
+                    <td className="px-2 py-2.5 whitespace-nowrap">{r.cycle || '—'}</td>
+                    <td className="px-2 py-2.5 whitespace-nowrap">{r.step2}{r.step3 ? ` / ${r.step3}` : ''}</td>
+                    <td className="px-2 py-2.5 whitespace-nowrap">
+                      <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+                        r.got_invite === 'yes'
+                          ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200'
+                          : 'bg-rose-100 text-rose-800 dark:bg-rose-900/40 dark:text-rose-200'
+                      }`}>
+                        {r.got_invite === 'yes' ? 'II' : 'No II'}
+                      </span>
+                    </td>
+                    <td className="px-2 py-2.5 whitespace-nowrap text-xs">{SIGNAL_LABELS[r.signal] || r.signal}</td>
+                    <td className="px-2 py-2.5 whitespace-nowrap text-xs">{CONNECTION_LABELS[r.connection] || r.connection}</td>
+                    <td className="px-2 py-2.5 text-xs">
+                      <div>{MED_SCHOOL_LABELS[r.med_school] || r.med_school || '—'}</div>
+                      <div className="text-slate-500 dark:text-slate-400">
+                        {[VISA_LABELS[r.visa], RESEARCH_LABELS[r.research], r.yog ? `YOG ${r.yog}` : null, r.rotation_months ? `${r.rotation_months}mo rotations` : null]
+                          .filter(Boolean)
+                          .join(' · ') || '—'}
+                      </div>
+                    </td>
+                    <td className="px-2 py-2.5 whitespace-nowrap text-xs text-slate-500">{formatDate(r.created_at)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
 function DemoSignInNotice({ onCreateAccount }) {
   return (
     <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 text-center dark:border-slate-700 dark:bg-slate-900/40">
@@ -551,7 +741,7 @@ export default function CommunityTab({ programs, demoMode = false, onCreateAccou
       <div className="rounded-xl border border-blue-200 bg-blue-50 px-5 py-4 dark:border-blue-800 dark:bg-blue-950/40">
         <h2 className="font-semibold text-blue-900 dark:text-blue-200">Help build Pakistani IMG data</h2>
         <p className="mt-1 text-sm text-blue-800 dark:text-blue-300/90">
-          Submissions are stored in Supabase, reviewed manually, and may update program medians over time. Not official NRMP or AAMC data.
+          Submit interview outcomes or browse what others have shared. Submitter emails are never shown publicly.
         </p>
         {isConfigured && userId && userId !== 'local' && (
           <p className="mt-2 text-xs text-blue-700 dark:text-blue-400">
@@ -574,6 +764,15 @@ export default function CommunityTab({ programs, demoMode = false, onCreateAccou
         </button>
         <button
           type="button"
+          onClick={() => setActiveForm('browse')}
+          className={`flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+            activeForm === 'browse' ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-slate-100' : 'text-slate-600 dark:text-slate-400'
+          }`}
+        >
+          Browse Reports
+        </button>
+        <button
+          type="button"
           onClick={() => setActiveForm('report')}
           className={`flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
             activeForm === 'report' ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-slate-100' : 'text-slate-600 dark:text-slate-400'
@@ -584,7 +783,12 @@ export default function CommunityTab({ programs, demoMode = false, onCreateAccou
       </div>
 
       <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800">
-        {demoMode || !isAuthenticated ? (
+        {activeForm === 'browse' ? (
+          <>
+            <h3 className="mb-1 text-base font-semibold text-slate-900 dark:text-slate-100">Community Interview Reports</h3>
+            <IvReportsBrowse programs={programs} />
+          </>
+        ) : demoMode || !isAuthenticated ? (
           <DemoSignInNotice onCreateAccount={onCreateAccount} />
         ) : activeForm === 'iv' ? (
           <>
@@ -608,9 +812,9 @@ export default function CommunityTab({ programs, demoMode = false, onCreateAccou
       <div className="rounded-xl border border-slate-200 bg-white p-5 text-sm text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
         <h4 className="mb-2 font-semibold text-slate-800 dark:text-slate-200">What happens to submitted data?</h4>
         <ul className="list-disc space-y-1.5 pl-4">
-          <li>Reports are saved to Supabase and reviewed before updating the public program list.</li>
-          <li>Individual submissions are never shown on program cards — only aggregated stats after review.</li>
-          <li>View all submissions in Supabase Table Editor (project owner only).</li>
+          <li>Interview reports appear in Browse Reports for all users — emails are never shown.</li>
+          <li>Program card medians and crowdsourced notes are still updated manually when needed.</li>
+          <li>You can edit or remove rows anytime in Supabase Table Editor (project owner).</li>
         </ul>
       </div>
     </div>

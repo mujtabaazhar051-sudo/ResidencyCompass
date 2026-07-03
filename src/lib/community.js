@@ -44,6 +44,29 @@ export async function submitCommunityReport(payload, userId) {
   if (error) throw error
 }
 
+const PUBLIC_IV_COLUMNS =
+  'id, created_at, program_code, program_name, cycle, step2, step3, med_school, yog, visa, research, rotation_months, got_invite, signal, connection, notes'
+
+export async function fetchPublicIvReports({ programCode, cycle, gotInvite } = {}) {
+  if (!isSupabaseConfigured || !supabase) {
+    return []
+  }
+
+  let query = supabase
+    .from('iv_reports_public')
+    .select(PUBLIC_IV_COLUMNS)
+    .order('created_at', { ascending: false })
+    .limit(300)
+
+  if (programCode) query = query.eq('program_code', programCode)
+  if (cycle) query = query.eq('cycle', cycle)
+  if (gotInvite) query = query.eq('got_invite', gotInvite)
+
+  const { data, error } = await query
+  if (error) throw error
+  return data ?? []
+}
+
 export async function fetchSubmissionCounts(userId) {
   if (!isSupabaseConfigured || !supabase || !userId) {
     return { iv: 0, reports: 0 }
