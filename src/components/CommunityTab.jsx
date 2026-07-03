@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import DataDisclaimer from './DataDisclaimer'
+import ProgramSearchPicker, { UNLISTED_PROGRAM_CODE } from './ProgramSearchPicker'
 import { useAuth } from '../context/AuthContext'
 import { isSupabaseConfigured } from '../lib/supabase'
 import { fetchPublicIvReports, fetchSubmissionCounts, submitCommunityReport, submitIvReport } from '../lib/community'
+import { sortProgramsByName } from '../utils/sortPrograms'
 
 const CYCLES = ['2026–27', '2025–26', '2024–25', '2023–24']
 
@@ -37,6 +39,9 @@ const CONNECTION_OPTIONS = [
 
 const EMPTY_IV_FORM = {
   program_code: '',
+  custom_program_name: '',
+  custom_program_state: '',
+  custom_nrmp_code: '',
   cycle: CYCLES[0],
   step2: '',
   step3: '',
@@ -88,26 +93,6 @@ function ConnectionStrengthPicker({ name, value, onChange }) {
   )
 }
 
-function ProgramSelect({ programs, value, onChange, required = true }) {
-  return (
-    <label className="block md:col-span-2">
-      <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-        Program {required && <span className="text-red-500">*</span>}
-      </span>
-      <select
-        required={required}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
-      >
-        <option value="">— Select program —</option>
-        {programs.map((p) => (
-          <option key={p.program_code} value={p.program_code}>{p.program_name} ({p.state})</option>
-        ))}
-      </select>
-    </label>
-  )
-}
 
 const REPORT_TYPES = [
   { value: 'error',      label: '🐛 Incorrect program data' },
@@ -127,22 +112,54 @@ function SetupNotice() {
   )
 }
 
-function IVReportForm({ programs, userId, onSubmitted }) {
+function IVReportForm({ programs, userId, onSubmitted, onSwitchToReport }) {
   const [form, setForm] = useState({ ...EMPTY_IV_FORM })
   const [status, setStatus] = useState('idle')
+
+  const sortedPrograms = useMemo(() => sortProgramsByName(programs), [programs])
+  const isUnlisted = form.program_code === UNLISTED_PROGRAM_CODE
 
   function update(field, value) {
     setForm((prev) => ({ ...prev, [field]: value }))
   }
 
+  function updateUnlisted(patch) {
+    setForm((prev) => ({ ...prev, ...patch }))
+  }
+
+  function isProgramValid() {
+    if (isUnlisted) {
+      return Boolean(form.custom_program_name.trim() && form.custom_program_state)
+    }
+    return Boolean(form.program_code)
+  }
+
   async function handleSubmit(e) {
     e.preventDefault()
-    if (!form.program_code || !form.step2 || !form.got_invite || !form.signal || !form.connection) return
+    if (!isProgramValid() || !form.step2 || !form.got_invite || !form.signal || !form.connection) return
     setStatus('loading')
     try {
-      const program = programs.find((p) => p.program_code === form.program_code)
+      let program_code = form.program_code
+      let program_name
+      let notes = form.notes?.trim() || null
+
+      if (isUnlisted) {
+        const name = form.custom_program_name.trim()
+        const state = form.custom_program_state
+        program_name = `${name} (${state})`
+        program_code = form.custom_nrmp_code.trim() || `unlisted:${Date.now()}`
+        if (form.custom_nrmp_code.trim()) {
+          notes = notes
+            ? `${notes}\n\nUser-provided NRMP code: ${form.custom_nrmp_code.trim()}`
+            : `User-provided NRMP code: ${form.custom_nrmp_code.trim()}`
+        }
+      } else {
+        const program = sortedPrograms.find((p) => p.program_code === form.program_code)
+        program_name = program?.program_name ?? form.program_code
+      }
+
       await submitIvReport(
-        { ...form, program_name: program?.program_name ?? form.program_code },
+        { ...form, program_code, program_name, notes },
         userId,
       )
       setStatus('success')
@@ -176,10 +193,17 @@ function IVReportForm({ programs, userId, onSubmitted }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid gap-4 md:grid-cols-2">
-        <ProgramSelect
-          programs={programs}
+        <ProgramSearchPicker
+          programs={sortedPrograms}
           value={form.program_code}
           onChange={(v) => update('program_code', v)}
+          unlisted={{
+            custom_program_name: form.custom_program_name,
+            custom_program_state: form.custom_program_state,
+            custom_nrmp_code: form.custom_nrmp_code,
+          }}
+          onUnlistedChange={updateUnlisted}
+          onSwitchToReport={onSwitchToReport}
         />
 
         <label className="block">
@@ -386,7 +410,7 @@ function IVReportForm({ programs, userId, onSubmitted }) {
       <div className="flex justify-end">
         <button
           type="submit"
-          disabled={status === 'loading' || !form.program_code || !form.step2 || !form.got_invite || !form.signal || !form.connection}
+          disabled={status === 'loading' || !isProgramValid() || !form.step2 || !form.got_invite || !form.signal || !form.connection}
           className="flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 disabled:opacity-50"
         >
           {status === 'loading' ? 'Submitting…' : 'Submit Report'}
@@ -397,6 +421,7 @@ function IVReportForm({ programs, userId, onSubmitted }) {
 }
 
 function ReportForm({ programs, userId, onSubmitted }) {
+  const sortedPrograms = useMemo(() => sortProgramsByName(programs), [programs])
   const [form, setForm] = useState({ type: 'error', program_code: '', description: '', contact: '' })
   const [status, setStatus] = useState('idle')
 
@@ -409,7 +434,7 @@ function ReportForm({ programs, userId, onSubmitted }) {
     if (!form.description.trim()) return
     setStatus('loading')
     try {
-      const program = programs.find((p) => p.program_code === form.program_code)
+      const program = sortedPrograms.find((p) => p.program_code === form.program_code)
       await submitCommunityReport(
         { ...form, program_name: program?.program_name ?? '' },
         userId,
@@ -469,7 +494,7 @@ function ReportForm({ programs, userId, onSubmitted }) {
           className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
         >
           <option value="">— Not program-specific —</option>
-          {programs.map((p) => (
+          {sortedPrograms.map((p) => (
             <option key={p.program_code} value={p.program_code}>{p.program_name} ({p.state})</option>
           ))}
         </select>
@@ -525,6 +550,7 @@ function formatDate(iso) {
 }
 
 function IvReportsBrowse({ programs }) {
+  const sortedPrograms = useMemo(() => sortProgramsByName(programs), [programs])
   const [reports, setReports] = useState([])
   const [status, setStatus] = useState('loading')
   const [programFilter, setProgramFilter] = useState('')
@@ -576,7 +602,7 @@ function IvReportsBrowse({ programs }) {
             className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
           >
             <option value="">All programs</option>
-            {programs.map((p) => (
+            {sortedPrograms.map((p) => (
               <option key={p.program_code} value={p.program_code}>{p.program_name} ({p.state})</option>
             ))}
           </select>
@@ -796,7 +822,12 @@ export default function CommunityTab({ programs, demoMode = false, onCreateAccou
             <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
               Share whether you received an interview — include Step 2/3, signal type, and connection strength at that program.
             </p>
-            <IVReportForm programs={programs} userId={userId} onSubmitted={refreshCounts} />
+            <IVReportForm
+              programs={programs}
+              userId={userId}
+              onSubmitted={refreshCounts}
+              onSwitchToReport={() => setActiveForm('report')}
+            />
           </>
         ) : (
           <>

@@ -1,7 +1,10 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import defaultPrograms from './data/programs.json'
 import defaultInitialState from './data/initialState.json'
+import { sortProgramsByName } from './utils/sortPrograms'
 import { scorePrograms, TIER_ORDER, SIGNAL_MAX, SIGNAL_MAX_GOLD, SIGNAL_MAX_SILVER } from './scoring/engine'
+
+const sortedDefaultPrograms = sortProgramsByName(defaultPrograms)
 import ProfileForm from './components/ProfileForm'
 import FilterBar from './components/FilterBar'
 import ProgramList from './components/ProgramList'
@@ -131,7 +134,7 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
   }
 
   const [filters, setFilters] = useState(DEFAULT_FILTERS)
-  const [programs, setPrograms] = useState(defaultPrograms)
+  const [programs, setPrograms] = useState(sortedDefaultPrograms)
   const [showImport, setShowImport] = useState(false)
   const [showClearModal, setShowClearModal] = useState(false)
   const [activeTab, setActiveTab] = useState(() => {
@@ -520,7 +523,7 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
 
   function handleImport(importedPrograms, importedSignals) {
     const newSignals = importedSignals || {}
-    setPrograms(importedPrograms)
+    setPrograms(sortProgramsByName(importedPrograms))
     setSignals(newSignals)
     setConnections({})
     setNotes({})
@@ -531,7 +534,7 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
   }
 
   function resetToDefault() {
-    setPrograms(defaultPrograms)
+    setPrograms(sortedDefaultPrograms)
     setSignals({})
     setConnections({})
     setNotes({})
@@ -578,7 +581,7 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
     setShowClearModal(false)
   }
 
-  const isImported = programs !== defaultPrograms
+  const isImported = programs !== sortedDefaultPrograms
 
   function exportToCSV() {
     const STATUS_LABELS = {
