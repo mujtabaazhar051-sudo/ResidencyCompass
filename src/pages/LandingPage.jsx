@@ -90,49 +90,50 @@ export default function LandingPage({ onSignIn, onSignUp, onTryDemo }) {
         </div>
       </header>
 
-      <FounderNote />
-
-      {/* Hero */}
+      {/* Hero + founder note */}
       <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-100/60 via-transparent to-emerald-100/40 dark:from-blue-950/40 dark:to-emerald-950/20" />
-        <div className="relative mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-24">
-          <div className="max-w-2xl">
-            <p className="mb-3 inline-flex rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-700 dark:border-blue-800 dark:bg-blue-950/50 dark:text-blue-300">
-              Built for Pakistani IMGs
-            </p>
-            <h1 className="text-4xl font-bold leading-tight tracking-tight md:text-5xl">
-              Rank IM residency programs with confidence
-            </h1>
-            <p className="mt-4 text-lg leading-relaxed text-slate-600 dark:text-slate-400">
-              ResidencyCompass scores and tiers Internal Medicine programs based on your Step 2, visa need,
-              connections, rotations, and research, so you build a balanced list instead of applying blind.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <button
-                type="button"
-                onClick={onSignUp}
-                className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 hover:bg-blue-700"
-              >
-                Get started free
-              </button>
-              <button
-                type="button"
-                onClick={onSignIn}
-                className="rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
-              >
-                Sign in
-              </button>
-              <button
-                type="button"
-                onClick={onTryDemo}
-                className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-6 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:bg-slate-800"
-              >
-                Try demo
-              </button>
+        <div className="relative mx-auto max-w-6xl px-4 py-12 md:px-6 md:py-20">
+          <div className="grid items-start gap-8 md:grid-cols-2 md:gap-10 lg:gap-12">
+            <div>
+              <p className="mb-3 inline-flex rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-700 dark:border-blue-800 dark:bg-blue-950/50 dark:text-blue-300">
+                Built for Pakistani IMGs
+              </p>
+              <h1 className="text-4xl font-bold leading-tight tracking-tight md:text-5xl">
+                Rank IM residency programs with confidence
+              </h1>
+              <p className="mt-4 max-w-xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">
+                ResidencyCompass scores and tiers Internal Medicine programs based on your Step 2, visa need,
+                connections, rotations, and research, so you build a balanced list instead of applying blind.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={onSignUp}
+                  className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 hover:bg-blue-700"
+                >
+                  Get started free
+                </button>
+                <button
+                  type="button"
+                  onClick={onSignIn}
+                  className="rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+                >
+                  Sign in
+                </button>
+                <button
+                  type="button"
+                  onClick={onTryDemo}
+                  className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-6 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:bg-slate-800"
+                >
+                  Try demo
+                </button>
+              </div>
+              <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
+                Free · No credit card · Demo mode does not save your list
+              </p>
             </div>
-            <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
-              Free · No credit card · Demo mode does not save your list
-            </p>
+            <FounderNote />
           </div>
         </div>
       </section>
