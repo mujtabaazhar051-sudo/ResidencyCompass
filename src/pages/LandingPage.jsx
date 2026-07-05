@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import DataDisclaimer from '../components/DataDisclaimer'
+import FounderNote from '../components/FounderNote'
 import { DISCLAIMER_SHORT, PRIVACY_LOCAL } from '../utils/dataSources'
 
 const FEATURES = [
@@ -88,6 +89,8 @@ export default function LandingPage({ onSignIn, onSignUp, onTryDemo }) {
           </div>
         </div>
       </header>
+
+      <FounderNote />
 
       {/* Hero */}
       <section className="relative overflow-hidden">

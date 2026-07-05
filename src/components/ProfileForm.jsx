@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import ProfilePrivacyNote from './ProfilePrivacyNote'
 import { PROFILE_COLLAPSE_KEY } from '../utils/profile'
 
 const VISA_OPTIONS = [
@@ -417,6 +418,7 @@ export default function ProfileForm({
           </p>
           <p className="mt-2 text-sm font-medium text-slate-700 dark:text-slate-300">{profileSummary(profile)}</p>
         </div>
+        <ProfilePrivacyNote />
         <section className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
           {formBody}
         </section>
