@@ -396,10 +396,16 @@ export default function ProfileForm({
       <div ref={sectionRef} className="space-y-5">
         {isOnboarding && (
           <div className="rounded-xl border border-blue-200 bg-gradient-to-br from-blue-50 to-white px-5 py-4 dark:border-blue-800 dark:from-blue-950/40 dark:to-slate-800 md:px-6">
-            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Welcome to ResidencyCompass</h2>
+            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Welcome — let&apos;s set up your profile</h2>
             <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
-              Fill in your profile below — at minimum your Step 2 CK score. Programs rank in the background; you stay on this tab until you choose Programs.
+              If you just finished the tour, start here. Enter at least your <strong>Step 2 CK score</strong> — that unlocks
+              program rankings. Add visa, ECFMG, med school, YOG, rotations, and research for sharper tiers.
             </p>
+            <ol className="mt-3 list-decimal space-y-1 pl-5 text-sm text-slate-600 dark:text-slate-400">
+              <li>Fill in the fields below (Step 2 is required)</li>
+              <li>Click <strong>Update tier list</strong> after any change</li>
+              <li>Open the <strong>Programs</strong> tab to browse your ranked list</li>
+            </ol>
           </div>
         )}
         <div className="rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-sm dark:border-slate-700 dark:bg-slate-800 md:px-6 md:py-5">

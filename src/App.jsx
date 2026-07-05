@@ -30,6 +30,7 @@ import {
   PANELS_AUTO_COLLAPSED_KEY,
   AUTO_RANKED_KEY,
 } from './utils/profile'
+import { hasCompletedOnboarding, markOnboardingComplete } from './utils/onboarding'
 import { useAuth } from './context/AuthContext'
 import {
   fetchRemoteUserState,
@@ -77,7 +78,7 @@ function loadSaved(userId = null) {
 }
 
 export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
-  const { user: session, userId, isConfigured } = useAuth()
+  const { user: session, userId, isConfigured, isAuthenticated } = useAuth()
   // Initialise from localStorage on first render, falling back to defaults (skipped in demo)
   const [profile, setProfile] = useState(() => {
     if (demoMode) return DEFAULT_PROFILE
@@ -125,11 +126,11 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
     try { localStorage.setItem('imresidency_dark', darkMode ? '1' : '0') } catch {}
   }, [darkMode])
 
-  // Onboarding tour — manual only (? button); first visit starts on Profile tab
+  // Onboarding tour — auto-shows on first login / first demo visit; replay via ? button
   const [showTour, setShowTour] = useState(false)
 
   function dismissTour() {
-    try { localStorage.setItem('imresidency_onboarded', '1') } catch {}
+    markOnboardingComplete(userId, demoMode)
     setShowTour(false)
   }
 
@@ -143,6 +144,13 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
     const step2 = saved?.profile?.step2 ?? DEFAULT_PROFILE.step2
     return isValidStep2(step2) ? 'programs' : 'profile'
   })
+
+  useEffect(() => {
+    if (hasCompletedOnboarding(userId, demoMode)) return
+    setShowTour(true)
+    setActiveTab('profile')
+  }, [userId, demoMode])
+
   const [compareList, setCompareList] = useState([])   // up to 3 program_codes
   const [showCompare, setShowCompare] = useState(false)
 
@@ -172,6 +180,7 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
   const needsProfileSetup = !isValidStep2(profile.step2)
 
   function handleTabChange(tabId) {
+    if (showTour) return
     if (needsProfileSetup && tabId !== 'profile') return
     setActiveTab(tabId)
   }
@@ -1171,7 +1180,12 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
       )}
 
       {/* ── Onboarding tour ── */}
-      {showTour && <OnboardingTour onDone={dismissTour} />}
+      {showTour && (
+        <OnboardingTour
+          onDone={dismissTour}
+          isAuthenticated={isAuthenticated && !demoMode}
+        />
+      )}
 
       <input
         ref={restoreInputRef}
