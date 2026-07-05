@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import DataDisclaimer from './DataDisclaimer'
+import FounderNoteModal, { FounderNoteButton } from './FounderNote'
 import { PROJECT_EMAIL } from '../constants/contact'
 import {
   OFFICIAL_SOURCES,
@@ -8,19 +10,26 @@ import {
 } from '../utils/dataSources'
 
 export default function AboutTab() {
+  const [showFounderNote, setShowFounderNote] = useState(false)
+
   return (
     <div className="space-y-6">
 
+      <FounderNoteModal open={showFounderNote} onClose={() => setShowFounderNote(false)} />
+
       {/* Hero */}
       <div className="rounded-xl border border-blue-200 bg-gradient-to-br from-blue-50 to-emerald-50 px-6 py-8 dark:border-slate-700 dark:from-slate-800 dark:to-slate-800">
-        <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-          <img src="/favicon.svg" alt="ResidencyCompass logo" className="h-16 w-16 rounded-2xl object-contain shadow-md" />
-          <div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">ResidencyCompass</h2>
-            <p className="mt-1 text-slate-600 dark:text-slate-400">
-              An IM residency program ranker built by and for Pakistani IMG applicants.
-            </p>
+        <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+            <img src="/favicon.svg" alt="ResidencyCompass logo" className="h-16 w-16 rounded-2xl object-contain shadow-md" />
+            <div>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">ResidencyCompass</h2>
+              <p className="mt-1 text-slate-600 dark:text-slate-400">
+                An IM residency program ranker built by and for Pakistani IMG applicants.
+              </p>
+            </div>
           </div>
+          <FounderNoteButton onClick={() => setShowFounderNote(true)} compact />
         </div>
       </div>
 
