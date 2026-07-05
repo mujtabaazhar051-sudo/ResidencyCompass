@@ -66,7 +66,7 @@ export default function LandingPage({ onSignIn, onSignUp, onTryDemo }) {
             >
               {darkMode ? '☀️' : '🌙'}
             </button>
-            <FounderNoteButton onClick={() => setShowFounderNote(true)} compact />
+            <FounderNoteButton onClick={() => setShowFounderNote(true)} compact expanded={showFounderNote} />
             <button
               type="button"
               onClick={onTryDemo}
@@ -129,7 +129,7 @@ export default function LandingPage({ onSignIn, onSignUp, onTryDemo }) {
               >
                 Try demo
               </button>
-              <FounderNoteButton onClick={() => setShowFounderNote(true)} />
+              <FounderNoteButton onClick={() => setShowFounderNote(true)} expanded={showFounderNote} />
             </div>
             <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
               Free · No credit card · Demo mode does not save your list

@@ -29,7 +29,7 @@ export default function AboutTab() {
               </p>
             </div>
           </div>
-          <FounderNoteButton onClick={() => setShowFounderNote(true)} compact />
+          <FounderNoteButton onClick={() => setShowFounderNote(true)} compact expanded={showFounderNote} />
         </div>
       </div>
 
