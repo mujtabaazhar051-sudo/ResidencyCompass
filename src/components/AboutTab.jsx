@@ -1,4 +1,5 @@
 import DataDisclaimer from './DataDisclaimer'
+import { PROJECT_EMAIL } from '../constants/contact'
 import {
   OFFICIAL_SOURCES,
   PROGRAM_FIELD_SOURCES,
@@ -145,6 +146,18 @@ export default function AboutTab() {
             </tbody>
           </table>
         </div>
+      </Card>
+
+      {/* Contact & contribute */}
+      <Card title="Contact & contribute">
+        <p className="leading-relaxed text-slate-600 dark:text-slate-400">
+          ResidencyCompass is built by Pakistani IMGs, for Pakistani IMGs. Want to help curate program data, improve
+          the app, or spread the word? Visit the <strong>Community Data → Join the Team</strong> tab or email{' '}
+          <a href={`mailto:${PROJECT_EMAIL}`} className="font-medium text-blue-600 hover:underline dark:text-blue-400">
+            {PROJECT_EMAIL}
+          </a>
+          .
+        </p>
       </Card>
 
       {/* Privacy */}

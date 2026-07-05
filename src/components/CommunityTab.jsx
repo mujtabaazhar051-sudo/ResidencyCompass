@@ -3,7 +3,8 @@ import DataDisclaimer from './DataDisclaimer'
 import ProgramSearchPicker, { UNLISTED_PROGRAM_CODE } from './ProgramSearchPicker'
 import { useAuth } from '../context/AuthContext'
 import { isSupabaseConfigured } from '../lib/supabase'
-import { fetchPublicIvReports, fetchSubmissionCounts, submitCommunityReport, submitIvReport } from '../lib/community'
+import { fetchPublicIvReports, fetchSubmissionCounts, submitCommunityReport, submitIvReport, submitJoinTeamApplication } from '../lib/community'
+import { PROJECT_EMAIL } from '../constants/contact'
 import { sortProgramsByName } from '../utils/sortPrograms'
 
 const CYCLES = ['2026–27', '2025–26', '2024–25', '2023–24']
@@ -100,6 +101,16 @@ const REPORT_TYPES = [
   { value: 'suggestion', label: '💡 Feature suggestion' },
   { value: 'other',      label: '📬 Other' },
 ]
+
+const TEAM_INTERESTS = [
+  { value: 'data', label: 'Program data curation' },
+  { value: 'dev', label: 'Web / app development' },
+  { value: 'outreach', label: 'Outreach & social media' },
+  { value: 'iv_data', label: 'Interview data collection' },
+  { value: 'other', label: 'Other' },
+]
+
+const EMPTY_JOIN_FORM = { name: '', email: '', interest: 'data', message: '' }
 
 function SetupNotice() {
   return (
@@ -729,6 +740,156 @@ function IvReportsBrowse({ programs }) {
   )
 }
 
+function JoinTeamForm({ userId, isAuthenticated, userEmail, onCreateAccount, onSubmitted }) {
+  const [form, setForm] = useState({ ...EMPTY_JOIN_FORM, email: userEmail ?? '' })
+  const [status, setStatus] = useState('idle')
+
+  function update(field, value) {
+    setForm((prev) => ({ ...prev, [field]: value }))
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) return
+
+    const interestLabel = TEAM_INTERESTS.find((o) => o.value === form.interest)?.label ?? form.interest
+    setStatus('loading')
+
+    try {
+      if (isAuthenticated && userId && userId !== 'local' && isSupabaseConfigured) {
+        await submitJoinTeamApplication({ ...form, interestLabel }, userId)
+        setStatus('success')
+        onSubmitted?.()
+        setForm({ ...EMPTY_JOIN_FORM, email: userEmail ?? '' })
+        return
+      }
+
+      const subject = encodeURIComponent('ResidencyCompass — Join the team')
+      const body = encodeURIComponent(
+        `Name: ${form.name.trim()}\nEmail: ${form.email.trim()}\nInterest: ${interestLabel}\n\n${form.message.trim()}`,
+      )
+      window.location.href = `mailto:${PROJECT_EMAIL}?subject=${subject}&body=${body}`
+      setStatus('success')
+    } catch {
+      setStatus('error')
+    }
+  }
+
+  if (!isSupabaseConfigured && import.meta.env.PROD) return <SetupNotice />
+
+  if (status === 'success') {
+    return (
+      <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-6 text-center dark:border-emerald-800 dark:bg-emerald-900/20">
+        <p className="text-2xl">🙌</p>
+        <p className="mt-2 font-semibold text-emerald-800 dark:text-emerald-200">Thanks for reaching out!</p>
+        <p className="mt-1 text-sm text-emerald-700 dark:text-emerald-300">
+          {isAuthenticated
+            ? 'Your application was saved. We will get back to you soon.'
+            : 'Your email app should open — send the message to complete your application.'}
+        </p>
+        <button
+          type="button"
+          onClick={() => setStatus('idle')}
+          className="mt-4 rounded-lg border border-emerald-300 px-4 py-1.5 text-sm font-medium text-emerald-700 dark:border-emerald-700 dark:text-emerald-300"
+        >
+          Submit another
+        </button>
+      </div>
+    )
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+        ResidencyCompass is a community project. Help us grow program data, improve the tool, or spread the word to
+        other Pakistani IMGs. Questions? Email{' '}
+        <a href={`mailto:${PROJECT_EMAIL}`} className="font-medium text-blue-600 hover:underline dark:text-blue-400">
+          {PROJECT_EMAIL}
+        </a>
+        .
+      </p>
+
+      {!isAuthenticated && (
+        <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600 dark:border-slate-600 dark:bg-slate-900/40 dark:text-slate-400">
+          Signed in? Your application saves to our database. As a guest, submit opens your email app to{' '}
+          <span className="font-medium">{PROJECT_EMAIL}</span>.{' '}
+          <button type="button" onClick={onCreateAccount} className="font-semibold text-blue-600 dark:text-blue-400">
+            Create account
+          </button>
+        </p>
+      )}
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className="block">
+          <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Name <span className="text-red-500">*</span></span>
+          <input
+            type="text"
+            required
+            value={form.name}
+            onChange={(e) => update('name', e.target.value)}
+            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+          />
+        </label>
+        <label className="block">
+          <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Email <span className="text-red-500">*</span></span>
+          <input
+            type="email"
+            required
+            value={form.email}
+            onChange={(e) => update('email', e.target.value)}
+            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+          />
+        </label>
+      </div>
+
+      <label className="block">
+        <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">How would you like to help?</span>
+        <select
+          value={form.interest}
+          onChange={(e) => update('interest', e.target.value)}
+          className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+        >
+          {TEAM_INTERESTS.map((o) => (
+            <option key={o.value} value={o.value}>{o.label}</option>
+          ))}
+        </select>
+      </label>
+
+      <label className="block">
+        <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
+          Tell us about yourself <span className="text-red-500">*</span>
+        </span>
+        <textarea
+          required
+          rows={4}
+          value={form.message}
+          onChange={(e) => update('message', e.target.value)}
+          placeholder="Your background, time you can offer, skills, or ideas…"
+          className="w-full resize-y rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+        />
+      </label>
+
+      {status === 'error' && (
+        <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-300">Submission failed — try again or email us directly.</p>
+      )}
+
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="text-xs text-slate-500 dark:text-slate-400">
+          Or email directly:{' '}
+          <a href={`mailto:${PROJECT_EMAIL}`} className="font-medium text-blue-600 dark:text-blue-400">{PROJECT_EMAIL}</a>
+        </p>
+        <button
+          type="submit"
+          disabled={status === 'loading' || !form.name.trim() || !form.email.trim() || !form.message.trim()}
+          className="rounded-lg bg-violet-600 px-6 py-2 text-sm font-semibold text-white hover:bg-violet-700 disabled:opacity-50"
+        >
+          {status === 'loading' ? 'Sending…' : 'Apply to join'}
+        </button>
+      </div>
+    </form>
+  )
+}
+
 function DemoSignInNotice({ onCreateAccount }) {
   return (
     <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 text-center dark:border-slate-700 dark:bg-slate-900/40">
@@ -748,7 +909,7 @@ function DemoSignInNotice({ onCreateAccount }) {
 }
 
 export default function CommunityTab({ programs, demoMode = false, onCreateAccount }) {
-  const { userId, isConfigured, isAuthenticated } = useAuth()
+  const { userId, isConfigured, isAuthenticated, user } = useAuth()
   const [activeForm, setActiveForm] = useState('iv')
   const [counts, setCounts] = useState({ iv: 0, reports: 0 })
 
@@ -778,11 +939,11 @@ export default function CommunityTab({ programs, demoMode = false, onCreateAccou
 
       <DataDisclaimer variant="banner" />
 
-      <div className="flex flex-col gap-1 rounded-xl border border-slate-200 bg-slate-100 p-1 sm:flex-row dark:border-slate-700 dark:bg-slate-800">
+      <div className="flex flex-wrap gap-1 rounded-xl border border-slate-200 bg-slate-100 p-1 dark:border-slate-700 dark:bg-slate-800">
         <button
           type="button"
           onClick={() => setActiveForm('iv')}
-          className={`flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+          className={`min-w-[7rem] flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
             activeForm === 'iv' ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-slate-100' : 'text-slate-600 dark:text-slate-400'
           }`}
         >
@@ -791,7 +952,7 @@ export default function CommunityTab({ programs, demoMode = false, onCreateAccou
         <button
           type="button"
           onClick={() => setActiveForm('browse')}
-          className={`flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+          className={`min-w-[7rem] flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
             activeForm === 'browse' ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-slate-100' : 'text-slate-600 dark:text-slate-400'
           }`}
         >
@@ -800,11 +961,20 @@ export default function CommunityTab({ programs, demoMode = false, onCreateAccou
         <button
           type="button"
           onClick={() => setActiveForm('report')}
-          className={`flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+          className={`min-w-[7rem] flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
             activeForm === 'report' ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-slate-100' : 'text-slate-600 dark:text-slate-400'
           }`}
         >
           Error / Question
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveForm('join')}
+          className={`min-w-[7rem] flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+            activeForm === 'join' ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-slate-100' : 'text-slate-600 dark:text-slate-400'
+          }`}
+        >
+          Join the Team
         </button>
       </div>
 
@@ -813,6 +983,17 @@ export default function CommunityTab({ programs, demoMode = false, onCreateAccou
           <>
             <h3 className="mb-1 text-base font-semibold text-slate-900 dark:text-slate-100">Community Interview Reports</h3>
             <IvReportsBrowse programs={programs} />
+          </>
+        ) : activeForm === 'join' ? (
+          <>
+            <h3 className="mb-1 text-base font-semibold text-slate-900 dark:text-slate-100">Join the Team</h3>
+            <JoinTeamForm
+              userId={userId}
+              isAuthenticated={isAuthenticated && !demoMode}
+              userEmail={user?.email}
+              onCreateAccount={onCreateAccount}
+              onSubmitted={refreshCounts}
+            />
           </>
         ) : demoMode || !isAuthenticated ? (
           <DemoSignInNotice onCreateAccount={onCreateAccount} />

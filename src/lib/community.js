@@ -44,6 +44,29 @@ export async function submitCommunityReport(payload, userId) {
   if (error) throw error
 }
 
+export async function submitJoinTeamApplication(payload, userId) {
+  const interestLabel = payload.interestLabel || payload.interest
+  const description = [
+    '[Join the team application]',
+    `Name: ${payload.name.trim()}`,
+    `Email: ${payload.email.trim()}`,
+    `Interest: ${interestLabel}`,
+    '',
+    payload.message.trim(),
+  ].join('\n')
+
+  await submitCommunityReport(
+    {
+      type: 'other',
+      program_code: '',
+      program_name: null,
+      description,
+      contact: payload.email.trim(),
+    },
+    userId,
+  )
+}
+
 const PUBLIC_IV_COLUMNS =
   'id, created_at, program_code, program_name, cycle, step2, step3, med_school, yog, visa, research, rotation_months, got_invite, signal, connection, notes'
 
