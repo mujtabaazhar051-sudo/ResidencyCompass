@@ -50,7 +50,7 @@ const DEFAULT_PROFILE = {
   step3: '',
   ecfmg: 'certified',
   yog: '',                   // year of graduation (e.g. '2022')
-  medSchool: 'dow',          // 'dow' | 'other_pak'
+  medSchool: '',             // pakMedicalSchools value id, or other_pak
   rotations: [],
   research: 'none',
 }

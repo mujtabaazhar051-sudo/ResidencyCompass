@@ -5,15 +5,11 @@ import { useAuth } from '../context/AuthContext'
 import { isSupabaseConfigured } from '../lib/supabase'
 import { fetchPublicIvReports, fetchSubmissionCounts, submitCommunityReport, submitIvReport, submitJoinTeamApplication } from '../lib/community'
 import { PROJECT_EMAIL } from '../constants/contact'
+import { getMedicalSchoolLabel } from '../constants/pakMedicalSchools'
+import MedSchoolSelect from './MedSchoolSelect'
 import { sortProgramsByName } from '../utils/sortPrograms'
 
 const CYCLES = ['2026–27', '2025–26', '2024–25', '2023–24']
-
-const MED_SCHOOLS = [
-  { value: 'dow',       label: 'Dow University of Health Sciences (DIMC / DMC)' },
-  { value: 'other_pak', label: 'Other Pakistani medical school' },
-  { value: 'other_img', label: 'Other IMG (non-Pakistani)' },
-]
 
 const VISA_OPTIONS = [
   { value: 'j1',   label: 'J-1 Visa' },
@@ -46,7 +42,7 @@ const EMPTY_IV_FORM = {
   cycle: CYCLES[0],
   step2: '',
   step3: '',
-  med_school: 'dow',
+  med_school: '',
   yog: '',
   visa: 'j1',
   research: 'none',
@@ -256,13 +252,11 @@ function IVReportForm({ programs, userId, onSubmitted, onSwitchToReport }) {
 
         <label className="block">
           <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Medical School</span>
-          <select
+          <MedSchoolSelect
             value={form.med_school}
             onChange={(e) => update('med_school', e.target.value)}
-            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
-          >
-            {MED_SCHOOLS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-          </select>
+            includeOtherImg
+          />
         </label>
 
         <label className="block">
@@ -549,7 +543,6 @@ function ReportForm({ programs, userId, onSubmitted }) {
   )
 }
 
-const MED_SCHOOL_LABELS = Object.fromEntries(MED_SCHOOLS.map((o) => [o.value, o.label]))
 const VISA_LABELS = Object.fromEntries(VISA_OPTIONS.map((o) => [o.value, o.label]))
 const RESEARCH_LABELS = Object.fromEntries(RESEARCH_OPTIONS.map((o) => [o.value, o.label]))
 const CONNECTION_LABELS = Object.fromEntries(CONNECTION_OPTIONS.map((o) => [o.value, o.label]))
@@ -679,7 +672,7 @@ function IvReportsBrowse({ programs }) {
                   {r.step3 && <div><dt className="inline font-medium">Step 3: </dt><dd className="inline">{r.step3}</dd></div>}
                   <div><dt className="inline font-medium">Signal: </dt><dd className="inline">{SIGNAL_LABELS[r.signal] || r.signal}</dd></div>
                   <div><dt className="inline font-medium">Connection: </dt><dd className="inline">{CONNECTION_LABELS[r.connection] || r.connection}</dd></div>
-                  <div className="col-span-2"><dt className="inline font-medium">School: </dt><dd className="inline">{MED_SCHOOL_LABELS[r.med_school] || r.med_school || '—'}</dd></div>
+                  <div className="col-span-2"><dt className="inline font-medium">School: </dt><dd className="inline">{getMedicalSchoolLabel(r.med_school) || r.med_school || '—'}</dd></div>
                 </dl>
                 {r.notes && <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{r.notes}</p>}
                 <p className="mt-2 text-[10px] text-slate-400">{formatDate(r.created_at)}</p>
@@ -721,7 +714,7 @@ function IvReportsBrowse({ programs }) {
                     <td className="px-2 py-2.5 whitespace-nowrap text-xs">{SIGNAL_LABELS[r.signal] || r.signal}</td>
                     <td className="px-2 py-2.5 whitespace-nowrap text-xs">{CONNECTION_LABELS[r.connection] || r.connection}</td>
                     <td className="px-2 py-2.5 text-xs">
-                      <div>{MED_SCHOOL_LABELS[r.med_school] || r.med_school || '—'}</div>
+                      <div>{getMedicalSchoolLabel(r.med_school) || r.med_school || '—'}</div>
                       <div className="text-slate-500 dark:text-slate-400">
                         {[VISA_LABELS[r.visa], RESEARCH_LABELS[r.research], r.yog ? `YOG ${r.yog}` : null, r.rotation_months ? `${r.rotation_months}mo rotations` : null]
                           .filter(Boolean)

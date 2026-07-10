@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import ProfilePrivacyNote from './ProfilePrivacyNote'
 import { PROFILE_COLLAPSE_KEY } from '../utils/profile'
+import { getMedicalSchoolShortLabel } from '../constants/pakMedicalSchools'
+import MedSchoolSelect from './MedSchoolSelect'
 
 const VISA_OPTIONS = [
   { value: 'none', label: 'No visa needed (US citizen / Green Card / EAD)' },
@@ -61,8 +63,10 @@ function profileSummary(profile) {
   const parts = []
   if (profile.step2) parts.push(`Step 2: ${profile.step2}`)
   if (profile.visaNeed) parts.push(VISA_SHORT[profile.visaNeed] || profile.visaNeed)
-  if (profile.medSchool === 'dow') parts.push('Dow')
-  else if (profile.medSchool === 'other_pak') parts.push('Other Pak school')
+  if (profile.medSchool) {
+    const school = getMedicalSchoolShortLabel(profile.medSchool)
+    if (school) parts.push(school)
+  }
   const rotCount = (profile.rotations || []).length
   if (rotCount) parts.push(`${rotCount} rotation${rotCount !== 1 ? 's' : ''}`)
   return parts.length ? parts.join(' · ') : 'No profile filled in yet'
@@ -170,30 +174,12 @@ export default function ProfileForm({
           {/* Medical school */}
           <label className="block md:col-span-2">
             <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Pakistani Medical School</span>
-            <div className="flex gap-3">
-              {[
-                { value: 'dow',       label: 'Dow University of Health Sciences (DIMC / DMC)' },
-                { value: 'other_pak', label: 'Other Pakistani medical school' },
-              ].map((o) => (
-                <label key={o.value} className={`flex flex-1 cursor-pointer items-center gap-2 rounded-lg border px-3 py-2.5 text-sm transition-colors ${
-                  profile.medSchool === o.value
-                    ? 'border-blue-400 bg-blue-50 text-blue-800 font-medium dark:border-blue-500 dark:bg-blue-900/30 dark:text-blue-200'
-                    : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600'
-                }`}>
-                  <input
-                    type="radio"
-                    name="medSchool"
-                    value={o.value}
-                    checked={profile.medSchool === o.value}
-                    onChange={() => update('medSchool', o.value)}
-                    className="accent-blue-600"
-                  />
-                  {o.label}
-                </label>
-              ))}
-            </div>
+            <MedSchoolSelect
+              value={profile.medSchool || ''}
+              onChange={(e) => update('medSchool', e.target.value)}
+            />
             <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
-              Affects how Dow/Pak match history is scored — Dow grads get a stronger boost at programs with Dow pipelines
+              Used for scoring against Dow/Pak match history at each program — Dow (DUHS) grads get a stronger boost where Dow pipelines exist
             </p>
           </label>
 

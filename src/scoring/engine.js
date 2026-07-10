@@ -1,4 +1,6 @@
 // ─── Scoring budget ───────────────────────────────────────────────────────────
+import { isDowMedicalSchool } from '../constants/pakMedicalSchools'
+
 // Calibrated so scores feel "full" (55–85 for most programs) while the
 // absolute theoretical maximum stays around 95–97 — the 0–100 clamp exists
 // as a safety net but should rarely fire in practice.
@@ -167,7 +169,7 @@ function scoreDowPak(program, medSchool) {
   const dowNo  = normalize(program.dow_matched) === 'no'
   const pakNo  = normalize(program.pak_matched) === 'no'
 
-  const isDowGrad = normalize(medSchool) === 'dow'
+  const isDowGrad = isDowMedicalSchool(medSchool)
 
   if (isDowGrad) {
     if (dowYes && pakYes) return { score: WEIGHT_DOW_GRAD_BOTH,      note: 'Dow + Pak graduates matched here — strong pipeline for you' }
