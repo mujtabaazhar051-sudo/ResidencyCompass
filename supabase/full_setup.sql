@@ -59,6 +59,7 @@ alter table public.iv_reports add column if not exists research text;
 alter table public.iv_reports add column if not exists rotation_months integer;
 alter table public.iv_reports add column if not exists signal text;
 alter table public.iv_reports add column if not exists connection text;
+alter table public.iv_reports add column if not exists eras_regions text[];
 
 -- Backfill so check constraints succeed on old rows
 update public.iv_reports set signal = 'none' where signal is null;
@@ -171,6 +172,7 @@ select
   step2,
   step3,
   med_school,
+  eras_regions,
   yog,
   visa,
   research,

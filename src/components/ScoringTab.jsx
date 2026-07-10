@@ -174,8 +174,23 @@ export default function ScoringTab() {
           </p>
         </Section>
 
-        {/* 5 · Rotations */}
-        <Section title="5 · US Clinical Rotations  (max +17)">
+        {/* 5 · ERAS regions */}
+        <Section title="5 · ERAS Geographic Preference  (max +16 per matching program)">
+          <p className="mb-2 text-sm text-slate-600 dark:text-slate-400">
+            Select up to <strong>3 ERAS geographic divisions</strong> on your Profile tab — the same regions ERAS lets you choose.
+            Programs in one of your selected regions receive a <strong>moderate +16 pt</strong> boost (same weight as a moderate personal connection).
+          </p>
+          <Table
+            headers={['Situation', 'Points']}
+            rows={[
+              ['Program region matches one of your ERAS preferences', '+16'],
+              ['No match or no regions selected', '0'],
+            ]}
+          />
+        </Section>
+
+        {/* 6 · Rotations */}
+        <Section title="6 · US Clinical Rotations  (max +17)">
           <Table
             headers={['Total months', 'Points']}
             rows={[
@@ -191,8 +206,8 @@ export default function ScoringTab() {
           </div>
         </Section>
 
-        {/* 6 · Research */}
-        <Section title="6 · Research  (max +13, scaled by program type)">
+        {/* 7 · Research */}
+        <Section title="7 · Research  (max +13, scaled by program type)">
           <p className="mb-2 text-sm text-slate-600 dark:text-slate-400">
             Base research points are multiplied by the program type: <strong>University ×1.0</strong>, Affiliated ×0.6, Community ×0.3.
           </p>
@@ -213,7 +228,7 @@ export default function ScoringTab() {
         </Section>
 
         {/* 7 · Program type */}
-        <Section title="7 · Program Type  (max +8)">
+        <Section title="8 · Program Type  (max +8)">
           <Table
             headers={['Type', 'Points']}
             rows={[
@@ -225,7 +240,7 @@ export default function ScoringTab() {
         </Section>
 
         {/* 8 · ECFMG */}
-        <Section title="8 · ECFMG Certification  (−10 to +4)">
+        <Section title="9 · ECFMG Certification  (−10 to +4)">
           <p className="mb-2 text-sm text-slate-600 dark:text-slate-400">
             Required for ERAS submission. Programs can technically see uncertified applications but most will not consider them.
           </p>
@@ -240,7 +255,7 @@ export default function ScoringTab() {
         </Section>
 
         {/* 9 · YOG */}
-        <Section title="9 · Year of Graduation Gap  (−20 to 0)">
+        <Section title="10 · Year of Graduation Gap  (−20 to 0)">
           <p className="mb-2 text-sm text-slate-600 dark:text-slate-400">Applied flat to every program based on years since medical school graduation.</p>
           <Table
             headers={['Years since graduation', 'Penalty']}
@@ -254,7 +269,7 @@ export default function ScoringTab() {
         </Section>
 
         {/* 10 · Signal */}
-        <Section title="10 · Per-Program Signal  (max +8)">
+        <Section title="11 · Per-Program Signal  (max +8)">
           <p className="mb-2 text-sm text-slate-600 dark:text-slate-400">
             You have a budget of <strong>3 Gold</strong> and <strong>12 Silver</strong> signals (15 total).
             Set them on each program card. Points depend on whether the program requires or benefits from signals.
@@ -270,7 +285,7 @@ export default function ScoringTab() {
         </Section>
 
         {/* 11 · Penalties */}
-        <Section title="11 · Per-Program Penalty Flags  (−14 to 0)">
+        <Section title="12 · Per-Program Penalty Flags  (−14 to 0)">
           <p className="mb-2 text-sm text-slate-600 dark:text-slate-400">Deductions based on flags found in a program's notes. Total capped at −14.</p>
           <Table
             headers={['Flag', 'Penalty']}
@@ -284,7 +299,7 @@ export default function ScoringTab() {
         </Section>
 
         {/* 12 · Step 3 */}
-        <Section title="12 · USMLE Step 3  (bonus +4)">
+        <Section title="13 · USMLE Step 3  (bonus +4)">
           <p className="text-sm text-slate-600 dark:text-slate-400">
             A small bonus if Step 3 has been passed. No penalty for not having it — it's an optional differentiator.
           </p>

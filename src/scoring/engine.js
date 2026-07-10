@@ -1,5 +1,6 @@
 // ─── Scoring budget ───────────────────────────────────────────────────────────
 import { isDowMedicalSchool } from '../constants/pakMedicalSchools'
+import { normalizeErasRegions } from '../constants/erasRegions'
 
 // Calibrated so scores feel "full" (55–85 for most programs) while the
 // absolute theoretical maximum stays around 95–97 — the 0–100 clamp exists
@@ -63,6 +64,9 @@ export const WEIGHT_ROTATIONS_1_TO_2  = 3    // 1–2 months
 export const WEIGHT_ROTATIONS_NONE    = 0
 export const WEIGHT_ROTATIONS_STATE_MATCH   = 2   // state match (kept minimal)
 export const WEIGHT_ROTATIONS_PROGRAM_MATCH = 10  // rotation at this specific program
+
+// ─── ERAS geographic preference ───────────────────────────────────────────────
+export const WEIGHT_ERAS_REGION_MATCH = 16   // moderate boost — same weight as a moderate connection
 
 // ─── Research ─────────────────────────────────────────────────────────────────
 export const WEIGHT_RESEARCH_MULTI_HIGH    = 13
@@ -184,6 +188,22 @@ function scoreDowPak(program, medSchool) {
   if (dowYes)           return { score: WEIGHT_OTHER_PAK_DOW_ONLY,  note: 'Dow graduates matched here (different school, but shows Pakistani acceptance)' }
   if (!dowNo && !pakNo) return { score: WEIGHT_DOW_PAK_NOT_SURE,    note: 'Dow/Pak match status uncertain' }
   return { score: WEIGHT_DOW_PAK_NONE, note: 'No known Dow or Pak matches at this program' }
+}
+
+// ─── ERAS region preference ───────────────────────────────────────────────────
+
+function scoreErasRegion(program, erasRegions) {
+  const prefs = normalizeErasRegions(erasRegions)
+  if (!prefs.length || !program.region) {
+    return { score: 0, note: prefs.length ? 'Program region not listed' : null }
+  }
+  if (prefs.includes(program.region)) {
+    return {
+      score: WEIGHT_ERAS_REGION_MATCH,
+      note: `Your ERAS region preference (${program.region}) — moderate boost`,
+    }
+  }
+  return { score: 0, note: null }
 }
 
 // ─── Step 2 ───────────────────────────────────────────────────────────────────
@@ -438,6 +458,7 @@ export function scorePrograms(programs, profile, signals = {}, connections = {})
       const visaStatus  = scoreVisaStatus(profile.visaNeed)
       const yogGap      = scoreYogGap(profile.yog)
       const rotations   = scoreRotations(profile, { __code: program.program_code, __state: program.state })
+      const erasRegion  = scoreErasRegion(program, profile.erasRegions)
       const research    = scoreResearch(profile.research, program.program_type)
       const programType = scoreProgramType(program)
       const signal      = scoreSignal(program, signals[program.program_code] || null)
@@ -445,7 +466,7 @@ export function scorePrograms(programs, profile, signals = {}, connections = {})
 
       const rawScore =
         conn.score + dowPak.score + step2.score + step3.score +
-        ecfmg.score + visaStatus.score + yogGap.score + rotations.score + research.score +
+        ecfmg.score + visaStatus.score + yogGap.score + rotations.score + erasRegion.score + research.score +
         programType.score + signal.score + penalty.score
 
       const computedScore = Math.max(0, Math.min(100, rawScore))
@@ -464,6 +485,7 @@ export function scorePrograms(programs, profile, signals = {}, connections = {})
           visaStatus:  { score: visaStatus.score,    note: visaStatus.note },
           yogGap:      { score: yogGap.score,        note: yogGap.note },
           rotations:   { score: rotations.score,     note: rotations.note },
+          erasRegion:  { score: erasRegion.score,    note: erasRegion.note },
           research:    { score: research.score,      note: research.note },
           programType: { score: programType.score,  note: programType.note },
           signal:      { score: signal.score,       note: signal.note },

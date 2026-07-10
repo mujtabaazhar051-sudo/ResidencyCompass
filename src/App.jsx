@@ -51,6 +51,7 @@ const DEFAULT_PROFILE = {
   ecfmg: 'certified',
   yog: '',                   // year of graduation (e.g. '2022')
   medSchool: '',             // pakMedicalSchools value id, or other_pak
+  erasRegions: [],           // up to 3 ERAS geographic divisions
   rotations: [],
   research: 'none',
 }

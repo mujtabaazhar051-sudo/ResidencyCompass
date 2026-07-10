@@ -13,6 +13,7 @@ export async function submitIvReport(payload, userId) {
     step2: payload.step2,
     step3: payload.step3?.trim() || null,
     med_school: payload.med_school ?? null,
+    eras_regions: payload.eras_regions?.length ? payload.eras_regions : null,
     yog: payload.yog || null,
     visa: payload.visa ?? null,
     research: payload.research ?? null,
@@ -68,7 +69,7 @@ export async function submitJoinTeamApplication(payload, userId) {
 }
 
 const PUBLIC_IV_COLUMNS =
-  'id, created_at, program_code, program_name, cycle, step2, step3, med_school, yog, visa, research, rotation_months, got_invite, signal, connection, notes'
+  'id, created_at, program_code, program_name, cycle, step2, step3, med_school, eras_regions, yog, visa, research, rotation_months, got_invite, signal, connection, notes'
 
 export async function fetchPublicIvReports({ programCode, cycle, gotInvite } = {}) {
   if (!isSupabaseConfigured || !supabase) {

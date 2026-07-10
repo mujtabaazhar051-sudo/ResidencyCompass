@@ -25,6 +25,7 @@ const BREAKDOWN_LABELS = {
   visaStatus:  'Visa Status',
   yogGap:      'YOG Gap',
   rotations:   'US Rotations',
+  erasRegion:  'ERAS Region',
   research:    'Research',
   programType: 'Program Type',
   signal:      'Signal',

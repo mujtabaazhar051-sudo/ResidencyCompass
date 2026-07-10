@@ -1,5 +1,8 @@
--- Public read-only view of interview reports (no email / user_id).
+-- Add ERAS geographic preferences to IV reports.
 -- Run once in Supabase Dashboard → SQL Editor.
+
+alter table public.iv_reports
+  add column if not exists eras_regions text[];
 
 create or replace view public.iv_reports_public as
 select

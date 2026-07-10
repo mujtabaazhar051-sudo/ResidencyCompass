@@ -2,7 +2,9 @@ import { useState } from 'react'
 import ProfilePrivacyNote from './ProfilePrivacyNote'
 import { PROFILE_COLLAPSE_KEY } from '../utils/profile'
 import { getMedicalSchoolShortLabel } from '../constants/pakMedicalSchools'
+import { formatErasRegions } from '../constants/erasRegions'
 import MedSchoolSelect from './MedSchoolSelect'
+import ErasRegionPicker from './ErasRegionPicker'
 
 const VISA_OPTIONS = [
   { value: 'none', label: 'No visa needed (US citizen / Green Card / EAD)' },
@@ -67,6 +69,8 @@ function profileSummary(profile) {
     const school = getMedicalSchoolShortLabel(profile.medSchool)
     if (school) parts.push(school)
   }
+  const erasLabel = formatErasRegions(profile.erasRegions)
+  if (erasLabel) parts.push(`ERAS: ${erasLabel}`)
   const rotCount = (profile.rotations || []).length
   if (rotCount) parts.push(`${rotCount} rotation${rotCount !== 1 ? 's' : ''}`)
   return parts.length ? parts.join(' · ') : 'No profile filled in yet'
@@ -182,6 +186,21 @@ export default function ProfileForm({
               Used for scoring against Dow/Pak match history at each program — Dow (DUHS) grads get a stronger boost where Dow pipelines exist
             </p>
           </label>
+
+          {/* ERAS geographic preferences */}
+          <div className="block md:col-span-2">
+            <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
+              ERAS Geographic Preferences
+              <span className="ml-1 font-normal text-slate-400 dark:text-slate-500">(up to 3)</span>
+            </span>
+            <ErasRegionPicker
+              value={profile.erasRegions || []}
+              onChange={(regions) => update('erasRegions', regions)}
+            />
+            <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
+              Match ERAS — programs in your selected regions receive a moderate scoring boost (+16 pts)
+            </p>
+          </div>
 
           {/* ECFMG + Visa */}
           <label className="block">

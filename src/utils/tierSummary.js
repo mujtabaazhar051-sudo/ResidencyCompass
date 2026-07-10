@@ -31,6 +31,7 @@ const SHORT_REASONS = {
     if (score > 0) return 'US clinical experience'
     return null
   },
+  erasRegion: ({ score }) => (score > 0 ? 'ERAS region match' : null),
   research: ({ score }) => (score > 0 ? 'Research profile fit' : null),
   programType: ({ score }) => {
     if (score > 0) return 'Community program fit'

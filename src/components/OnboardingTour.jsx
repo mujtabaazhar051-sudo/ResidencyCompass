@@ -19,7 +19,7 @@ const STEPS = [
     bullets: [
       'Step 2 CK (required) and optional Step 3',
       'Visa type (J-1, H-1B, none) and ECFMG status',
-      'Medical school, year of graduation, US clinical rotations',
+      'Medical school, year of graduation, ERAS region preferences (up to 3), US clinical rotations',
       'Research level (publications, presentations, none)',
     ],
     tip: 'After entering Step 2, programs rank automatically in the background. Click Update tier list whenever you change profile fields.',

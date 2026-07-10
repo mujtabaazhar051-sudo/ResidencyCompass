@@ -71,7 +71,7 @@ export default function AboutTab() {
       <Card title="How to get the most out of it">
         <ol className="space-y-3 text-slate-600 dark:text-slate-400">
           {[
-            { n: '1', title: 'Fill in your profile completely', desc: 'The more accurate your Step 2, YOG, visa status, and ECFMG status, the more meaningful the scores become.' },
+            { n: '1', title: 'Fill in your profile completely', desc: 'The more accurate your Step 2, YOG, visa status, ECFMG status, and ERAS region preferences (up to 3), the more meaningful the scores become.' },
             { n: '2', title: 'Add your connections', desc: 'Open each program card and log your connection strength. Even a weak connection can significantly shift a score.' },
             { n: '3', title: 'Use your signals wisely', desc: 'You have 3 Gold and 12 Silver signals. Use them on programs where you genuinely want to match — not just the most prestigious ones.' },
             { n: '4', title: 'Review the How Scoring Works tab', desc: 'Understanding the scoring weights helps you interpret results critically, not blindly.' },
