@@ -6,6 +6,7 @@ export const PAK_MEDICAL_SCHOOL_GROUPS = [
     schools: [
       { value: 'aku', label: 'Aga Khan University (AKU), Karachi' },
       { value: 'dow', label: 'Dow University of Health Sciences (DUHS), Karachi' },
+      { value: 'dimc', label: 'Dow International Medical College (DIMC), Karachi' },
       { value: 'jsmu', label: 'Jinnah Sindh Medical University (JSMU), Karachi' },
       { value: 'lumhs', label: 'Liaquat University of Medical & Health Sciences (LUMHS), Jamshoro' },
       { value: 'pumhsw', label: "People's University of Medical & Health Sciences for Women (PUMHSW), Nawabshah" },
@@ -54,9 +55,11 @@ const LABEL_BY_VALUE = Object.fromEntries([
   [MED_SCHOOL_OTHER_IMG.value, MED_SCHOOL_OTHER_IMG.label],
 ])
 
-/** Dow grads get a stronger boost at programs with Dow-specific match history. */
+/** Dow / DIMC grads get a stronger boost at programs with Dow-specific match history. */
+const DOW_MEDICAL_SCHOOL_IDS = new Set(['dow', 'dimc'])
+
 export function isDowMedicalSchool(value) {
-  return value === 'dow'
+  return DOW_MEDICAL_SCHOOL_IDS.has(value)
 }
 
 export function getMedicalSchoolLabel(value) {

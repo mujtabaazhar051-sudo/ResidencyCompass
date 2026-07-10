@@ -183,7 +183,7 @@ export default function ProfileForm({
               onChange={(e) => update('medSchool', e.target.value)}
             />
             <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
-              Used for scoring against Dow/Pak match history at each program — Dow (DUHS) grads get a stronger boost where Dow pipelines exist
+              Used for scoring against Dow/Pak match history at each program — Dow (DUHS / DIMC) grads get a stronger boost where Dow pipelines exist
             </p>
           </label>
 
