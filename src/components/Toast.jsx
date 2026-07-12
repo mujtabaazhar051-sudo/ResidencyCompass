@@ -16,7 +16,7 @@ export default function Toast({ message, variant = 'info', onDismiss }) {
   return (
     <div
       role="status"
-      className={`no-print fixed bottom-20 left-1/2 z-50 flex max-w-md -translate-x-1/2 items-start gap-3 rounded-xl border px-4 py-3 shadow-lg sm:bottom-6 ${VARIANTS[variant] ?? VARIANTS.info}`}
+      className={`no-print safe-bottom fixed bottom-20 left-1/2 z-50 flex max-w-[calc(100vw-2rem)] -translate-x-1/2 items-start gap-3 rounded-xl border px-4 py-3 shadow-lg sm:bottom-6 sm:max-w-md ${VARIANTS[variant] ?? VARIANTS.info}`}
     >
       <p className="flex-1 text-sm font-medium leading-snug">{message}</p>
       <button

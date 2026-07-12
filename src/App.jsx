@@ -875,7 +875,7 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
                   alt="ResidencyCompass logo"
                   className="h-11 w-11 shrink-0 rounded-xl object-contain shadow-sm md:h-12 md:w-12"
                 />
-                <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 md:text-3xl">
+                <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100 sm:text-2xl md:text-3xl">
                   ResidencyCompass
                 </h1>
               </div>
@@ -900,20 +900,25 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
                     )}
                   </div>
                 ) : session?.email ? (
-                  <div className="hidden items-center gap-2 sm:flex">
-                    <span className="max-w-[140px] truncate text-xs text-slate-500 dark:text-slate-400" title={session.email}>
-                      {session.name || session.email}
+                  <>
+                    <span className="max-w-[100px] truncate text-xs text-slate-500 sm:hidden dark:text-slate-400" title={session.email}>
+                      {session.name || session.email.split('@')[0]}
                     </span>
-                    {onLeaveApp && (
-                      <button
-                        type="button"
-                        onClick={() => onLeaveApp()}
-                        className="rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
-                      >
-                        Sign out
-                      </button>
-                    )}
-                  </div>
+                    <div className="hidden items-center gap-2 sm:flex">
+                      <span className="max-w-[140px] truncate text-xs text-slate-500 dark:text-slate-400" title={session.email}>
+                        {session.name || session.email}
+                      </span>
+                      {onLeaveApp && (
+                        <button
+                          type="button"
+                          onClick={() => onLeaveApp()}
+                          className="rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
+                        >
+                          Sign out
+                        </button>
+                      )}
+                    </div>
+                  </>
                 ) : null}
                 <button
                   type="button"
@@ -983,15 +988,15 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
           </div>
 
           {/* Tab navigation */}
-          <div className="mt-4 -mx-4 flex gap-1 overflow-x-auto border-b border-slate-200 px-4 dark:border-slate-700 md:mx-0 md:px-0">
+          <div className="tab-scroll mt-4 -mx-4 flex gap-0.5 overflow-x-auto border-b border-slate-200 px-4 dark:border-slate-700 md:mx-0 md:gap-1 md:px-0">
             {[
-              { id: 'profile',    label: 'Profile' },
-              { id: 'programs',   label: 'Programs' },
-              { id: 'geography',  label: 'By State' },
-              { id: 'interviews', label: 'Interviews', badge: iiCount > 0 ? iiCount : null },
-              { id: 'scoring',    label: 'How Scoring Works' },
-              { id: 'about',      label: 'About' },
-              { id: 'community',  label: 'Community Data' },
+              { id: 'profile',    label: 'Profile', short: 'Profile' },
+              { id: 'programs',   label: 'Programs', short: 'Programs' },
+              { id: 'geography',  label: 'By State', short: 'States' },
+              { id: 'interviews', label: 'Interviews', short: 'IVs', badge: iiCount > 0 ? iiCount : null },
+              { id: 'scoring',    label: 'How Scoring Works', short: 'Scoring' },
+              { id: 'about',      label: 'About', short: 'About' },
+              { id: 'community',  label: 'Community Data', short: 'Community' },
             ].map((tab) => {
               const locked = needsProfileSetup && tab.id !== 'profile'
               return (
@@ -1001,7 +1006,7 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
                 onClick={() => handleTabChange(tab.id)}
                 disabled={locked}
                 title={locked ? 'Enter your Step 2 score on the Profile tab first' : undefined}
-                className={`flex shrink-0 items-center gap-1.5 border-b-2 px-4 py-2 text-sm font-semibold transition-colors -mb-px ${
+                className={`flex shrink-0 items-center gap-1 border-b-2 px-2.5 py-2 text-xs font-semibold transition-colors -mb-px sm:gap-1.5 sm:px-4 sm:text-sm ${
                   activeTab === tab.id
                     ? 'border-blue-600 text-blue-700 dark:border-blue-400 dark:text-blue-400'
                     : locked
@@ -1009,7 +1014,8 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
                     : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
                 }`}
               >
-                {tab.label}
+                <span className="sm:hidden">{tab.short}</span>
+                <span className="hidden sm:inline">{tab.label}</span>
                 {tab.badge != null && (
                   <span className="rounded-full bg-emerald-500 px-1.5 py-0.5 text-xs font-bold text-white">
                     {tab.badge}
@@ -1056,7 +1062,7 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
       )}
 
       {/* ── Main ── */}
-      <main className="mx-auto max-w-4xl space-y-4 px-4 py-6 md:px-6 md:py-8">
+      <main className={`mx-auto max-w-4xl space-y-4 px-4 py-6 md:px-6 md:py-8 ${compareList.length > 0 ? 'pb-28 sm:pb-8' : ''}`}>
 
         {/* Geography tab */}
         {activeTab === 'geography' && (
@@ -1281,10 +1287,10 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
 
       {/* ── Sticky compare bar ── */}
       {compareList.length > 0 && !showCompare && (
-        <div className="no-print fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-900">
-          <div className="mx-auto flex max-w-4xl items-center gap-3 px-4 py-3 md:px-6">
+        <div className="no-print safe-bottom fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-900">
+          <div className="mx-auto flex max-w-4xl flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:gap-3 md:px-6">
             <span className="text-sm font-medium text-slate-600 dark:text-slate-300 shrink-0">
-              Comparing {compareList.length}/{COMPARE_MAX}:
+              Comparing {compareList.length}/{COMPARE_MAX}
             </span>
             <div className="flex flex-1 flex-wrap gap-2 min-w-0">
               {compareList.map((code) => {
@@ -1299,21 +1305,23 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
                 )
               })}
             </div>
+            <div className="flex shrink-0 items-center gap-2">
             <button
               type="button"
               onClick={() => setShowCompare(true)}
               disabled={compareList.length < 2}
-              className="shrink-0 rounded-lg bg-blue-600 px-4 py-1.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-40"
+              className="flex-1 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-40 sm:flex-none sm:py-1.5"
             >
               Compare ↗
             </button>
             <button
               type="button"
               onClick={() => setCompareList([])}
-              className="shrink-0 text-sm text-slate-400 hover:text-slate-600"
+              className="shrink-0 rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-500 hover:bg-slate-50 sm:border-0 sm:py-0 dark:border-slate-600 dark:hover:bg-slate-800"
             >
               Clear
             </button>
+            </div>
           </div>
         </div>
       )}

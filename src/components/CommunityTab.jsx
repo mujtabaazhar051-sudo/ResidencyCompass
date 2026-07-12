@@ -59,12 +59,12 @@ const EMPTY_IV_FORM = {
 
 function ConnectionStrengthPicker({ name, value, onChange }) {
   return (
-    <div className="flex flex-wrap gap-3">
+    <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-3">
       {CONNECTION_OPTIONS.map((o) => (
         <label
           key={o.value}
           title={o.hint}
-          className={`flex cursor-pointer flex-col rounded-lg border px-3 py-2.5 text-sm transition-colors ${
+          className={`flex min-w-0 cursor-pointer flex-col rounded-lg border px-2.5 py-2 text-sm transition-colors sm:px-3 sm:py-2.5 ${
             value === o.value
               ? o.value === 'strong'
                 ? 'border-violet-400 bg-violet-50 font-semibold text-violet-900 dark:border-violet-700 dark:bg-violet-900/30 dark:text-violet-200'
@@ -322,14 +322,14 @@ function IVReportForm({ programs, userId, onSubmitted, onSwitchToReport }) {
 
         <div className="block md:col-span-2">
           <span className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Did you receive an interview invite? <span className="text-red-500">*</span></span>
-          <div className="flex gap-3">
+          <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
             {[
-              { value: 'yes', label: '✓ Yes — got the invite' },
-              { value: 'no',  label: '✗ No — did not get one' },
+              { value: 'yes', label: '✓ Yes — got the invite', short: '✓ Yes' },
+              { value: 'no',  label: '✗ No — did not get one', short: '✗ No' },
             ].map((o) => (
               <label
                 key={o.value}
-                className={`flex flex-1 cursor-pointer items-center gap-2 rounded-lg border px-3 py-2.5 text-sm transition-colors ${
+                className={`flex min-w-0 flex-1 cursor-pointer items-center gap-2 rounded-lg border px-3 py-2.5 text-sm transition-colors ${
                   form.got_invite === o.value
                     ? o.value === 'yes'
                       ? 'border-emerald-400 bg-emerald-50 font-semibold text-emerald-800 dark:border-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-200'
@@ -345,7 +345,8 @@ function IVReportForm({ programs, userId, onSubmitted, onSwitchToReport }) {
                   onChange={() => update('got_invite', o.value)}
                   className="accent-blue-600"
                 />
-                {o.label}
+                <span className="sm:hidden">{o.short}</span>
+                <span className="hidden sm:inline">{o.label}</span>
               </label>
             ))}
           </div>
@@ -355,7 +356,7 @@ function IVReportForm({ programs, userId, onSubmitted, onSwitchToReport }) {
           <span className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
             Did you signal this program? <span className="text-red-500">*</span>
           </span>
-          <div className="flex flex-wrap gap-3">
+          <div className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:gap-3">
             {[
               { value: 'gold', label: 'Gold signal' },
               { value: 'silver', label: 'Silver signal' },
@@ -954,11 +955,11 @@ export default function CommunityTab({ programs, demoMode = false, onCreateAccou
 
       <DataDisclaimer variant="banner" />
 
-      <div className="flex flex-wrap gap-1 rounded-xl border border-slate-200 bg-slate-100 p-1 dark:border-slate-700 dark:bg-slate-800">
+      <div className="grid grid-cols-2 gap-1 rounded-xl border border-slate-200 bg-slate-100 p-1 sm:flex sm:flex-wrap dark:border-slate-700 dark:bg-slate-800">
         <button
           type="button"
           onClick={() => setActiveForm('iv')}
-          className={`min-w-[7rem] flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+          className={`min-w-0 rounded-lg px-2 py-2 text-xs font-semibold transition-colors sm:min-w-[7rem] sm:flex-1 sm:px-3 sm:text-sm ${
             activeForm === 'iv' ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-slate-100' : 'text-slate-600 dark:text-slate-400'
           }`}
         >
@@ -967,7 +968,7 @@ export default function CommunityTab({ programs, demoMode = false, onCreateAccou
         <button
           type="button"
           onClick={() => setActiveForm('browse')}
-          className={`min-w-[7rem] flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+          className={`min-w-0 rounded-lg px-2 py-2 text-xs font-semibold transition-colors sm:min-w-[7rem] sm:flex-1 sm:px-3 sm:text-sm ${
             activeForm === 'browse' ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-slate-100' : 'text-slate-600 dark:text-slate-400'
           }`}
         >
@@ -976,7 +977,7 @@ export default function CommunityTab({ programs, demoMode = false, onCreateAccou
         <button
           type="button"
           onClick={() => setActiveForm('report')}
-          className={`min-w-[7rem] flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+          className={`min-w-0 rounded-lg px-2 py-2 text-xs font-semibold transition-colors sm:min-w-[7rem] sm:flex-1 sm:px-3 sm:text-sm ${
             activeForm === 'report' ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-slate-100' : 'text-slate-600 dark:text-slate-400'
           }`}
         >
@@ -985,7 +986,7 @@ export default function CommunityTab({ programs, demoMode = false, onCreateAccou
         <button
           type="button"
           onClick={() => setActiveForm('join')}
-          className={`min-w-[7rem] flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+          className={`col-span-2 min-w-0 rounded-lg px-2 py-2 text-xs font-semibold transition-colors sm:col-span-1 sm:min-w-[7rem] sm:flex-1 sm:px-3 sm:text-sm ${
             activeForm === 'join' ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-slate-100' : 'text-slate-600 dark:text-slate-400'
           }`}
         >

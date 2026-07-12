@@ -25,13 +25,15 @@ export function FounderNoteButton({ onClick, compact = false, expanded = false }
       onClick={onClick}
       aria-haspopup="dialog"
       aria-expanded={expanded}
+      aria-label="Founder's note"
       className={
         compact
-          ? 'rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800'
+          ? 'rounded-lg border border-slate-300 px-2.5 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 sm:px-4 sm:py-2 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800'
           : 'rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700'
       }
     >
-      Founder&apos;s note
+      <span className="sm:hidden" aria-hidden="true">Note</span>
+      <span className="hidden sm:inline">Founder&apos;s note</span>
     </button>
   )
 }

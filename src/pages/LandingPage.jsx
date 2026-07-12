@@ -51,13 +51,13 @@ export default function LandingPage({ onSignIn, onSignUp, onTryDemo }) {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       {/* Nav */}
-      <header className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 md:px-6">
-          <div className="flex items-center gap-3">
-            <img src="/favicon.svg" alt="ResidencyCompass" className="h-10 w-10 rounded-xl object-contain shadow-sm" />
-            <span className="text-lg font-bold">ResidencyCompass</span>
+      <header className="safe-top sticky top-0 z-40 border-b border-slate-200/80 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-3 sm:gap-4 sm:px-4 sm:py-4 md:px-6">
+          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+            <img src="/favicon.svg" alt="ResidencyCompass" className="h-9 w-9 shrink-0 rounded-xl object-contain shadow-sm sm:h-10 sm:w-10" />
+            <span className="truncate text-base font-bold sm:text-lg">ResidencyCompass</span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             <button
               type="button"
               onClick={() => setDarkMode((d) => !d)}
@@ -100,7 +100,7 @@ export default function LandingPage({ onSignIn, onSignUp, onTryDemo }) {
             <p className="mb-3 inline-flex rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-700 dark:border-blue-800 dark:bg-blue-950/50 dark:text-blue-300">
               Built for Pakistani IMGs
             </p>
-            <h1 className="text-4xl font-bold leading-tight tracking-tight md:text-5xl">
+            <h1 className="text-3xl font-bold leading-tight tracking-tight sm:text-4xl md:text-5xl">
               Rank IM residency programs with confidence
             </h1>
             <p className="mt-4 text-lg leading-relaxed text-slate-600 dark:text-slate-400">

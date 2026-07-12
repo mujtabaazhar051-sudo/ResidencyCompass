@@ -84,7 +84,7 @@ function Step2VsMedian({ userStep2, medianStep2 }) {
   }
 
   return (
-    <span className="ml-2 inline-flex flex-wrap items-center gap-1.5">
+    <span className="mt-1 block sm:ml-2 sm:mt-0 sm:inline-flex sm:flex-wrap sm:items-center sm:gap-1.5">
       <span className="text-slate-400">
         · You <span className="font-semibold text-slate-700 dark:text-slate-200">{user}</span>
         {' vs '}
@@ -621,7 +621,7 @@ export default function ProgramCard({
         aria-expanded={expanded}
         className="w-full cursor-pointer px-5 pb-4 pt-5 text-left transition-colors hover:bg-slate-50/80 dark:hover:bg-slate-700/30 md:px-6 md:pt-6"
       >
-        <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
+        <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2.5">
               <h3 className="text-base font-semibold leading-snug text-slate-900 dark:text-slate-100 md:text-lg">
@@ -645,7 +645,7 @@ export default function ProgramCard({
               </p>
             )}
           </div>
-          <div className="flex shrink-0 items-start gap-2">
+          <div className="flex w-full shrink-0 items-center justify-between gap-2 sm:w-auto sm:justify-end">
             {profileActive && <TierScoreRow program={program} />}
             <CardChevron expanded={expanded} />
           </div>
