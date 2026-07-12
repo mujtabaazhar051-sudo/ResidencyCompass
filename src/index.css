@@ -42,3 +42,15 @@ body {
 .tab-scroll::-webkit-scrollbar {
   display: none;
 }
+
+/* Landscape phones: keep rotation controls stacked (wide but short viewport) */
+@media (orientation: landscape) and (max-height: 32rem) {
+  .rotation-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .rotation-row-controls {
+    width: 100%;
+  }
+}

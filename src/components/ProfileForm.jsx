@@ -231,17 +231,17 @@ export default function ProfileForm({
 
           {/* Rotations — dynamic list, each row = state + months */}
           <div className="md:col-span-2">
-            <div className="mb-1.5 flex items-center justify-between">
+            <div className="mb-1.5 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
               <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
                 US Clinical Rotations
-                <span className="ml-1 font-normal text-slate-400 dark:text-slate-500">
+                <span className="ml-1 block font-normal text-slate-400 dark:text-slate-500 sm:inline">
                   (state match = small bonus per program)
                 </span>
               </span>
               <button
                 type="button"
                 onClick={() => update('rotations', [...(profile.rotations || []), { state: 'none', months: 1 }])}
-                className="rounded-md border border-blue-300 bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100"
+                className="shrink-0 self-start rounded-md border border-blue-300 bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100"
               >
                 + Add rotation
               </button>
@@ -263,9 +263,9 @@ export default function ProfileForm({
                   const stateIsLocked = Boolean(listedProg) // auto-filled from listed program
 
                   return (
-                    <div key={idx} className="flex flex-wrap items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-2 dark:border-slate-600 dark:bg-slate-700/50">
+                    <div key={idx} className="rotation-row flex flex-col gap-2 rounded-lg border border-slate-200 bg-slate-50 p-2.5 dark:border-slate-600 dark:bg-slate-700/50 lg:flex-row lg:flex-wrap lg:items-center">
 
-                      {/* Program picker */}
+                      {/* Program picker — full width until large screens / landscape phones */}
                       <select
                         value={rot.programCode || ''}
                         onChange={(e) => {
@@ -275,7 +275,7 @@ export default function ProfileForm({
                             state: prog ? prog.state : (rot.programCode ? 'none' : rot.state),
                           })
                         }}
-                        className="min-w-0 flex-1 rounded-md border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+                        className="w-full min-w-0 rounded-md border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 lg:min-w-[12rem] lg:flex-1 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
                       >
                         <option value="">🏥 Other / Non-listed facility</option>
                           <optgroup label="Listed programs">
@@ -287,6 +287,7 @@ export default function ProfileForm({
                           </optgroup>
                       </select>
 
+                      <div className="rotation-row-controls flex flex-wrap items-center gap-2">
                       {/* State — locked (auto-fill) or editable */}
                       {stateIsLocked ? (
                         <span className="rounded-md border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-500 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-400" title="Auto-filled from program">
@@ -296,7 +297,7 @@ export default function ProfileForm({
                         <select
                           value={rot.state || 'none'}
                           onChange={(e) => updateRow({ state: e.target.value })}
-                          className="rounded-md border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+                          className="min-w-[7rem] flex-1 rounded-md border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:flex-none dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
                         >
                           {US_STATES.map((s) => (
                             <option key={s.code} value={s.code}>{s.label}</option>
@@ -322,9 +323,11 @@ export default function ProfileForm({
                       <button
                         type="button"
                         onClick={() => update('rotations', profile.rotations.filter((_, i) => i !== idx))}
-                        className="rounded p-1 text-slate-400 hover:bg-red-50 hover:text-red-500"
-                        title="Remove"
+                        className="ml-auto rounded p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-500 lg:ml-0"
+                        title="Remove rotation"
+                        aria-label="Remove rotation"
                       >✕</button>
+                      </div>
                     </div>
                   )
                 })}
@@ -424,7 +427,7 @@ export default function ProfileForm({
           <p className="mt-2 text-sm font-medium text-slate-700 dark:text-slate-300">{profileSummary(profile)}</p>
         </div>
         <ProfilePrivacyNote />
-        <section className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
+        <section className="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
           {formBody}
         </section>
       </div>
@@ -438,7 +441,7 @@ export default function ProfileForm({
   return (
     <section
       ref={sectionRef}
-      className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800"
+      className="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800"
     >
       <button
         type="button"
