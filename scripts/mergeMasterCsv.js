@@ -8,6 +8,7 @@
 import { readFileSync, writeFileSync } from 'fs'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
+import { execSync } from 'child_process'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
@@ -139,7 +140,6 @@ function rowToProgram(row) {
 
   const notesParts = []
   if (deanLOR && !/not sure/i.test(deanLOR)) notesParts.push(`Dean's LOR: ${deanLOR}`)
-  if (rate !== '' && rate !== '0') notesParts.push(`User priority: ${rate}/5`)
 
   return {
     program_code: code,
@@ -196,8 +196,10 @@ for (const row of rows) {
       const newVal = (fromCsv[key] || '').trim()
       if (newVal && newVal !== oldVal) fieldChanges[key]++
     }
-    fromCsv.crowdsourced_outcomes = mergeRmSnippet(prev.crowdsourced_outcomes, fromCsv.crowdsourced_outcomes)
-    if (!fromCsv.known_contacts && prev.known_contacts) fromCsv.known_contacts = prev.known_contacts
+    // Keep anonymized community notes; only merge ResMatch snippets from CSV when needed.
+    fromCsv.crowdsourced_outcomes = mergeRmSnippet(prev.crowdsourced_outcomes, '')
+    fromCsv.program_notes = prev.program_notes || fromCsv.program_notes
+    fromCsv.known_contacts = ''
     updated++
   } else {
     added++
@@ -228,6 +230,8 @@ writeFileSync(
   join(ROOT, 'src', 'data', 'initialState.json'),
   JSON.stringify({ signals, connections: CONNECTIONS }, null, 2),
 )
+
+execSync('node scripts/redactCommunityNotes.js', { cwd: ROOT, stdio: 'inherit' })
 
 console.log(`✓ Merged ${merged.length} programs from CSV: ${CSV_PATH}`)
 console.log(`  Updated from CSV: ${updated}  Added: ${added}  Kept (not in CSV): ${merged.length - updated - added}`)

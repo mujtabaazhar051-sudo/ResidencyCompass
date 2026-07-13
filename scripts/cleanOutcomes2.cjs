@@ -59,15 +59,21 @@ const CLEANED = {
   '1401600931': 'Not participating in signals. ResidencyMatch median 268. ResMatch IV median: 260 (n=7, range 260–270)',
   // Corewell Dearborn - "One girl form Shifa" + personal comment
   '1402531188': 'Shifa graduate present. Mostly Middle Eastern residents. Strong connection recommended before applying. ResMatch IV median: 255 (n=8, range 250–255)',
+  // Mercy Hospital St Louis - Anooja Rani
+  '1402831217': 'Pakistani IMG (250, Silver) → matched. Many IMGs on website.',
 }
 
 let updated = 0
-programs.forEach(p => {
-  if (CLEANED[p.program_code] !== undefined) {
-    p.crowdsourced_outcomes = CLEANED[p.program_code]
-    updated++
-  }
-})
+if (require.main === module) {
+  programs.forEach(p => {
+    if (CLEANED[p.program_code] !== undefined) {
+      p.crowdsourced_outcomes = CLEANED[p.program_code]
+      updated++
+    }
+  })
 
-fs.writeFileSync(FILE, JSON.stringify(programs, null, 2))
-console.log(`✓ Updated ${updated} programs. Saved.`)
+  fs.writeFileSync(FILE, JSON.stringify(programs, null, 2))
+  console.log(`✓ Updated ${updated} programs. Saved.`)
+}
+
+module.exports = { CLEANED }

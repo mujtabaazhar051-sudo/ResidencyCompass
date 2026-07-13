@@ -85,12 +85,16 @@ const CLEANED = {
 }
 
 let updated = 0
-programs.forEach(p => {
-  if (CLEANED[p.program_code] !== undefined) {
-    p.crowdsourced_outcomes = CLEANED[p.program_code]
-    updated++
-  }
-})
+if (require.main === module) {
+  programs.forEach(p => {
+    if (CLEANED[p.program_code] !== undefined) {
+      p.crowdsourced_outcomes = CLEANED[p.program_code]
+      updated++
+    }
+  })
 
-fs.writeFileSync(FILE, JSON.stringify(programs, null, 2))
-console.log(`✓ Updated ${updated} programs. Saved to ${FILE}`)
+  fs.writeFileSync(FILE, JSON.stringify(programs, null, 2))
+  console.log(`✓ Updated ${updated} programs. Saved to ${FILE}`)
+}
+
+module.exports = { CLEANED }
