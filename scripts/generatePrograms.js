@@ -171,7 +171,7 @@ function normalizeDowPak(raw) {
 
 // ── Main conversion ────────────────────────────────────────────────────────────
 
-const CSV_PATH = 'C:\\Users\\Mujtaba Azhar\\Downloads\\Master Program List Match 2026 - Sheet1.csv'
+const CSV_PATH = process.argv[2] || 'C:\\Users\\Mujtaba Azhar\\Downloads\\Master Program List Match 2026 - Sheet1 (1).csv'
 const masterCSV = readFileSync(CSV_PATH, 'utf-8')
 const { rows } = parseCSV(masterCSV)
 
