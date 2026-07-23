@@ -25,7 +25,7 @@ export default function AboutTab() {
             <div>
               <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">ResidencyCompass</h2>
               <p className="mt-1 text-slate-600 dark:text-slate-400">
-                An IM residency program ranker built by and for Pakistani IMG applicants.
+                A free tool that helps Pakistani IMGs explore U.S. Internal Medicine programs more clearly — with an eye toward mutual fit.
               </p>
             </div>
           </div>
@@ -39,31 +39,32 @@ export default function AboutTab() {
       <Card title="What is ResidencyCompass?">
         <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
           ResidencyCompass is a free, browser-based tool that helps Pakistani International Medical Graduate (IMG) applicants
-          score and rank Internal Medicine residency programs in the United States. You enter your profile — Step 2 CK score,
-          visa need, ECFMG status, year of graduation, US clinical rotations, research, and personal connections — and the
-          tool scores every program in the list based on how well your profile fits.
+          explore U.S. Internal Medicine programs more clearly. You share your background — Step 2 CK, visa need,
+          ECFMG status, year of graduation, geographic preferences, US clinical experience, research, and meaningful
+          connections — and the tool organizes programs using a structured view of how those factors may relate to
+          each program’s setting and pathways.
         </p>
         <p className="mt-3 text-slate-600 dark:text-slate-400 leading-relaxed">
-          Programs are sorted into four tiers: <strong className="text-emerald-700 dark:text-emerald-400">TARGET</strong>,{' '}
+          Programs are grouped into four fit tiers: <strong className="text-emerald-700 dark:text-emerald-400">TARGET</strong>,{' '}
           <strong className="text-blue-700 dark:text-blue-400">LIKELY</strong>,{' '}
           <strong className="text-amber-700 dark:text-amber-400">REACH</strong>, and{' '}
-          <strong className="text-slate-600 dark:text-slate-400">LONG SHOT</strong> — so you can build a balanced,
-          evidence-informed list rather than applying blindly to 100+ programs.
+          <strong className="text-slate-600 dark:text-slate-400">LONG SHOT</strong> — so you can reflect on where
+          applicant and program interests may align, rather than navigating opaque lists alone.
         </p>
       </Card>
 
       {/* Why it was built */}
       <Card title="Why was this built?">
         <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-          The US residency match is notoriously opaque for IMG applicants. While resources exist for US medical graduates,
-          Pakistani IMGs face unique challenges: navigating visa sponsorship, demonstrating US clinical experience,
-          managing the ECFMG certification timeline, and competing without the advantage of home-program connections.
+          Choosing where to apply is hard for every IMG — and Pakistani graduates often weigh extra dimensions:
+          visa sponsorship, ECFMG timelines, US clinical experience, and whether a program has a history of training
+          graduates from similar backgrounds. Information is scattered, and it is easy to lose sight of mutual fit.
         </p>
         <p className="mt-3 text-slate-600 dark:text-slate-400 leading-relaxed">
-          Most Pakistani applicants rely on word-of-mouth, scattered WhatsApp groups, and incomplete spreadsheets to
-          build their program lists. ResidencyCompass was built to bring that scattered knowledge together into a
-          structured, personalised tool — one that understands the specific factors that matter for Pakistani IMGs,
-          including Dow University match history, Pakistani graduate pipelines, and community program friendliness.
+          ResidencyCompass brings curated program context and your own preferences into one structured place —
+          including Dow University and Pakistani graduate pathways, geography, and community-shared interview
+          reports — so applicants can explore thoughtfully, and programs are more likely to see candidates who
+          genuinely align with their setting.
         </p>
       </Card>
 
@@ -71,10 +72,10 @@ export default function AboutTab() {
       <Card title="How to get the most out of it">
         <ol className="space-y-3 text-slate-600 dark:text-slate-400">
           {[
-            { n: '1', title: 'Fill in your profile completely', desc: 'The more accurate your Step 2, YOG, visa status, ECFMG status, and ERAS region preferences (up to 3), the more meaningful the scores become.' },
-            { n: '2', title: 'Add your connections', desc: 'Open each program card and log your connection strength. Even a weak connection can significantly shift a score.' },
-            { n: '3', title: 'Use your signals wisely', desc: 'You have 3 Gold and 12 Silver signals. Use them on programs where you genuinely want to match — not just the most prestigious ones.' },
-            { n: '4', title: 'Review the How Scoring Works tab', desc: 'Understanding the scoring weights helps you interpret results critically, not blindly.' },
+            { n: '1', title: 'Complete your profile thoughtfully', desc: 'Accurate Step 2, YOG, visa status, ECFMG status, and ERAS region preferences (up to 3) make fit estimates more meaningful.' },
+            { n: '2', title: 'Note real connections', desc: 'Open each program card and log connection strength where you have a genuine relationship — honesty helps you and the programs you engage.' },
+            { n: '3', title: 'Use signals intentionally', desc: 'Gold and Silver signals express sincere interest. Assign them where fit and interest align.' },
+            { n: '4', title: 'Read How Scoring Works', desc: 'Understanding the model helps you interpret tiers as a guide for exploration, not a prediction.' },
             { n: '5', title: 'Cross-check with official sources', desc: 'Always verify program data (positions, visa types, PD details) on each program website before applying.' },
           ].map((step) => (
             <li key={step.n} className="flex gap-3">
@@ -160,8 +161,9 @@ export default function AboutTab() {
       {/* Contact & contribute */}
       <Card title="Contact & contribute">
         <p className="leading-relaxed text-slate-600 dark:text-slate-400">
-          ResidencyCompass is built by Pakistani IMGs, for Pakistani IMGs. Want to help curate program data, improve
-          the app, or spread the word? Visit the <strong>Community Data → Join the Team</strong> tab or email{' '}
+          ResidencyCompass is built by Pakistani IMGs, for Pakistani IMGs — to support clearer exploration and better
+          mutual fit. Want to help curate program data, improve the app, or share de-identified interview learning?
+          Visit the <strong>Community Data → Join the Team</strong> tab or email{' '}
           <a href={`mailto:${PROJECT_EMAIL}`} className="font-medium text-blue-600 hover:underline dark:text-blue-400">
             {PROJECT_EMAIL}
           </a>

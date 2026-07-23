@@ -817,8 +817,8 @@ function JoinTeamForm({ userId, isAuthenticated, userEmail, onCreateAccount, onS
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-        ResidencyCompass is a community project. Help us grow program data, improve the tool, or spread the word to
-        other Pakistani IMGs. Questions? Email{' '}
+        ResidencyCompass is a community project. Help us keep program information clear, improve the tool, or support
+        outreach so more Pakistani IMGs can explore fit thoughtfully. Questions? Email{' '}
         <a href={`mailto:${PROJECT_EMAIL}`} className="font-medium text-blue-600 hover:underline dark:text-blue-400">
           {PROJECT_EMAIL}
         </a>
@@ -911,7 +911,7 @@ function DemoSignInNotice({ onCreateAccount }) {
     <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 text-center dark:border-slate-700 dark:bg-slate-900/40">
       <p className="font-semibold text-slate-800 dark:text-slate-200">Sign in to submit community reports</p>
       <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-        Demo mode lets you explore the ranker without an account. Create an account to save your list and contribute interview data.
+        Demo mode lets you explore program fit without an account. Create an account to save your list and contribute interview data.
       </p>
       <button
         type="button"
@@ -942,9 +942,9 @@ export default function CommunityTab({ programs, demoMode = false, onCreateAccou
   return (
     <div className="space-y-6">
       <div className="rounded-xl border border-blue-200 bg-blue-50 px-5 py-4 dark:border-blue-800 dark:bg-blue-950/40">
-        <h2 className="font-semibold text-blue-900 dark:text-blue-200">Help build Pakistani IMG data</h2>
+        <h2 className="font-semibold text-blue-900 dark:text-blue-200">Learn from the community</h2>
         <p className="mt-1 text-sm text-blue-800 dark:text-blue-300/90">
-          Submit interview outcomes or browse what others have shared. Submitter emails are never shown publicly.
+          Share de-identified interview outcomes or browse what peers have shared — so applicants and programs benefit from clearer information. Submitter emails are never shown publicly.
         </p>
         {isConfigured && userId && userId !== 'local' && (
           <p className="mt-2 text-xs text-blue-700 dark:text-blue-400">

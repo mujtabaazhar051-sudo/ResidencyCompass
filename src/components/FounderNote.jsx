@@ -4,16 +4,15 @@ import { createPortal } from 'react-dom'
 const FOUNDER_NOTE_BODY = (
   <>
     <p>
-      I&apos;m Mujtaba, a Dow grad going through the IM Match myself. I&apos;ve tracked 100+ programs across
-      spreadsheets that never matched each other, plus scattered WhatsApp advice about visa sponsorship and which
-      programs actually take Pakistani grads. It cost more time than it should have, and it led to worse decisions
-      than it needed to.
+      I&apos;m Mujtaba, a Dow grad going through the IM Match myself. Like many Pakistani IMGs, I spent hours stitching
+      together program details from spreadsheets and informal advice — visa policies, geography, and where graduates
+      from schools like mine had trained — without a clear way to think about mutual fit.
     </p>
     <p>
-      ResidencyCompass is what I wish I&apos;d had — a place that scores programs against your own profile and tells
-      you honestly where you stand, instead of applying blind to a hundred places. It&apos;s free, it&apos;s not
-      affiliated with NRMP/AAMC/AMA, and it&apos;s still growing. If you&apos;re going through this too, I built it
-      for you as much as for myself.
+      ResidencyCompass is what I wished I&apos;d had: a free space to explore U.S. Internal Medicine programs more
+      clearly, using a structured view of program factors alongside your background and geographic preferences. It is
+      meant to support thoughtful choices for applicants and programs alike. It is independent of
+      NRMP/AAMC/AMA, and it is still growing with the community.
     </p>
   </>
 )

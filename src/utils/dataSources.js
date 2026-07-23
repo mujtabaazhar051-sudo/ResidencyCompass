@@ -51,7 +51,7 @@ export const PROGRAM_FIELD_SOURCES = [
 ]
 
 export const DISCLAIMER_SHORT =
-  'Independent tool — not affiliated with NRMP, AAMC, AMA, ECFMG, or any residency program. Scores are heuristics, not predictions. Verify all program information before applying.'
+  'Independent tool — not affiliated with NRMP, AAMC, AMA, ECFMG, or any residency program. Scores support thoughtful program fit; they are not predictions. Verify all program information before applying.'
 
 export const PRIVACY_LOCAL =
   'Your profile, tier list, signals, connections, notes, and application statuses stay in this browser — your private list is not uploaded to our servers.'
@@ -62,10 +62,10 @@ export const PRIVACY_ACCOUNT =
 export const PRIVACY_SHORT = `${PRIVACY_LOCAL} ${PRIVACY_ACCOUNT}`
 
 export const DISCLAIMER_FOOTER =
-  'ResidencyCompass is an independent list-building aid. Program facts are manually curated from NRMP program identifiers, ResidencyMatch.net crowdsourced reports, and community reports. We do not copy, scrape, or redistribute data from FREIDA (AMA) or Residency Explorer (AAMC). Always verify on program websites and other official sources before applying.'
+  'ResidencyCompass is an independent exploration aid for program fit. Program facts are manually curated from NRMP program identifiers, ResidencyMatch.net crowdsourced reports, and community reports. We do not copy, scrape, or redistribute data from FREIDA (AMA) or Residency Explorer (AAMC). Always verify on program websites and other official sources before applying.'
 
 export const DISCLAIMER_BULLETS = [
-  'Scores are heuristics tuned for Pakistani IMG applicants. They are not predictions or guarantees of interview invites or match outcomes.',
+  'Scores are heuristics to help Pakistani IMG applicants explore mutual program fit. They are not predictions or guarantees of interview invites or match outcomes.',
   'ResidencyCompass is not affiliated with, endorsed by, or authorized to redistribute data from NRMP, AAMC, AMA, ECFMG, or any residency program.',
   'We do not copy, scrape, or republish FREIDA (AMA) or Residency Explorer™ material. Residency Explorer may only be used on residencyexplorer.org for personal application research.',
   'Program fields are compiled from manual curation and community reports. They may be incomplete, outdated, or inaccurate.',

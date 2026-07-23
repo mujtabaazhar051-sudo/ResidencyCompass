@@ -5,18 +5,18 @@ import { DISCLAIMER_SHORT, PRIVACY_LOCAL } from '../utils/dataSources'
 
 const FEATURES = [
   {
-    title: 'Personalized tiers',
-    desc: 'Every program scored into TARGET, LIKELY, REACH, or LONG SHOT based on your Step 2, visa, YOG, and more.',
+    title: 'Thoughtful program fit',
+    desc: 'See how each program lines up with your background, geographic preferences, and training goals — grouped into clear fit tiers.',
     icon: '🎯',
   },
   {
-    title: 'IMG-specific signals',
-    desc: 'Weights tuned for Pakistani applicants — Dow match history, J-1/H-1B fit, ECFMG timeline, and US rotations.',
+    title: 'Built with Pakistani IMGs in mind',
+    desc: 'Considers visa sponsorship, ECFMG timeline, US clinical experience, research, and Pakistani graduate pathways at programs.',
     icon: '🩺',
   },
   {
-    title: 'Connections & signals',
-    desc: 'Log per-program connections and track your 3 Gold + 12 Silver ERAS signals in one place.',
+    title: 'Connections & ERAS signals',
+    desc: 'Note where you have genuine relationships and keep track of Gold and Silver signals in one place.',
     icon: '🤝',
   },
   {
@@ -26,15 +26,15 @@ const FEATURES = [
   },
   {
     title: 'Verify on official sources',
-    desc: 'Program data comes from NRMP identifiers, ResidencyMatch.net crowdsourced reports, and community submissions — not from FREIDA or AAMC Residency Explorer.',
+    desc: 'Program information is curated for exploration — always confirm details on each program’s website and other official sources.',
     icon: '✓',
   },
 ]
 
 const STEPS = [
-  { n: '1', title: 'Set your profile', desc: 'Step 2, visa type, ECFMG status, med school, rotations, and research.' },
-  { n: '2', title: 'Review your tier list', desc: 'Filter by state, region, or tier. Shortlist programs you are seriously considering.' },
-  { n: '3', title: 'Track the season', desc: 'Mark application status, log interviews, and compare programs side by side.' },
+  { n: '1', title: 'Share your background', desc: 'Step 2, visa type, ECFMG status, med school, geographic preferences, rotations, and research.' },
+  { n: '2', title: 'Explore program fit', desc: 'Review programs by region, fit tier, or name. Shortlist places that feel like a genuine match for you and for them.' },
+  { n: '3', title: 'Track your season', desc: 'Log applications and interviews, compare programs side by side, and keep notes as you learn more.' },
 ]
 
 export default function LandingPage({ onSignIn, onSignUp, onTryDemo }) {
@@ -98,14 +98,15 @@ export default function LandingPage({ onSignIn, onSignUp, onTryDemo }) {
         <div className="relative mx-auto max-w-6xl px-4 py-12 md:px-6 md:py-20">
           <div className="max-w-2xl">
             <p className="mb-3 inline-flex rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-700 dark:border-blue-800 dark:bg-blue-950/50 dark:text-blue-300">
-              Built for Pakistani IMGs
+              Thoughtful fit for applicants &amp; programs
             </p>
             <h1 className="text-3xl font-bold leading-tight tracking-tight sm:text-4xl md:text-5xl">
-              Rank IM residency programs with confidence
+              Explore IM programs with clearer fit
             </h1>
             <p className="mt-4 text-lg leading-relaxed text-slate-600 dark:text-slate-400">
-              ResidencyCompass scores and tiers Internal Medicine programs based on your Step 2, visa need,
-              connections, rotations, and research, so you build a balanced list instead of applying blind.
+              ResidencyCompass helps Pakistani IMGs explore U.S. Internal Medicine programs more clearly — combining
+              program factors with your geographic preferences and background so you can think about mutual fit,
+              not just volume.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <button
@@ -143,9 +144,9 @@ export default function LandingPage({ onSignIn, onSignUp, onTryDemo }) {
       {/* Features */}
       <section className="border-t border-slate-200 bg-white py-16 dark:border-slate-800 dark:bg-slate-900 md:py-20">
         <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <h2 className="text-center text-2xl font-bold md:text-3xl">Everything you need for list-building</h2>
+          <h2 className="text-center text-2xl font-bold md:text-3xl">Clarity for applicants — and for programs</h2>
           <p className="mx-auto mt-2 max-w-xl text-center text-slate-600 dark:text-slate-400">
-            One tool for scoring, filtering, shortlisting, and tracking your IM match season.
+            A structured way to explore where your profile and a program’s setting, geography, and pathways may align.
           </p>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {FEATURES.map((f) => (
@@ -186,9 +187,9 @@ export default function LandingPage({ onSignIn, onSignUp, onTryDemo }) {
       {/* CTA */}
       <section className="border-t border-slate-200 bg-gradient-to-br from-blue-600 to-blue-700 py-16 dark:border-slate-800 md:py-20">
         <div className="mx-auto max-w-6xl px-4 text-center md:px-6">
-          <h2 className="text-2xl font-bold text-white md:text-3xl">Ready to build your program list?</h2>
+          <h2 className="text-2xl font-bold text-white md:text-3xl">Ready to explore programs more clearly?</h2>
           <p className="mx-auto mt-2 max-w-lg text-blue-100">
-            Sign in to save your list, or try the demo with no account.
+            Sign in to save your exploration, or try the demo with no account.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <button

@@ -92,7 +92,7 @@ export default function AuthModal({ mode = 'signin', onClose, onSuccess, onSwitc
               {isSignUp ? 'Create your account' : 'Welcome back'}
             </h2>
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              {isSignUp ? 'Start ranking programs in minutes.' : 'Sign in to continue to your list.'}
+              {isSignUp ? 'Start exploring program fit in minutes.' : 'Sign in to continue to your list.'}
             </p>
           </div>
         </div>

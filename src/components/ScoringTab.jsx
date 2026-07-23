@@ -60,24 +60,25 @@ export default function ScoringTab() {
 
       {/* Intro */}
       <div className="rounded-xl border border-blue-200 bg-blue-50 px-5 py-4 dark:border-blue-800 dark:bg-blue-900/20">
-        <h2 className="font-semibold text-blue-900 dark:text-blue-200">How programs are scored</h2>
+        <h2 className="font-semibold text-blue-900 dark:text-blue-200">How program fit is estimated</h2>
         <p className="mt-1 text-sm text-blue-800 dark:text-blue-300">
-          Every program gets a score from <strong>0 to 100</strong> and a tier based on how well your profile fits.
-          Scores are calculated entirely in your browser — nothing is sent anywhere.
-          The tool is tuned specifically for <strong>Pakistani IMG applicants</strong> applying to Internal Medicine.
+          Every program gets a score from <strong>0 to 100</strong> and a tier based on how your background and
+          preferences may align with that program. Scores are calculated entirely in your browser — nothing is sent
+          anywhere. The model is designed for <strong>Pakistani IMG applicants</strong> exploring Internal Medicine —
+          as a guide for thoughtful fit, not a prediction of interviews or Match outcomes.
         </p>
       </div>
 
       {/* Tier thresholds */}
       <div className="space-y-3 rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800">
         <Section title="Tiers">
-          <p className="mb-3 text-sm text-slate-600 dark:text-slate-400">Programs are grouped into four tiers based on their final score:</p>
+          <p className="mb-3 text-sm text-slate-600 dark:text-slate-400">Programs are grouped into four fit tiers based on their final score:</p>
           <div className="flex flex-wrap gap-4">
             {[
-              { label: 'TARGET  ≥ 65',    color: 'emerald', note: 'Strong fit — worth prioritising' },
-              { label: 'LIKELY  ≥ 38',    color: 'blue',    note: 'Good chance — apply broadly' },
-              { label: 'REACH   ≥ 20',    color: 'amber',   note: 'Low odds — still worth a shot' },
-              { label: 'LONG SHOT < 20',  color: 'slate',   note: 'Very unlikely — decide carefully' },
+              { label: 'TARGET  ≥ 65',    color: 'emerald', note: 'Stronger alignment — explore closely' },
+              { label: 'LIKELY  ≥ 38',    color: 'blue',    note: 'Reasonable mutual fit to consider' },
+              { label: 'REACH   ≥ 20',    color: 'amber',   note: 'Possible, but more competitive' },
+              { label: 'LONG SHOT < 20',  color: 'slate',   note: 'Weaker alignment — decide thoughtfully' },
             ].map((t) => (
               <div key={t.label} className="flex items-center gap-2">
                 <Pill label={t.label} color={t.color} />

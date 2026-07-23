@@ -1,15 +1,15 @@
 # ResidencyCompass
 
-An Internal Medicine residency program ranker built for Pakistani IMG applicants. Score and tier programs from your Step 2, visa need, connections, rotations, and research — then track signals, shortlists, and interviews through match season.
+A free web app that helps Pakistani IMGs explore U.S. Internal Medicine programs more clearly. Combine program factors with each applicant’s geographic preferences and background to support thoughtful mutual fit — then track signals, shortlists, and interviews through the season.
 
 **Live site:** deploy via [Vercel](https://vercel.com) from this repo.
 
 ## Features
 
-- Personalized TARGET / LIKELY / REACH / LONG SHOT tiers
+- Fit tiers (TARGET / LIKELY / REACH / LONG SHOT) as a guide for exploration — not Match prediction
 - Per-program Gold & Silver ERAS signals (3 + 12 cap)
-- Connection strength scoring, shortlist, compare, interview tracker
-- Community IV reports (optional Supabase backend)
+- Connection strength, shortlist, compare, interview tracker
+- Optional community IV reports (Supabase)
 - Private by default — your list stays in browser local storage
 
 ## Local development
@@ -24,4 +24,4 @@ See [docs/DEPLOY.md](docs/DEPLOY.md) for Vercel + Supabase setup.
 
 ## Disclaimer
 
-ResidencyCompass is an independent tool — not affiliated with NRMP, AAMC, AMA, or any residency program. Scores are heuristics, not predictions. Always verify program data on official sources before applying.
+ResidencyCompass is an independent tool — not affiliated with NRMP, AAMC, AMA, or any residency program. Scores are heuristics to support thoughtful program fit, not predictions. Always verify program data on official sources before applying.

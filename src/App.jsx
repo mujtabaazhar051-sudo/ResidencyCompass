@@ -941,7 +941,7 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
             <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
               {demoMode
                 ? 'Demo mode — your profile and list are not saved'
-                : 'IM program ranker for Pakistani IMGs · data saved in your browser'}
+                : 'Explore IM program fit · data saved in your browser'}
               {!demoMode && (
               <span
                 className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium transition-opacity duration-500 ${
