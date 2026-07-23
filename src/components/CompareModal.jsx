@@ -15,9 +15,17 @@ const STATUS_LABELS = {
   matched:     '🎉 Matched',
 }
 
+function flagYes(raw) {
+  return String(raw || '').trim().toUpperCase() === 'YES'
+}
+
+function flagNo(raw) {
+  return String(raw || '').trim().toUpperCase() === 'NO'
+}
+
 const BREAKDOWN_LABELS = {
   connection:  'Connection',
-  dowPak:      'Dow/Pak Match',
+  dowPak:      'Pak Match History',
   step2:       'Step 2 Fit',
   step3:       'Step 3',
   ecfmg:       'ECFMG',
@@ -147,8 +155,17 @@ export default function CompareModal({ programs, signals, connections, statuses,
               <Row label="Visa"         programs={programs} getValue={(p) => p.visa_type} />
               <Row label="Positions"    programs={programs} getValue={(p) => p.pgy_positions} />
               <Row label="Median Step 2" programs={programs} getValue={(p) => p.median_step2 ? <span className="font-semibold">{p.median_step2}</span> : null} />
-              <Row label="Dow Matched"  programs={programs} getValue={(p) => p.dow_matched  ? '✓ Yes' : '—'} />
-              <Row label="Pak Matched"  programs={programs} getValue={(p) => p.pak_matched  ? '✓ Yes' : '—'} />
+              <Row
+                label="Pakistani Graduates Matched"
+                programs={programs}
+                getValue={(p) =>
+                  flagYes(p.pak_matched) || flagYes(p.dow_matched)
+                    ? '✓ Yes'
+                    : flagNo(p.pak_matched) && flagNo(p.dow_matched)
+                      ? 'No'
+                      : '—'
+                }
+              />
 
               {/* ── Your data ── */}
               <tr className="bg-slate-100 dark:bg-slate-700">

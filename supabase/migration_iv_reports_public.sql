@@ -1,7 +1,13 @@
 -- Public read-only view of interview reports (no email / user_id).
 -- Run once in Supabase Dashboard → SQL Editor.
+-- Drop first when adding/reordering columns (CREATE OR REPLACE cannot rename view columns).
 
-create or replace view public.iv_reports_public as
+alter table public.iv_reports
+  add column if not exists eras_regions text[];
+
+drop view if exists public.iv_reports_public;
+
+create view public.iv_reports_public as
 select
   id,
   created_at,

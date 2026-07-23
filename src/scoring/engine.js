@@ -25,7 +25,7 @@ export const CONNECTION_OVERRIDE_THRESHOLD = 26  // ≥ 26 → force TARGET tier
 export const CONNECTION_COUNT_BONUS_TWO   = 4    // 2 contacts at same program
 export const CONNECTION_COUNT_BONUS_THREE = 6    // 3+ contacts at same program
 
-// ─── Dow / Pak match history ─────────────────────────────────────────────────
+// ─── Pakistani graduate match history ────────────────────────────────────────
 export const WEIGHT_DOW_GRAD_DOW_MATCH      = 16   // Dow grad, dow_matched YES
 export const WEIGHT_DOW_GRAD_PAK_ONLY       = 10   // Dow grad, pak_matched YES but dow_matched NO
 export const WEIGHT_DOW_GRAD_BOTH           = 22   // Dow grad, both matched
@@ -165,7 +165,7 @@ function scoreConnection(conn) {
   return { score, note, hasConnection: true }
 }
 
-// ─── Dow / Pak ────────────────────────────────────────────────────────────────
+// ─── Pakistani graduate pathways ──────────────────────────────────────────────
 
 function scoreDowPak(program, medSchool) {
   const dowYes = normalize(program.dow_matched) === 'yes'
@@ -176,18 +176,18 @@ function scoreDowPak(program, medSchool) {
   const isDowGrad = isDowMedicalSchool(medSchool)
 
   if (isDowGrad) {
-    if (dowYes && pakYes) return { score: WEIGHT_DOW_GRAD_BOTH,      note: 'Dow + Pak graduates matched here — strong pipeline for you' }
-    if (dowYes)           return { score: WEIGHT_DOW_GRAD_DOW_MATCH,  note: 'Dow graduates matched here — direct pipeline' }
-    if (pakYes)           return { score: WEIGHT_DOW_GRAD_PAK_ONLY,   note: 'Pakistani (non-Dow) graduates matched — some precedent' }
-    if (!dowNo && !pakNo) return { score: WEIGHT_DOW_PAK_NOT_SURE,    note: 'Dow/Pak match status uncertain' }
-    return { score: WEIGHT_DOW_PAK_NONE, note: 'No known Dow or Pak matches at this program' }
+    if (dowYes && pakYes) return { score: WEIGHT_DOW_GRAD_BOTH,      note: 'Strong Pakistani graduate pathway at this program' }
+    if (dowYes)           return { score: WEIGHT_DOW_GRAD_DOW_MATCH,  note: 'Pakistani graduates matched here' }
+    if (pakYes)           return { score: WEIGHT_DOW_GRAD_PAK_ONLY,   note: 'Pakistani graduates matched here' }
+    if (!dowNo && !pakNo) return { score: WEIGHT_DOW_PAK_NOT_SURE,    note: 'Pakistani graduate pathway status uncertain' }
+    return { score: WEIGHT_DOW_PAK_NONE, note: 'No known Pakistani graduate matches at this program' }
   }
 
   // Other Pakistani medical school
   if (pakYes)           return { score: WEIGHT_OTHER_PAK_PAK_MATCH, note: 'Pakistani graduates matched here' }
-  if (dowYes)           return { score: WEIGHT_OTHER_PAK_DOW_ONLY,  note: 'Dow graduates matched here (different school, but shows Pakistani acceptance)' }
-  if (!dowNo && !pakNo) return { score: WEIGHT_DOW_PAK_NOT_SURE,    note: 'Dow/Pak match status uncertain' }
-  return { score: WEIGHT_DOW_PAK_NONE, note: 'No known Dow or Pak matches at this program' }
+  if (dowYes)           return { score: WEIGHT_OTHER_PAK_DOW_ONLY,  note: 'Pakistani graduates matched here' }
+  if (!dowNo && !pakNo) return { score: WEIGHT_DOW_PAK_NOT_SURE,    note: 'Pakistani graduate pathway status uncertain' }
+  return { score: WEIGHT_DOW_PAK_NONE, note: 'No known Pakistani graduate matches at this program' }
 }
 
 // ─── ERAS region preference ───────────────────────────────────────────────────

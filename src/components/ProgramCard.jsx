@@ -18,7 +18,7 @@ const BTN_LOCKED = 'cursor-not-allowed border-slate-200 bg-white text-slate-300 
 
 const BREAKDOWN_LABELS = {
   connection:  'Connection',
-  dowPak:      'Dow/Pak Match',
+  dowPak:      'Pak Match History',
   step2:       'Step 2 Fit',
   step3:       'Step 3',
   ecfmg:       'ECFMG',

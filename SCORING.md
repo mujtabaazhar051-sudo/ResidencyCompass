@@ -55,28 +55,16 @@ Step 2 is the heaviest single academic factor — a 15+ point difference between
 
 ---
 
-### 2. Dow / Pak Match History (max +22 pts)
+### 2. Pakistani Graduate Match History (max +22 pts)
 
-Scores differ based on whether you attended Dow University of Health Sciences (DIMC/DMC) or another Pakistani medical school.
-
-**Dow graduate:**
+Points when a program has known Pakistani graduates in its pathway / resident history. Applies across Pakistani medical schools — not limited to any single institution.
 
 | Program history | Points |
 |-----------------|--------|
-| Both Dow and Pakistani matched | +22 |
-| Dow graduates matched | +16 |
-| Pakistani graduates matched (not Dow-specific) | +10 |
-| Uncertain / not sure | +2 |
-| No match history | 0 |
-
-**Other Pakistani medical school:**
-
-| Program history | Points |
-|-----------------|--------|
+| Strong Pakistani graduate pathway | up to +22 |
 | Pakistani graduates matched | +10 |
-| Only Dow graduates matched | +4 |
 | Uncertain / not sure | +2 |
-| No match history | 0 |
+| No known Pakistani graduate history | 0 |
 
 ---
 

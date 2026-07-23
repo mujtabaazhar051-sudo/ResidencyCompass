@@ -162,7 +162,9 @@ create policy "user_app_state_update_own"
 
 -- ── 8. Public browse view (no email / user_id) ───────────────────────────────
 
-create or replace view public.iv_reports_public as
+drop view if exists public.iv_reports_public;
+
+create view public.iv_reports_public as
 select
   id,
   created_at,

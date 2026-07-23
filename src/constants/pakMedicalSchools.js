@@ -55,7 +55,7 @@ const LABEL_BY_VALUE = Object.fromEntries([
   [MED_SCHOOL_OTHER_IMG.value, MED_SCHOOL_OTHER_IMG.label],
 ])
 
-/** Dow / DIMC grads get a stronger boost at programs with Dow-specific match history. */
+/** Used internally for school-specific pathway weighting in scoring. */
 const DOW_MEDICAL_SCHOOL_IDS = new Set(['dow', 'dimc'])
 
 export function isDowMedicalSchool(value) {

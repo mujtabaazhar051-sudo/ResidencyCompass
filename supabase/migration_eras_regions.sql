@@ -1,10 +1,13 @@
 -- Add ERAS geographic preferences to IV reports.
 -- Run once in Supabase Dashboard → SQL Editor.
+-- Drop the public view first when column lists change (CREATE OR REPLACE cannot rename view columns).
 
 alter table public.iv_reports
   add column if not exists eras_regions text[];
 
-create or replace view public.iv_reports_public as
+drop view if exists public.iv_reports_public;
+
+create view public.iv_reports_public as
 select
   id,
   created_at,

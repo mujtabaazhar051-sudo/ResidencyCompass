@@ -6,8 +6,8 @@ const SHORT_REASONS = {
     return null
   },
   dowPak: ({ score }) => {
-    if (score > 0) return 'Dow/Pak match history'
-    if (score < 0) return 'Limited Pak pipeline'
+    if (score > 0) return 'Pakistani graduate pathway'
+    if (score < 0) return 'Limited Pak pathway'
     return null
   },
   step2: ({ score }) => {

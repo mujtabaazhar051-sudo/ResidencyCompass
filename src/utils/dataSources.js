@@ -37,7 +37,7 @@ export const OFFICIAL_SOURCES = [
     fullName: 'Applicant & IMG community reports',
     url: null,
     usage:
-      'Match outcomes, Dow/Pak pipeline notes, and signal policies submitted or curated by applicants. Not independently verified.',
+      'Match outcomes, Pakistani graduate pathway notes, and signal policies submitted or curated by applicants. Not independently verified.',
   },
 ]
 
@@ -46,7 +46,7 @@ export const PROGRAM_FIELD_SOURCES = [
   { fields: 'Program code & name', sources: ['NRMP identifiers', 'Manual curation'], note: 'Cross-check on each program website before applying.' },
   { fields: 'Visa type, PGY positions, PD contact', sources: ['Program website', 'Community reports'], note: 'Changes each cycle — verify directly.' },
   { fields: 'Median Step 2', sources: ['ResidencyMatch.net'], note: 'Crowdsourced; may not reflect this cycle.' },
-  { fields: 'Dow / Pak matched flags', sources: ['Community reports'], note: 'Based on reported outcomes, not official NRMP data.' },
+  { fields: 'Pakistani graduates matched', sources: ['Community reports'], note: 'Based on reported outcomes, not official NRMP data.' },
   { fields: 'Crowdsourced outcomes & notes', sources: ['Community reports', 'ResidencyMatch.net'], note: 'Anecdotal — use for context only.' },
 ]
 
@@ -133,8 +133,8 @@ export function getProgramFieldHints(program) {
       verify: 'Program website',
     },
     {
-      label: 'Dow / Pak matched',
-      value: program.dow_matched || program.pak_matched,
+      label: 'Pakistani graduates matched',
+      value: program.pak_matched || program.dow_matched,
       sources: 'Community reports',
       verify: 'Program website / your own research',
     },

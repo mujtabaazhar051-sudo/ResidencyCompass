@@ -113,36 +113,20 @@ export default function ScoringTab() {
           <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">A 15-point Step 2 difference typically shifts a program by at least one tier.</p>
         </Section>
 
-        {/* 2 · Dow / Pak */}
-        <Section title="2 · Dow / Pak Match History  (max +22)">
-          <p className="mb-2 text-sm text-slate-600 dark:text-slate-400">Points depend on whether you attended Dow (DIMC/DMC) or another Pakistani school.</p>
-          <div className="grid gap-3 md:grid-cols-2">
-            <div>
-              <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-700 dark:text-slate-300">Dow graduate</p>
-              <Table
-                headers={['Program history', 'Points']}
-                rows={[
-                  ['Both Dow + Pakistani matched', '+22'],
-                  ['Dow graduates matched', '+16'],
-                  ['Pakistani matched (not Dow-specific)', '+10'],
-                  ['Uncertain / not confirmed', '+2'],
-                  ['No history', '0'],
-                ]}
-              />
-            </div>
-            <div>
-              <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-700 dark:text-slate-300">Other Pakistani school</p>
-              <Table
-                headers={['Program history', 'Points']}
-                rows={[
-                  ['Pakistani graduates matched', '+10'],
-                  ['Only Dow graduates matched', '+4'],
-                  ['Uncertain / not confirmed', '+2'],
-                  ['No history', '0'],
-                ]}
-              />
-            </div>
-          </div>
+        {/* 2 · Pakistani graduate pathways */}
+        <Section title="2 · Pakistani Graduate Match History  (max +22)">
+          <p className="mb-2 text-sm text-slate-600 dark:text-slate-400">
+            Points when a program has known Pakistani graduates in its pathway / resident history. Applies across Pakistani medical schools — not limited to any single institution.
+          </p>
+          <Table
+            headers={['Program history', 'Points']}
+            rows={[
+              ['Strong Pakistani graduate pathway', 'up to +22'],
+              ['Pakistani graduates matched', '+10'],
+              ['Uncertain / not confirmed', '+2'],
+              ['No known Pakistani graduate history', '0'],
+            ]}
+          />
         </Section>
 
         {/* 3 · Connections */}

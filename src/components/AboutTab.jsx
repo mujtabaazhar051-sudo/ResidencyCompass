@@ -62,7 +62,7 @@ export default function AboutTab() {
         </p>
         <p className="mt-3 text-slate-600 dark:text-slate-400 leading-relaxed">
           ResidencyCompass brings curated program context and your own preferences into one structured place —
-          including Dow University and Pakistani graduate pathways, geography, and community-shared interview
+          including Pakistani graduate pathways, geography, and community-shared interview
           reports — so applicants can explore thoughtfully, and programs are more likely to see candidates who
           genuinely align with their setting.
         </p>
