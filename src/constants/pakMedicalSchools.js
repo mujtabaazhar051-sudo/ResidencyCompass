@@ -38,6 +38,7 @@ export const PAK_MEDICAL_SCHOOL_GROUPS = [
     province: 'Punjab',
     schools: [
       { value: 'aimc', label: 'Allama Iqbal Medical College (AIMC), Lahore' },
+      { value: 'abwa', label: 'Abwa Medical College, Faisalabad' },
       { value: 'ameeruddin', label: 'Ameer-ud-Din Medical College (PGMI), Lahore' },
       { value: 'akhtar_saeed', label: 'Akhtar Saeed Medical & Dental College, Lahore' },
       { value: 'avicenna', label: 'Avicenna Medical College, Lahore' },
@@ -70,6 +71,7 @@ export const PAK_MEDICAL_SCHOOL_GROUPS = [
       { value: 'szmc', label: 'Sheikh Zayed Medical College, Rahim Yar Khan' },
       { value: 'uol_ucmd', label: 'University College of Medicine & Dentistry (UoL), Lahore' },
       { value: 'umdc_fsd', label: 'University Medical & Dental College, Faisalabad' },
+      { value: 'watim', label: 'Watim Medical College, Rawalpindi' },
     ],
   },
   {
@@ -98,6 +100,7 @@ export const PAK_MEDICAL_SCHOOL_GROUPS = [
       { value: 'fazaia', label: 'Fazaia Medical College, Islamabad' },
       { value: 'fmc_isb', label: 'Federal Medical College, Islamabad' },
       { value: 'fumc', label: 'Foundation University Medical College (FUMC), Islamabad' },
+      { value: 'hbs', label: 'HBS Medical & Dental College, Islamabad' },
       { value: 'hitec', label: 'HITEC Institute of Medical Sciences, Taxila' },
       { value: 'imdc', label: 'Islamabad Medical & Dental College, Islamabad' },
       { value: 'iimc', label: 'Islamic International Medical College (Riphah), Rawalpindi' },
