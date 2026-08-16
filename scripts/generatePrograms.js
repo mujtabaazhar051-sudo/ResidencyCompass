@@ -188,7 +188,6 @@ for (const row of rows) {
   // Must have a 10-digit program code
   if (!code || !/^\d{10}$/.test(code)) { skipped++; continue }
   if (!rawName) { skipped++; continue }
-  if (/no visa/i.test(visa)) { skipped++; continue }   // no sponsorship — skip
   if (seenCodes.has(code)) continue
   seenCodes.add(code)
 

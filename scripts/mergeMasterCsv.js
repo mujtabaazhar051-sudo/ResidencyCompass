@@ -124,13 +124,23 @@ function normalizeDowPak(raw) {
   return 'NOT SURE'
 }
 
+const NAME_FIXES = {
+  '1401600543': 'Chicago Medical School/RFU / Northwestern Medicine McHenry Hospital Program',
+}
+const STATE_FIXES = {
+  '1401200928': 'GA',
+  '1403821348': 'OH',
+  '1404111392': 'PA',
+}
+
 function rowToProgram(row) {
   const code = (row['Program code'] || '').trim()
-  const rawName = (row['Program'] || '').replace(/\s+/g, ' ').trim()
+  let rawName = (row['Program'] || '').replace(/\s+/g, ' ').trim()
   const visa = (row['Visa status'] || '').trim()
-  if (!code || !/^\d{10}$/.test(code) || !rawName || /no visa/i.test(visa)) return null
+  if (!code || !/^\d{10}$/.test(code) || !rawName) return null
+  if (NAME_FIXES[code]) rawName = NAME_FIXES[code]
 
-  const state = (row['State'] || '').trim().toUpperCase()
+  const state = STATE_FIXES[code] || (row['State'] || '').trim().toUpperCase()
   const comments = (row['Comments'] || '').replace(/\s+/g, ' ').trim()
   const medianStep2Raw = (row['Median Step 2'] || '').trim()
   const medianStep2 = /^[-–—]$/.test(medianStep2Raw) ? '' : medianStep2Raw
@@ -180,6 +190,7 @@ const { rows } = parseCSV(readFileSync(CSV_PATH, 'utf-8'))
 
 const merged = []
 const seen = new Set()
+const addedPrograms = []
 let updated = 0
 let added = 0
 let fieldChanges = { median_step2: 0, email: 0, phone: 0, pd_name: 0, website: 0, pgy_positions: 0 }
@@ -196,13 +207,21 @@ for (const row of rows) {
       const newVal = (fromCsv[key] || '').trim()
       if (newVal && newVal !== oldVal) fieldChanges[key]++
     }
-    // Keep anonymized community notes; only merge ResMatch snippets from CSV when needed.
-    fromCsv.crowdsourced_outcomes = mergeRmSnippet(prev.crowdsourced_outcomes, '')
-    fromCsv.program_notes = prev.program_notes || fromCsv.program_notes
+    fromCsv.crowdsourced_outcomes = mergeRmSnippet(
+      prev.crowdsourced_outcomes,
+      fromCsv.crowdsourced_outcomes,
+    )
+    fromCsv.program_notes = fromCsv.program_notes || prev.program_notes
     fromCsv.known_contacts = ''
     updated++
   } else {
     added++
+    addedPrograms.push({
+      code: fromCsv.program_code,
+      name: fromCsv.program_name,
+      state: fromCsv.state,
+      visa: fromCsv.visa_type,
+    })
   }
   merged.push(fromCsv)
 }
@@ -236,3 +255,23 @@ execSync('node scripts/redactCommunityNotes.js', { cwd: ROOT, stdio: 'inherit' }
 console.log(`✓ Merged ${merged.length} programs from CSV: ${CSV_PATH}`)
 console.log(`  Updated from CSV: ${updated}  Added: ${added}  Kept (not in CSV): ${merged.length - updated - added}`)
 console.log('  Field updates:', fieldChanges)
+
+function visaGroup(v) {
+  const s = (v || '').toLowerCase()
+  if (/no visa|no sponsorship/.test(s)) return 'no'
+  if (/unknown|^$/.test(s)) return 'unknown'
+  return 'yes'
+}
+
+console.log('\n── New programs added to the website ──')
+if (!addedPrograms.length) {
+  console.log('  (none)')
+} else {
+  const yes = addedPrograms.filter((p) => visaGroup(p.visa) === 'yes')
+  const no = addedPrograms.filter((p) => visaGroup(p.visa) === 'no')
+  const unknown = addedPrograms.filter((p) => visaGroup(p.visa) === 'unknown')
+  console.log(`  Sponsoring: ${yes.length}  No sponsorship: ${no.length}  Unknown: ${unknown.length}`)
+  for (const p of addedPrograms.sort((a, b) => a.name.localeCompare(b.name))) {
+    console.log(`  ✓ ${p.name} (${p.state} · ${p.code}) — ${p.visa}`)
+  }
+}

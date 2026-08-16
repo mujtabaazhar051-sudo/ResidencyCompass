@@ -155,7 +155,7 @@ export default function ScoringTab() {
         <Section title="4 · No-Visa Status  (flat +12)">
           <p className="text-sm text-slate-600 dark:text-slate-400">
             US citizens, green card holders, and EAD holders receive a flat <strong>+12</strong> across every program.
-            Programs that don't sponsor visas also become visible and available.
+            Programs that do not sponsor visas are shown <strong>only</strong> when Profile visa is set to No visa needed.
           </p>
         </Section>
 

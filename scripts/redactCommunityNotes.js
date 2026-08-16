@@ -74,15 +74,15 @@ let auto = 0
 let notes = 0
 
 for (const p of programs) {
-  if (CLEANED[p.program_code] !== undefined) {
-    p.crowdsourced_outcomes = CLEANED[p.program_code]
-    curated++
-  } else if (p.crowdsourced_outcomes) {
+  if (p.crowdsourced_outcomes) {
     const redacted = autoRedact(p.crowdsourced_outcomes)
     if (redacted !== p.crowdsourced_outcomes) {
       p.crowdsourced_outcomes = redacted
       auto++
     }
+  } else if (CLEANED[p.program_code] !== undefined) {
+    p.crowdsourced_outcomes = CLEANED[p.program_code]
+    curated++
   }
 
   const cleanedNotes = cleanProgramNotes(p.program_notes)

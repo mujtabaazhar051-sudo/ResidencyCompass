@@ -404,19 +404,20 @@ function scoreYogGap(yog) {
 
 function passesVisaFilter(program, visaNeed) {
   const need = normalize(visaNeed)
-  // No-visa applicants can apply anywhere — even programs that don't sponsor visas
-  if (need === 'none') return true
   const visa = normalize(program.visa_type)
-  if (visa.includes('no sponsorship')) return false
+  const noSponsorship = visa.includes('no sponsorship')
+  // No-sponsorship programs are only shown when the applicant does not need a visa.
+  if (need === 'none') return true
+  if (noSponsorship) return false
   if (need === 'j1')    return visa.includes('j1')
   if (need === 'h1b')   return visa.includes('h1b')
   if (need === 'either') return visa.includes('j1') || visa.includes('h1b')
-  return true
+  return !noSponsorship
 }
 
 function scoreVisaStatus(visaNeed) {
   if (normalize(visaNeed) === 'none') {
-    return { score: WEIGHT_NO_VISA_BOOST, note: 'No visa sponsorship needed (+15)' }
+    return { score: WEIGHT_NO_VISA_BOOST, note: 'No visa sponsorship needed (+12)' }
   }
   return { score: 0, note: null }
 }
