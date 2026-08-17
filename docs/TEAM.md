@@ -1,6 +1,6 @@
 # ResidencyCompass — Volunteer Team
 
-Last updated: 2026-08-02 (Aieman applying; Waqas lead pending)
+Last updated: 2026-08-12 (Hasan removed; Aieman → data; CV-friendly public titles)
 
 **Model:** Volunteers fill **secondary sheets**. **Master sheet** = Mujtaba + Mohammad Ahmed only. Website publish = Mujtaba only.
 
@@ -10,36 +10,58 @@ Last updated: 2026-08-02 (Aieman applying; Waqas lead pending)
 
 ---
 
-## Role split (post–kickoff meeting)
+## Public roles (website + social)
 
-### Social / outreach
+| Name | School | Public role |
+|------|--------|-------------|
+| **Mujtaba Azhar** | DIMC | Founder & Product Lead |
+| **Mohammad Ahmed** | DIMC | Co-founder & Operations Lead |
+| **Waqas Ali** | Ameer-ud-Din Medical College | Head of Program Data |
+| **Naima Agha** | Foundation University Medical College | Program Research Analyst |
+| **Aimal Waqas** | Foundation University Medical College | Match Insights Analyst |
+| **Aieman Naeem** | Rawalpindi Medical University | Program Data Specialist |
+| **Zoya Tariq** | Shalamar Medical and Dental College | Community Growth Lead |
+| **Usama Idrees** | KMSMC Sialkot | Digital Outreach Lead |
 
-| Name | School | Applying? | Focus |
-|------|--------|-----------|--------|
-| **Zoya Tariq** | Shalamar Medical and Dental College | No | Social + outreach (primary continuity) |
-| **Usama Idrees** | KMSMC Sialkot | No | Social + outreach (primary continuity) |
-| **Aieman Naeem** | Rawalpindi Medical University | **Yes** | Social support (lighter load during Match season) |
+**Photos for About → Team:** drop into `public/team/` as `{id}.jpg` (see `src/constants/team.js` ids).
 
-**Jobs**
-- Run Insta, Facebook, LinkedIn (LinkedIn page already exists — give **admin** to whoever is already active on LinkedIn among Zoya / Usama / Aieman)
-- Reach med influencers / peer accounts → ask them to try the site + share a story/post
-- Mujtaba provides **post images / captions**; they schedule and engage
-- They should **also see** how data is collected and merged (watch 1–2 merge sessions) so outreach stays accurate
-- Continuity when Match gets busy: **Zoya + Usama**
+---
+
+## Internal role split
+
+### Leadership / master
+
+| Name | Focus |
+|------|--------|
+| **Mujtaba Azhar** | Founder & Product Lead. Product + website publish. |
+| **Mohammad Ahmed** | Co-founder & Operations Lead. Ops + master co-owner. Dedup. Merge secondary → master. |
 
 ### Data (secondary sheets → master)
 
-| Name | School | Applying? | Focus |
-|------|--------|-----------|--------|
-| **Mohammad Ahmed** | DIMC | No (2025) | **Ops + master co-owner** with Mujtaba. Dedup. Merge secondary → master. |
-| **Waqas Ali** | Ameer-ud-Din Medical College | Yes | Strong contributor (~200+ list). **Data lead asked privately — awaiting reply. Do not announce in group until he accepts.** |
-| **Hasan Raza** | DIMC | Yes | Secondary sheet / uni + peer sources |
-| **Naima Agha** | Foundation University Medical College | Yes | Secondary sheet / uni + peer sources |
-| **Aimal** | Foundation University Medical College | Yes | Secondary sheet / uni + peer sources |
+| Name | Applying? | Focus |
+|------|-----------|--------|
+| **Waqas Ali** | Yes | **Head of Program Data.** Secondary lists, pipeline coordination. |
+| **Naima Agha** | Yes | Secondary sheet / uni + peer sources |
+| **Aimal Waqas** | Yes | Secondary sheet / uni + peer sources |
+| **Aieman Naeem** | **Yes** | Secondary sheet / uni + peer sources |
 
 **Near-term data source:** MedAngle mentee responses (~200 applicants, mostly IM) — matched program + programs interviewed at.  
 **Do first:** add/update programs, comments/outcomes, visa, contacts, Pak pathway flags, etc.  
 **Median Step 2:** optional later — only from **RC / MedAngle-derived scores**, not copied from ResMatch or Residency Explorer (see formula below).
+
+### Social / outreach
+
+| Name | Applying? | Focus |
+|------|-----------|--------|
+| **Zoya Tariq** | No | Community Growth Lead (primary continuity) |
+| **Usama Idrees** | No | Digital Outreach Lead (primary continuity) |
+
+**Jobs**
+- Run Insta, Facebook, LinkedIn (LinkedIn page already exists — give **admin** to whoever is already active on LinkedIn among Zoya / Usama)
+- Reach med influencers / peer accounts → ask them to try the site + share a story/post
+- Mujtaba provides **post images / captions**; they schedule and engage
+- They should **also see** how data is collected and merged (watch 1–2 merge sessions) so outreach stays accurate
+- Continuity when Match gets busy: **Zoya + Usama**
 
 ---
 
@@ -92,12 +114,12 @@ Scores: 238, 245, 245, 250, 252 → median = **245**
 3. Flag possible duplicates — don’t create a second row for the same NRMP code.  
 4. Prefer program website > rumor. Unsure → `NOT SURE` + link.  
 5. No personal applicant names in public/comment fields.  
-6. Always state: **not affiliated with AAMC / NRMP / AMA / ECFMG.**
+6. Always state: **not affiliated with AAMC / NRMP / AMA / ECFMG**.
 
 ---
 
 ## Social media notes
 
-- LinkedIn page exists → admin to the person already active on LinkedIn among Aieman / Zoya / Usama  
+- LinkedIn page exists → admin to the person already active on LinkedIn among Zoya / Usama  
 - Provide a small folder of approved images + 5–10 caption templates  
 - Every post should include site link + independent-tool disclaimer (short)
