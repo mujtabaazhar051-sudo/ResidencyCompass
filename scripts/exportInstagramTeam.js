@@ -1,9 +1,9 @@
 /**
- * Recrop Aimal (keep head in frame) and export 8 Instagram carousel slides.
+ * Recrop tight headshots (Aimal, Aieman) and export 8 Instagram carousel slides.
  * Run: node scripts/exportInstagramTeam.js
  */
 import sharp from 'sharp'
-import { mkdirSync, readFileSync } from 'fs'
+import { mkdirSync, readFileSync, readdirSync, unlinkSync } from 'fs'
 import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -20,9 +20,9 @@ const MEMBERS = [
   { id: 'mujtaba-azhar', name: 'Mujtaba Azhar', role: 'Founder & Product Lead', school: 'DIMC', photo: 'mujtaba-azhar.jpg', src: 'Mujtaba Azhar Siddiqui.jpg', position: 'centre' },
   { id: 'mohammad-ahmed', name: 'Mohammad Ahmed', role: 'Co-founder & Operations Lead', school: 'DIMC', photo: 'mohammad-ahmed.jpg', src: 'Mohammud Wajeeh.jpeg', position: 'centre' },
   { id: 'waqas-ali', name: 'Waqas Ali', role: 'Head of Program Data', school: 'Ameer-ud-Din Medical College', photo: 'waqas-ali.jpg', src: 'Waqas Ali.jpg', position: 'centre' },
+  { id: 'aieman-naeem', name: 'Aieman Naeem', role: 'Program Data Specialist', school: 'Rawalpindi Medical University', photo: 'aieman-naeem.jpg', src: 'Aieman Naeem.png', position: 'north', padTop: 0.16 },
   { id: 'naima-agha', name: 'Naima Agha', role: 'Program Research Analyst', school: 'Foundation University Medical College', photo: 'naima-agha.jpg', src: 'Naima Agha.jpg', position: 'centre' },
   { id: 'aimal-waqas', name: 'Aimal Waqas', role: 'Match Insights Analyst', school: 'Foundation University Medical College', photo: 'aimal-waqas.jpg', src: 'Aimal Waqas.png', position: 'north' },
-  { id: 'aieman-naeem', name: 'Aieman Naeem', role: 'Program Data Specialist', school: 'Rawalpindi Medical University', photo: 'aieman-naeem.jpg', src: 'Aieman Naeem.png', position: 'centre' },
   { id: 'zoya-tariq', name: 'Zoya Tariq', role: 'Community Growth Lead', school: 'Shalamar Medical and Dental College', photo: 'zoya-tariq.jpg', src: 'Zoya Imran.jpeg', position: 'centre' },
   { id: 'usama-idrees', name: 'Usama Idrees', role: 'Digital Outreach Lead', school: 'KMSMC Sialkot', photo: null, src: null, position: 'centre' },
 ]
@@ -43,24 +43,39 @@ async function renderSiteLogo(size) {
   return sharp(Buffer.from(wrapped)).png().toBuffer()
 }
 
-async function cropHeadshot(srcName, destName, position) {
-  await sharp(join(TEAM_SRC, srcName))
-    .rotate()
-    .resize(640, 640, { fit: 'cover', position })
-    .jpeg({ quality: 84, mozjpeg: true })
-    .toFile(join(TEAM_OUT, destName))
+async function squareFromSource(srcPath, size, position, padTop = 0) {
+  const rotated = await sharp(srcPath).rotate().toBuffer()
+  let input = rotated
+  if (padTop) {
+    const { width, height } = await sharp(rotated).metadata()
+    const top = Math.round((width || height) * padTop)
+    input = await sharp(rotated)
+      .extend({
+        top,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        background: { r: 255, g: 255, b: 255, alpha: 1 },
+      })
+      .toBuffer()
+  }
+  return sharp(input)
+    .resize(size, size, { fit: 'cover', position: position || 'centre' })
+    .png()
+    .toBuffer()
 }
 
-async function circleFromFile(srcPath, size, position) {
+async function cropHeadshot(srcName, destName, position, padTop = 0) {
+  const square = await squareFromSource(join(TEAM_SRC, srcName), 640, position, padTop)
+  await sharp(square).jpeg({ quality: 84, mozjpeg: true }).toFile(join(TEAM_OUT, destName))
+}
+
+async function circleFromFile(srcPath, size, position, padTop = 0) {
   const mask = Buffer.from(`<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">
   <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2}" fill="#fff"/>
 </svg>`)
-  const img = await sharp(srcPath)
-    .rotate()
-    .resize(size, size, { fit: 'cover', position })
-    .png()
-    .toBuffer()
+  const img = await squareFromSource(srcPath, size, position, padTop)
   return sharp(img)
     .composite([{ input: await sharp(mask).png().toBuffer(), blend: 'dest-in' }])
     .png()
@@ -96,9 +111,15 @@ async function roundedLogo(box) {
     .toBuffer()
 }
 
-// Recrop site thumbnails, keeping Aimal's head in frame
+// Recrop site thumbnails, adding headroom where the source is tight at the top
 for (const m of MEMBERS) {
-  if (m.src) await cropHeadshot(m.src, m.photo, m.position)
+  if (m.src) await cropHeadshot(m.src, m.photo, m.position, m.padTop)
+}
+
+for (const file of readdirSync(OUT)) {
+  if (file.startsWith('instagram-team-') && file.endsWith('.png')) {
+    unlinkSync(join(OUT, file))
+  }
 }
 
 const SIZE = 1080
@@ -135,7 +156,7 @@ for (let i = 0; i < MEMBERS.length; i++) {
 </svg>`)
 
   const photoBuf = m.src
-    ? await circleFromFile(join(TEAM_SRC, m.src), avatar, m.position)
+    ? await circleFromFile(join(TEAM_SRC, m.src), avatar, m.position, m.padTop)
     : await initialsAvatar(m.name, avatar)
 
   const filename = join(OUT, `instagram-team-${String(n).padStart(2, '0')}-${m.id}.png`)

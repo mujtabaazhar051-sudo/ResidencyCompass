@@ -29,6 +29,15 @@ export const TEAM_MEMBERS = [
     photo: '/team/waqas-ali.jpg',
   },
   {
+    id: 'aieman-naeem',
+    name: 'Aieman Naeem',
+    role: 'Program Data Specialist',
+    school: 'Rawalpindi Medical University',
+    group: 'data',
+    photo: '/team/aieman-naeem.jpg',
+    photoPosition: 'top',
+  },
+  {
     id: 'naima-agha',
     name: 'Naima Agha',
     role: 'Program Research Analyst',
@@ -44,14 +53,6 @@ export const TEAM_MEMBERS = [
     group: 'data',
     photo: '/team/aimal-waqas.jpg',
     photoPosition: 'top',
-  },
-  {
-    id: 'aieman-naeem',
-    name: 'Aieman Naeem',
-    role: 'Program Data Specialist',
-    school: 'Rawalpindi Medical University',
-    group: 'data',
-    photo: '/team/aieman-naeem.jpg',
   },
   {
     id: 'zoya-tariq',
