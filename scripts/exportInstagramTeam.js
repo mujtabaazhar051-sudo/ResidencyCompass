@@ -1,0 +1,152 @@
+/**
+ * Recrop Aimal (keep head in frame) and export 8 Instagram carousel slides.
+ * Run: node scripts/exportInstagramTeam.js
+ */
+import sharp from 'sharp'
+import { mkdirSync, readFileSync } from 'fs'
+import { dirname, join } from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const PUBLIC = join(__dirname, '..', 'public')
+const TEAM_SRC = join(__dirname, '..', 'team')
+const TEAM_OUT = join(PUBLIC, 'team')
+const OUT = join(PUBLIC, 'social-hd')
+mkdirSync(OUT, { recursive: true })
+
+const svgRaw = readFileSync(join(PUBLIC, 'favicon.svg'), 'utf8')
+
+const MEMBERS = [
+  { id: 'mujtaba-azhar', name: 'Mujtaba Azhar', role: 'Founder & Product Lead', school: 'DIMC', photo: 'mujtaba-azhar.jpg', src: 'Mujtaba Azhar Siddiqui.jpg', position: 'centre' },
+  { id: 'mohammad-ahmed', name: 'Mohammad Ahmed', role: 'Co-founder & Operations Lead', school: 'DIMC', photo: 'mohammad-ahmed.jpg', src: 'Mohammud Wajeeh.jpeg', position: 'centre' },
+  { id: 'waqas-ali', name: 'Waqas Ali', role: 'Head of Program Data', school: 'Ameer-ud-Din Medical College', photo: 'waqas-ali.jpg', src: 'Waqas Ali.jpg', position: 'centre' },
+  { id: 'naima-agha', name: 'Naima Agha', role: 'Program Research Analyst', school: 'Foundation University Medical College', photo: 'naima-agha.jpg', src: 'Naima Agha.jpg', position: 'centre' },
+  { id: 'aimal-waqas', name: 'Aimal Waqas', role: 'Match Insights Analyst', school: 'Foundation University Medical College', photo: 'aimal-waqas.jpg', src: 'Aimal Waqas.png', position: 'north' },
+  { id: 'aieman-naeem', name: 'Aieman Naeem', role: 'Program Data Specialist', school: 'Rawalpindi Medical University', photo: 'aieman-naeem.jpg', src: 'Aieman Naeem.png', position: 'centre' },
+  { id: 'zoya-tariq', name: 'Zoya Tariq', role: 'Community Growth Lead', school: 'Shalamar Medical and Dental College', photo: 'zoya-tariq.jpg', src: 'Zoya Imran.jpeg', position: 'centre' },
+  { id: 'usama-idrees', name: 'Usama Idrees', role: 'Digital Outreach Lead', school: 'KMSMC Sialkot', photo: null, src: null, position: 'centre' },
+]
+
+function escapeXml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+}
+
+function initials(name) {
+  return name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join('')
+}
+
+async function renderSiteLogo(size) {
+  const wrapped = svgRaw.replace(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"',
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 64 64"`,
+  )
+  return sharp(Buffer.from(wrapped)).png().toBuffer()
+}
+
+async function cropHeadshot(srcName, destName, position) {
+  await sharp(join(TEAM_SRC, srcName))
+    .rotate()
+    .resize(640, 640, { fit: 'cover', position })
+    .jpeg({ quality: 84, mozjpeg: true })
+    .toFile(join(TEAM_OUT, destName))
+}
+
+async function circleFromFile(srcPath, size, position) {
+  const mask = Buffer.from(`<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">
+  <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2}" fill="#fff"/>
+</svg>`)
+  const img = await sharp(srcPath)
+    .rotate()
+    .resize(size, size, { fit: 'cover', position })
+    .png()
+    .toBuffer()
+  return sharp(img)
+    .composite([{ input: await sharp(mask).png().toBuffer(), blend: 'dest-in' }])
+    .png()
+    .toBuffer()
+}
+
+async function initialsAvatar(name, size) {
+  const svg = Buffer.from(`<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">
+  <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2}" fill="#1e3a5f"/>
+  <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 6}" fill="none" stroke="#10b981" stroke-width="4"/>
+  <text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle" fill="#ffffff"
+    font-family="Arial, Helvetica, sans-serif" font-size="${Math.round(size * 0.28)}" font-weight="700">${initials(name)}</text>
+</svg>`)
+  return sharp(svg).png().toBuffer()
+}
+
+async function roundedLogo(box) {
+  const logo = await renderSiteLogo(Math.round(box * 0.82))
+  const onWhite = await sharp({
+    create: { width: box, height: box, channels: 3, background: { r: 255, g: 255, b: 255 } },
+  })
+    .composite([{ input: logo, gravity: 'centre' }])
+    .png()
+    .toBuffer()
+  const rounded = Buffer.from(`<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${box}" height="${box}">
+  <rect width="${box}" height="${box}" rx="20" fill="#fff"/>
+</svg>`)
+  return sharp(onWhite)
+    .composite([{ input: await sharp(rounded).png().toBuffer(), blend: 'dest-in' }])
+    .png()
+    .toBuffer()
+}
+
+// Recrop site thumbnails, keeping Aimal's head in frame
+for (const m of MEMBERS) {
+  if (m.src) await cropHeadshot(m.src, m.photo, m.position)
+}
+
+const SIZE = 1080
+const logoBox = 96
+const logoRounded = await roundedLogo(logoBox)
+const avatar = 420
+
+for (let i = 0; i < MEMBERS.length; i++) {
+  const m = MEMBERS[i]
+  const n = i + 1
+  const overlay = Buffer.from(`<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${SIZE}" height="${SIZE}">
+  <defs>
+    <radialGradient id="glow" cx="88%" cy="8%" r="52%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#0f1e32" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="${SIZE}" height="${SIZE}" fill="#0f1e32"/>
+  <rect width="${SIZE}" height="${SIZE}" fill="url(#glow)"/>
+  <text x="176" y="98" fill="#34d399" font-family="Arial, Helvetica, sans-serif"
+    font-size="20" font-weight="700" letter-spacing="3">RESIDENCYCOMPASS</text>
+  <text x="72" y="168" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif"
+    font-size="22" font-weight="600">Meet the team  ·  ${n}/8</text>
+  <text x="540" y="780" text-anchor="middle" fill="#ffffff"
+    font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700">${escapeXml(m.name)}</text>
+  <text x="540" y="834" text-anchor="middle" fill="#34d399"
+    font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="600">${escapeXml(m.role)}</text>
+  <text x="540" y="878" text-anchor="middle" fill="#94a3b8"
+    font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="500">${escapeXml(m.school)}</text>
+  <rect x="400" y="980" width="280" height="5" rx="3" fill="#10b981"/>
+  <text x="540" y="1028" text-anchor="middle" fill="#94a3b8"
+    font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="500">residency-compass.vercel.app</text>
+</svg>`)
+
+  const photoBuf = m.src
+    ? await circleFromFile(join(TEAM_SRC, m.src), avatar, m.position)
+    : await initialsAvatar(m.name, avatar)
+
+  const filename = join(OUT, `instagram-team-${String(n).padStart(2, '0')}-${m.id}.png`)
+  await sharp(overlay)
+    .png()
+    .composite([
+      { input: logoRounded, left: 64, top: 48 },
+      { input: photoBuf, left: Math.round((SIZE - avatar) / 2), top: 230 },
+    ])
+    .toFile(filename)
+  console.log(`✓ ${filename}`)
+}
+
+console.log('\nCarousel: 8 slides in public/social-hd/instagram-team-01-*.png … 08')

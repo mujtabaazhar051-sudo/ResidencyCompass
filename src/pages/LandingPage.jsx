@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import DataDisclaimer from '../components/DataDisclaimer'
-import FounderNoteModal, { FounderNoteButton } from '../components/FounderNote'
+import FounderNoteModal, { FounderNoteButton, FOUNDER_NOTE_BODY } from '../components/FounderNote'
+import TeamGrid from '../components/TeamGrid'
 import { DISCLAIMER_SHORT, PRIVACY_LOCAL } from '../utils/dataSources'
+import { PROJECT_EMAIL } from '../constants/contact'
 
 const FEATURES = [
   {
@@ -58,6 +60,12 @@ export default function LandingPage({ onSignIn, onSignUp, onTryDemo }) {
             <span className="truncate text-base font-bold sm:text-lg">ResidencyCompass</span>
           </div>
           <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+            <a
+              href="#about"
+              className="hidden rounded-lg px-3 py-1.5 text-sm font-semibold text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800 sm:inline-flex"
+            >
+              About
+            </a>
             <button
               type="button"
               onClick={() => setDarkMode((d) => !d)}
@@ -181,6 +189,27 @@ export default function LandingPage({ onSignIn, onSignUp, onTryDemo }) {
               </li>
             ))}
           </ol>
+        </div>
+      </section>
+
+      {/* About / team */}
+      <section id="about" className="scroll-mt-24 border-t border-slate-200 bg-white py-16 dark:border-slate-800 dark:bg-slate-900 md:py-20">
+        <div className="mx-auto max-w-6xl px-4 md:px-6">
+          <p className="text-xs font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-400">About</p>
+          <h2 className="mt-2 text-2xl font-bold md:text-3xl">Why this exists</h2>
+          <div className="mt-6 max-w-3xl space-y-4 text-base leading-relaxed text-slate-600 dark:text-slate-400">
+            {FOUNDER_NOTE_BODY}
+          </div>
+
+          <h3 className="mt-12 text-xl font-bold md:text-2xl">The team</h3>
+          <p className="mt-2 mb-6 max-w-2xl text-slate-600 dark:text-slate-400">
+            Built by Pakistani IMGs, for Pakistani IMGs. Want to help? Email{' '}
+            <a href={`mailto:${PROJECT_EMAIL}`} className="font-medium text-blue-600 hover:underline dark:text-blue-400">
+              {PROJECT_EMAIL}
+            </a>
+            .
+          </p>
+          <TeamGrid />
         </div>
       </section>
 

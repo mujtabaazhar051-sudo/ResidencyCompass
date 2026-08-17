@@ -2,7 +2,7 @@ import { useState } from 'react'
 import DataDisclaimer from './DataDisclaimer'
 import FounderNoteModal, { FounderNoteButton } from './FounderNote'
 import { PROJECT_EMAIL } from '../constants/contact'
-import { TEAM_MEMBERS } from '../constants/team'
+import TeamGrid from './TeamGrid'
 import {
   OFFICIAL_SOURCES,
   PROGRAM_FIELD_SOURCES,
@@ -38,19 +38,18 @@ export default function AboutTab() {
 
       {/* Team */}
       <Card title="The team">
-        <p className="mb-5 text-slate-600 dark:text-slate-400 leading-relaxed">
-          Built by Pakistani IMGs — for clearer exploration of U.S. IM programs, and better mutual fit.
-          Want to help? Visit <strong>Community Data → Join the Team</strong> or email{' '}
-          <a href={`mailto:${PROJECT_EMAIL}`} className="font-medium text-blue-600 hover:underline dark:text-blue-400">
-            {PROJECT_EMAIL}
-          </a>
-          .
-        </p>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {TEAM_MEMBERS.map((member) => (
-            <TeamMemberCard key={member.id} member={member} />
-          ))}
-        </div>
+        <TeamGrid
+          intro={
+            <p className="mb-5 leading-relaxed text-slate-600 dark:text-slate-400">
+              Built by Pakistani IMGs — for clearer exploration of U.S. IM programs, and better mutual fit.
+              Want to help? Visit <strong>Community Data → Join the Team</strong> or email{' '}
+              <a href={`mailto:${PROJECT_EMAIL}`} className="font-medium text-blue-600 hover:underline dark:text-blue-400">
+                {PROJECT_EMAIL}
+              </a>
+              .
+            </p>
+          }
+        />
       </Card>
 
       {/* What it is */}
@@ -211,45 +210,6 @@ function Card({ title, children }) {
         {title}
       </h3>
       {children}
-    </div>
-  )
-}
-
-function initials(name) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((w) => w[0]?.toUpperCase() ?? '')
-    .join('')
-}
-
-function TeamMemberCard({ member }) {
-  const [imgFailed, setImgFailed] = useState(false)
-  const showPhoto = Boolean(member.photo) && !imgFailed
-
-  return (
-    <div className="flex items-center gap-3 rounded-lg border border-slate-100 bg-slate-50/80 p-3 dark:border-slate-700 dark:bg-slate-900/40">
-      {showPhoto ? (
-        <img
-          src={member.photo}
-          alt=""
-          className="h-14 w-14 shrink-0 rounded-full object-cover"
-          onError={() => setImgFailed(true)}
-        />
-      ) : (
-        <div
-          className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#1e3a5f] text-sm font-semibold text-white"
-          aria-hidden
-        >
-          {initials(member.name)}
-        </div>
-      )}
-      <div className="min-w-0">
-        <p className="truncate font-semibold text-slate-900 dark:text-slate-100">{member.name}</p>
-        <p className="text-sm font-medium text-emerald-700 dark:text-emerald-400">{member.role}</p>
-        <p className="truncate text-xs text-slate-500 dark:text-slate-400">{member.school}</p>
-      </div>
     </div>
   )
 }

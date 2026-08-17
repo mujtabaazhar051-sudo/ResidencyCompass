@@ -43,6 +43,7 @@ export const TEAM_MEMBERS = [
     school: 'Foundation University Medical College',
     group: 'data',
     photo: '/team/aimal-waqas.jpg',
+    photoPosition: 'top',
   },
   {
     id: 'aieman-naeem',

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 
-const FOUNDER_NOTE_BODY = (
+export const FOUNDER_NOTE_BODY = (
   <>
     <p>
       I&apos;m Mujtaba, a Dow grad going through the IM Match myself. Like many Pakistani IMGs, I spent hours stitching
