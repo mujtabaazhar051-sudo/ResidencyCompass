@@ -18,7 +18,7 @@ const svgRaw = readFileSync(join(PUBLIC, 'favicon.svg'), 'utf8')
 
 const MEMBERS = [
   { id: 'mujtaba-azhar', name: 'Mujtaba Azhar', role: 'Founder & Product Lead', school: 'DIMC', photo: 'mujtaba-azhar.jpg', src: 'Mujtaba Azhar Siddiqui.jpg', position: 'centre' },
-  { id: 'mohammad-ahmed', name: 'Mohammad Ahmed', role: 'Co-founder & Operations Lead', school: 'DIMC', photo: 'mohammad-ahmed.jpg', src: 'Mohammud Wajeeh.jpeg', position: 'centre' },
+  { id: 'mohammad-ahmed', name: 'Mohammud Wajeeh Ahmud', role: 'Co-founder & Operations Lead', school: 'DIMC', photo: 'mohammad-ahmed.jpg', src: 'Mohammud Wajeeh.jpeg', position: 'centre' },
   { id: 'waqas-ali', name: 'Waqas Ali', role: 'Head of Program Data', school: 'Ameer-ud-Din Medical College', photo: 'waqas-ali.jpg', src: 'Waqas Ali.jpg', position: 'centre' },
   { id: 'aieman-naeem', name: 'Aieman Naeem', role: 'Program Data Specialist', school: 'Rawalpindi Medical University', photo: 'aieman-naeem.jpg', src: 'Aieman Naeem.png', position: 'north', padTop: 0.16 },
   { id: 'naima-agha', name: 'Naima Agha', role: 'Program Research Analyst', school: 'Foundation University Medical College', photo: 'naima-agha.jpg', src: 'Naima Agha.jpg', position: 'centre' },

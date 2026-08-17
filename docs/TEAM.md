@@ -2,7 +2,7 @@
 
 Last updated: 2026-08-12 (Hasan removed; Aieman → data; CV-friendly public titles)
 
-**Model:** Volunteers fill **secondary sheets**. **Master sheet** = Mujtaba + Mohammad Ahmed only. Website publish = Mujtaba only.
+**Model:** Volunteers fill **secondary sheets**. **Master sheet** = Mujtaba + Mohammud Wajeeh Ahmud only. Website publish = Mujtaba only.
 
 **Product framing:** Explore U.S. IM programs for clearer mutual fit — not to game the Match.
 
@@ -15,7 +15,7 @@ Last updated: 2026-08-12 (Hasan removed; Aieman → data; CV-friendly public tit
 | Name | School | Public role |
 |------|--------|-------------|
 | **Mujtaba Azhar** | DIMC | Founder & Product Lead |
-| **Mohammad Ahmed** | DIMC | Co-founder & Operations Lead |
+| **Mohammud Wajeeh Ahmud** | DIMC | Co-founder & Operations Lead |
 | **Waqas Ali** | Ameer-ud-Din Medical College | Head of Program Data |
 | **Naima Agha** | Foundation University Medical College | Program Research Analyst |
 | **Aimal Waqas** | Foundation University Medical College | Match Insights Analyst |
@@ -34,7 +34,7 @@ Last updated: 2026-08-12 (Hasan removed; Aieman → data; CV-friendly public tit
 | Name | Focus |
 |------|--------|
 | **Mujtaba Azhar** | Founder & Product Lead. Product + website publish. |
-| **Mohammad Ahmed** | Co-founder & Operations Lead. Ops + master co-owner. Dedup. Merge secondary → master. |
+| **Mohammud Wajeeh Ahmud** | Co-founder & Operations Lead. Ops + master co-owner. Dedup. Merge secondary → master. |
 
 ### Data (secondary sheets → master)
 

@@ -14,7 +14,7 @@ export const TEAM_MEMBERS = [
   },
   {
     id: 'mohammad-ahmed',
-    name: 'Mohammad Ahmed',
+    name: 'Mohammud Wajeeh Ahmud',
     role: 'Co-founder & Operations Lead',
     school: 'Dow International Medical College (DIMC)',
     group: 'leadership',
