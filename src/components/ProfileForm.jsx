@@ -7,10 +7,10 @@ import MedSchoolSelect from './MedSchoolSelect'
 import ErasRegionPicker from './ErasRegionPicker'
 
 const VISA_OPTIONS = [
-  { value: 'none', label: 'No visa needed (US citizen / Green Card / EAD)' },
   { value: 'j1', label: 'J-1 Visa' },
   { value: 'h1b', label: 'H-1B Visa' },
-  { value: 'either', label: 'J-1 or H-1B (either)' },
+  { value: 'either', label: 'J-1 or H-1B' },
+  { value: 'none', label: 'No visa needed' },
 ]
 
 const ECFMG_OPTIONS = [
@@ -216,18 +216,33 @@ export default function ProfileForm({
             </select>
           </label>
 
-          <label className="block">
-            <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Visa Need</span>
-            <select
-              value={profile.visaNeed}
-              onChange={(e) => update('visaNeed', e.target.value)}
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
-            >
-              {VISA_OPTIONS.map((o) => (
-                <option key={o.value} value={o.value}>{o.label}</option>
-              ))}
-            </select>
-          </label>
+          <div className="block">
+            <span className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Visa Need</span>
+            <div className="flex flex-wrap gap-2">
+              {VISA_OPTIONS.map((o) => {
+                const active = profile.visaNeed === o.value
+                return (
+                  <button
+                    key={o.value}
+                    type="button"
+                    onClick={() => update('visaNeed', o.value)}
+                    className={`rounded-lg border px-3 py-2 text-left text-sm transition-colors ${
+                      active
+                        ? 'border-blue-500 bg-blue-50 font-semibold text-blue-800 dark:border-blue-400 dark:bg-blue-900/40 dark:text-blue-200'
+                        : 'border-slate-200 bg-white text-slate-700 hover:border-blue-300 hover:bg-blue-50/50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300'
+                    }`}
+                  >
+                    {o.label}
+                  </button>
+                )
+              })}
+            </div>
+            {profile.visaNeed === 'none' && (
+              <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
+                No-sponsorship programs are included for this setting. Click Update tier list to refresh.
+              </p>
+            )}
+          </div>
 
           {/* Rotations — dynamic list, each row = state + months */}
           <div className="md:col-span-2">
@@ -279,7 +294,7 @@ export default function ProfileForm({
                       >
                         <option value="">🏥 Other / Non-listed facility</option>
                           <optgroup label="Listed programs">
-                            {[...programs].sort((a, b) => a.program_name.localeCompare(b.program_name)).map((p) => (
+                            {[...programs].sort((a, b) => (a.program_name || '').localeCompare(b.program_name || '')).map((p) => (
                               <option key={p.program_code} value={p.program_code}>
                                 {p.program_name}
                               </option>

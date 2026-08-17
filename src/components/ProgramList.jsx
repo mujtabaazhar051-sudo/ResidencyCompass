@@ -34,7 +34,7 @@ export default function ProgramList({ programs, filters, signals, onSignal, gold
       const q = filters.search.toLowerCase()
       result = result.filter(
         (p) =>
-          p.program_name.toLowerCase().includes(q) ||
+          (p.program_name || '').toLowerCase().includes(q) ||
           (p.state || '').toLowerCase().includes(q) ||
           (p.city || '').toLowerCase().includes(q) ||
           (p.program_type || '').toLowerCase().includes(q)

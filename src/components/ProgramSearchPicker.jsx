@@ -29,9 +29,9 @@ function programMatchesQuery(program, query) {
   const q = query.trim().toLowerCase()
   if (!q) return true
   return (
-    program.program_name.toLowerCase().includes(q) ||
-    program.state.toLowerCase().includes(q) ||
-    program.program_code.includes(q)
+    (program.program_name || '').toLowerCase().includes(q) ||
+    (program.state || '').toLowerCase().includes(q) ||
+    (program.program_code || '').includes(q)
   )
 }
 

@@ -436,10 +436,14 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
   }
 
   // Scores always stay live (so card details reflect current connections/signals)
-  const scoredPrograms = useMemo(
-    () => scorePrograms(programs, profile, signals, connections),
-    [programs, profile, signals, connections],
-  )
+  const scoredPrograms = useMemo(() => {
+    try {
+      return scorePrograms(programs, profile, signals, connections)
+    } catch (err) {
+      console.error('scorePrograms failed', err)
+      return []
+    }
+  }, [programs, profile, signals, connections])
 
   // Stable baseline — scored and sorted from the last applied snapshot.
   // Only updates when the user clicks Apply or Re-rank.

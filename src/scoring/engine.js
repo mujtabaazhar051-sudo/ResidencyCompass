@@ -154,7 +154,7 @@ function scoreConnection(conn) {
   }
 
   const count  = conn.count >= 3 ? 3 : (conn.count || 1)
-  const base   = BASE[conn.strength]
+  const base   = BASE[conn.strength] ?? 0
   const bonus  = COUNT_BONUS[count] || 0
   const score  = Math.min(WEIGHT_CONNECTION_STRONG, base + bonus)
 
@@ -451,50 +451,67 @@ export function scorePrograms(programs, profile, signals = {}, connections = {})
   return programs
     .filter((program) => passesVisaFilter(program, profile.visaNeed))
     .map((program) => {
-      const conn = scoreConnection(connections[program.program_code] || null)
-      const dowPak      = scoreDowPak(program, profile.medSchool)
-      const step2       = scoreStep2(program, profile.step2)
-      const step3       = scoreStep3(profile.step3)
-      const ecfmg       = scoreEcfmg(profile.ecfmg)
-      const visaStatus  = scoreVisaStatus(profile.visaNeed)
-      const yogGap      = scoreYogGap(profile.yog)
-      const rotations   = scoreRotations(profile, { __code: program.program_code, __state: program.state })
-      const erasRegion  = scoreErasRegion(program, profile.erasRegions)
-      const research    = scoreResearch(profile.research, program.program_type)
-      const programType = scoreProgramType(program)
-      const signal      = scoreSignal(program, signals[program.program_code] || null)
-      const penalty     = scorePenalty(program)
-
-      const rawScore =
-        conn.score + dowPak.score + step2.score + step3.score +
-        ecfmg.score + visaStatus.score + yogGap.score + rotations.score + erasRegion.score + research.score +
-        programType.score + signal.score + penalty.score
-
-      const computedScore = Math.max(0, Math.min(100, rawScore))
-      const computedTier  = assignTier(computedScore, conn.score)
-
-      return {
-        ...program,
-        computed_score: computedScore,
-        computed_tier:  computedTier,
-        score_breakdown: {
-          connection:  { score: conn.score,          note: conn.note },
-          dowPak:      { score: dowPak.score,        note: dowPak.note },
-          step2:       { score: step2.score,         note: step2.note },
-          step3:       { score: step3.score,         note: step3.note },
-          ecfmg:       { score: ecfmg.score,         note: ecfmg.note },
-          visaStatus:  { score: visaStatus.score,    note: visaStatus.note },
-          yogGap:      { score: yogGap.score,        note: yogGap.note },
-          rotations:   { score: rotations.score,     note: rotations.note },
-          erasRegion:  { score: erasRegion.score,    note: erasRegion.note },
-          research:    { score: research.score,      note: research.note },
-          programType: { score: programType.score,  note: programType.note },
-          signal:      { score: signal.score,       note: signal.note },
-          penalty:     { score: penalty.score,      note: penalty.note },
-        },
-        flags:              penalty.flags,
-        user_has_connection: conn.hasConnection,
-        user_signal:         signals[program.program_code] || null,
+      try {
+        return scoreSingleProgram(program, profile, signals, connections)
+      } catch (err) {
+        console.error('Failed to score program', program?.program_code, err)
+        return {
+          ...program,
+          computed_score: 0,
+          computed_tier: TIER_LONG_SHOT,
+          score_breakdown: {},
+          flags: [],
+          user_has_connection: false,
+          user_signal: signals[program.program_code] || null,
+        }
       }
     })
+}
+
+function scoreSingleProgram(program, profile, signals, connections) {
+  const conn = scoreConnection(connections[program.program_code] || null)
+  const dowPak      = scoreDowPak(program, profile.medSchool)
+  const step2       = scoreStep2(program, profile.step2)
+  const step3       = scoreStep3(profile.step3)
+  const ecfmg       = scoreEcfmg(profile.ecfmg)
+  const visaStatus  = scoreVisaStatus(profile.visaNeed)
+  const yogGap      = scoreYogGap(profile.yog)
+  const rotations   = scoreRotations(profile, { __code: program.program_code, __state: program.state })
+  const erasRegion  = scoreErasRegion(program, profile.erasRegions)
+  const research    = scoreResearch(profile.research, program.program_type)
+  const programType = scoreProgramType(program)
+  const signal      = scoreSignal(program, signals[program.program_code] || null)
+  const penalty     = scorePenalty(program)
+
+  const rawScore =
+    conn.score + dowPak.score + step2.score + step3.score +
+    ecfmg.score + visaStatus.score + yogGap.score + rotations.score + erasRegion.score + research.score +
+    programType.score + signal.score + penalty.score
+
+  const computedScore = Math.max(0, Math.min(100, Number.isFinite(rawScore) ? rawScore : 0))
+  const computedTier  = assignTier(computedScore, conn.score)
+
+  return {
+    ...program,
+    computed_score: computedScore,
+    computed_tier:  computedTier,
+    score_breakdown: {
+      connection:  { score: conn.score,          note: conn.note },
+      dowPak:      { score: dowPak.score,        note: dowPak.note },
+      step2:       { score: step2.score,         note: step2.note },
+      step3:       { score: step3.score,         note: step3.note },
+      ecfmg:       { score: ecfmg.score,         note: ecfmg.note },
+      visaStatus:  { score: visaStatus.score,    note: visaStatus.note },
+      yogGap:      { score: yogGap.score,        note: yogGap.note },
+      rotations:   { score: rotations.score,     note: rotations.note },
+      erasRegion:  { score: erasRegion.score,    note: erasRegion.note },
+      research:    { score: research.score,      note: research.note },
+      programType: { score: programType.score,  note: programType.note },
+      signal:      { score: signal.score,       note: signal.note },
+      penalty:     { score: penalty.score,      note: penalty.note },
+    },
+    flags:              penalty.flags,
+    user_has_connection: conn.hasConnection,
+    user_signal:         signals[program.program_code] || null,
+  }
 }
