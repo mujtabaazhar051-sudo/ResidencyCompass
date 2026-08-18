@@ -11,4 +11,5 @@ Optimized headshots used on About → Team (`{id}.jpg`):
 - zoya-tariq.jpg
 
 **Do not add** `usama-idrees.jpg` — Usama asked not to use a photo (initials only).
+**Instagram only:** do not use Naima’s name or photo — initials (NA) on that slide. The website still shows her name and photo.
 Hassan is not on the public roster.

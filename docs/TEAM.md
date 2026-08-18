@@ -16,7 +16,7 @@ Last updated: 2026-08-12 (Hasan removed; Aieman → data; CV-friendly public tit
 |------|--------|-------------|
 | **Mujtaba Azhar** | DIMC | Founder & Product Lead |
 | **Mohammud Wajeeh Ahmud** | DIMC | Co-founder & Operations Lead |
-| **Waqas Ali** | Ameer-ud-Din Medical College | Head of Program Data |
+| **Muhammad Waqas Ali** | Ameer-ud-Din Medical College | Head of Program Data |
 | **Naima Agha** | Foundation University Medical College | Program Research Analyst |
 | **Aimal Waqas** | Foundation University Medical College | Match Insights Analyst |
 | **Aieman Naeem** | Rawalpindi Medical University | Program Data Specialist |
@@ -40,7 +40,7 @@ Last updated: 2026-08-12 (Hasan removed; Aieman → data; CV-friendly public tit
 
 | Name | Applying? | Focus |
 |------|-----------|--------|
-| **Waqas Ali** | Yes | **Head of Program Data.** Secondary lists, pipeline coordination. |
+| **Muhammad Waqas Ali** | Yes | **Head of Program Data.** Secondary lists, pipeline coordination. |
 | **Naima Agha** | Yes | Secondary sheet / uni + peer sources |
 | **Aimal Waqas** | Yes | Secondary sheet / uni + peer sources |
 | **Aieman Naeem** | **Yes** | Secondary sheet / uni + peer sources |

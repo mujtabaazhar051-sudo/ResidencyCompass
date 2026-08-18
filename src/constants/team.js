@@ -22,7 +22,7 @@ export const TEAM_MEMBERS = [
   },
   {
     id: 'waqas-ali',
-    name: 'Waqas Ali',
+    name: 'Muhammad Waqas Ali',
     role: 'Head of Program Data',
     school: 'Ameer-ud-Din Medical College',
     group: 'data',
