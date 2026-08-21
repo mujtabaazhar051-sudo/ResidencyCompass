@@ -192,8 +192,8 @@ for (let i = 0; i < MEMBERS.length; i++) {
   const m = MEMBERS[i]
   const n = i + 2
   const title = m.hideIdentity ? initials(m.name) : m.name
-  const role = m.hideIdentity ? '' : m.role
-  const school = m.hideIdentity ? '' : m.school
+  const role = m.role
+  const school = m.school
   const overlay = Buffer.from(`<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${SIZE}" height="${SIZE}">
   <defs>

@@ -402,6 +402,7 @@ function ExpandedDetails({
   advanced = false,
 }) {
   const detailFields = [
+    { label: 'Program code', value: program.program_code },
     { label: 'Program Director', value: program.pd_name },
     { label: 'Phone', value: program.phone },
     { label: 'Email', value: program.email },
