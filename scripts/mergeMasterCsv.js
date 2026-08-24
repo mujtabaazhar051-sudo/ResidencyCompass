@@ -133,8 +133,24 @@ const STATE_FIXES = {
   '1404111392': 'PA',
 }
 
+/** Some master-sheet rows store NRMP track codes (e.g. 1616140C0) instead of ACGME IDs. */
+const NRMP_TO_ACGME = {
+  '1616140C0': '1404131367',
+  '2086140C1': '1403300541',
+  '1080140C0': '1400811075',
+  '2980140C0': '1405121432',
+  '2335140C8': '1401100019',
+  '1089140C2': '1400800910',
+  '1094140C2': '1400800910',
+  '1241140C0': '1402331152',
+  '2984140C0': '1402800917',
+  '1991140C0': '1400400925',
+  '1867140C0': '1401200930',
+}
+
 function rowToProgram(row) {
-  const code = (row['Program code'] || '').trim()
+  let code = (row['Program code'] || '').trim()
+  if (NRMP_TO_ACGME[code.toUpperCase()]) code = NRMP_TO_ACGME[code.toUpperCase()]
   let rawName = (row['Program'] || '').replace(/\s+/g, ' ').trim()
   const visa = (row['Visa status'] || '').trim()
   if (!code || !/^\d{10}$/.test(code) || !rawName) return null
