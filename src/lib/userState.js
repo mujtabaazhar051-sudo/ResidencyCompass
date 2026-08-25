@@ -27,8 +27,46 @@ export function hasAppStateData(state) {
       Object.keys(state.connections ?? {}).length > 0 ||
       Object.keys(state.notes ?? {}).length > 0 ||
       Object.keys(state.statuses ?? {}).length > 0 ||
+      Object.keys(state.ivDates ?? {}).length > 0 ||
       Object.keys(state.shortlist ?? {}).length > 0,
   )
+}
+
+/** Prefer existing map values; fill missing keys from the other map. */
+export function mergeMapField(primary = {}, secondary = {}) {
+  const out = { ...(primary && typeof primary === 'object' ? primary : {}) }
+  for (const [key, value] of Object.entries(secondary && typeof secondary === 'object' ? secondary : {})) {
+    if (value == null || value === '') continue
+    if (out[key] == null || out[key] === '') out[key] = value
+  }
+  return out
+}
+
+/**
+ * Merge local + remote app state without letting an older/partial cloud
+ * snapshot wipe shortlist, signals, notes, etc.
+ * Earlier arguments win on conflicts; later ones only fill gaps.
+ */
+export function mergeAppStates(...states) {
+  const present = states.filter((s) => s && typeof s === 'object')
+  if (!present.length) return null
+
+  const withStep2 = [...present].reverse().find((s) => s.profile?.step2)
+  const mergedProfile = present.reduce(
+    (acc, s) => ({ ...acc, ...(s.profile && typeof s.profile === 'object' ? s.profile : {}) }),
+    {},
+  )
+  if (withStep2?.profile?.step2) mergedProfile.step2 = withStep2.profile.step2
+
+  return {
+    profile: mergedProfile,
+    signals: present.reduce((acc, s) => mergeMapField(acc, s.signals), {}),
+    connections: present.reduce((acc, s) => mergeMapField(acc, s.connections), {}),
+    notes: present.reduce((acc, s) => mergeMapField(acc, s.notes), {}),
+    statuses: present.reduce((acc, s) => mergeMapField(acc, s.statuses), {}),
+    ivDates: present.reduce((acc, s) => mergeMapField(acc, s.ivDates), {}),
+    shortlist: present.reduce((acc, s) => mergeMapField(acc, s.shortlist), {}),
+  }
 }
 
 export function loadLocalState(userId) {

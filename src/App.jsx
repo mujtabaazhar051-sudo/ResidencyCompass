@@ -37,6 +37,7 @@ import {
   hasAppStateData,
   loadLocalState,
   localStorageKey,
+  mergeAppStates,
   packAppState,
   saveLocalState,
   saveRemoteUserState,
@@ -83,37 +84,37 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
   // Initialise from localStorage on first render, falling back to defaults (skipped in demo)
   const [profile, setProfile] = useState(() => {
     if (demoMode) return DEFAULT_PROFILE
-    const saved = loadSaved()
+    const saved = loadSaved(userId)
     return saved?.profile ? { ...DEFAULT_PROFILE, ...saved.profile } : DEFAULT_PROFILE
   })
   const [signals, setSignals] = useState(() => {
     if (demoMode) return DEFAULT_SIGNALS
-    const saved = loadSaved()
+    const saved = loadSaved(userId)
     return saved?.signals ?? SEED_SIGNALS
   })
   const [connections, setConnections] = useState(() => {
     if (demoMode) return DEFAULT_CONNECTIONS
-    const saved = loadSaved()
+    const saved = loadSaved(userId)
     return saved?.connections ?? SEED_CONNECTIONS
   })
   const [notes, setNotes] = useState(() => {
     if (demoMode) return {}
-    const saved = loadSaved()
+    const saved = loadSaved(userId)
     return saved?.notes ?? {}
   })
   const [statuses, setStatuses] = useState(() => {
     if (demoMode) return {}
-    const saved = loadSaved()
+    const saved = loadSaved(userId)
     return saved?.statuses ?? {}
   })
   const [ivDates, setIvDates] = useState(() => {
     if (demoMode) return {}
-    const saved = loadSaved()
+    const saved = loadSaved(userId)
     return saved?.ivDates ?? {}
   })
   const [shortlist, setShortlist] = useState(() => {
     if (demoMode) return {}
-    const saved = loadSaved()
+    const saved = loadSaved(userId)
     return saved?.shortlist ?? {}
   })
 
@@ -141,7 +142,7 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
   const [showClearModal, setShowClearModal] = useState(false)
   const [activeTab, setActiveTab] = useState(() => {
     if (demoMode) return 'profile'
-    const saved = loadSaved()
+    const saved = loadSaved(userId)
     const step2 = saved?.profile?.step2 ?? DEFAULT_PROFILE.step2
     return isValidStep2(step2) ? 'programs' : 'profile'
   })
@@ -249,7 +250,7 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
     if (demoMode) {
       return { profile: DEFAULT_PROFILE, signals: DEFAULT_SIGNALS, connections: DEFAULT_CONNECTIONS }
     }
-    const saved = loadSaved()
+    const saved = loadSaved(userId)
     return {
       profile:     saved?.profile     ? { ...DEFAULT_PROFILE, ...saved.profile } : DEFAULT_PROFILE,
       signals:     saved?.signals     ?? SEED_SIGNALS,
@@ -684,7 +685,8 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
     })
   }
 
-  // Load signed-in user's list from Supabase (survives redeploys / new browsers)
+  // Load signed-in user's list from Supabase (survives redeploys / new browsers).
+  // Merge local + remote so a partial cloud snapshot cannot wipe shortlist/notes.
   useEffect(() => {
     if (demoMode || !userId || userId === 'local' || !isConfigured) return
 
@@ -693,16 +695,20 @@ export default function App({ onLeaveApp, demoMode = false, onCreateAccount }) {
 
     ;(async () => {
       try {
+        const perUserLocal = loadLocalState(userId)
+        const legacyLocal = userId !== 'local' ? loadLocalState(null) : null
         const remote = await fetchRemoteUserState(userId)
         if (cancelled) return
 
-        if (remote?.state && hasAppStateData(remote.state)) {
-          applyBackup(remote.state)
-          saveLocalState(userId, remote.state)
-        } else {
-          const local = loadLocalState(userId)
-          if (local && hasAppStateData(local)) {
-            await saveRemoteUserState(userId, local)
+        const beforeCount = Object.keys(shortlist).length
+        const merged = mergeAppStates(perUserLocal, legacyLocal, remote?.state)
+        if (merged && hasAppStateData(merged)) {
+          applyBackup(merged)
+          saveLocalState(userId, merged)
+          await saveRemoteUserState(userId, merged)
+          const afterCount = Object.keys(merged.shortlist ?? {}).length
+          if (afterCount > beforeCount) {
+            showToast(`Restored ${afterCount} shortlisted program${afterCount === 1 ? '' : 's'}`, 'success')
           }
         }
       } catch (err) {
